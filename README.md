@@ -53,6 +53,6 @@ Følgende afleveres på Moodle senest torsdag d. 9. maj kl 18.00 som enten link 
  
 # Praktiske oplysninger
 
-Projektet løses i de samme grupper som Marios Pizzabar projektet.</b>
-Alle bør løse en ligelig del af kodearbejdet, hvilket skal fremgå af @author kommentar på Java klasserne.</b> 
+Projektet løses i de samme grupper som Marios Pizzabar projektet.</br>
+Alle bør løse en ligelig del af kodearbejdet, hvilket skal fremgå af @author kommentar på Java klasserne.</br> 
 Det er en obligatorisk study point opgave på 20 points. 
