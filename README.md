@@ -1,4 +1,5 @@
 # Delfinen
+![](like-a-dolphin-134211.gif)
 ## 1. Semesterprojekt forår 2019 - Case: Svømmeklubben Delfinen
 
 Svømmeklubben Delfinen er en mindre klub, der er i vækst. Klubbens ledelse ønsker derfor udviklet et administrativt system til at styre medlemsoplysninger, kontingenter og svømmeresultater.
