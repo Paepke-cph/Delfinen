@@ -33,7 +33,7 @@ public class MockUI implements UI{
     }
 
     @Override
-    public String getUserImput() {
+    public String getUserInput() {
         return input[inputIndex++];
     }
     

@@ -22,7 +22,7 @@ public class ConsoleUI implements UI {
     }
 
     @Override
-    public String getUserImput() {
+    public String getUserInput() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
