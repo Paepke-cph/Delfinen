@@ -37,13 +37,13 @@ Det er krav, at I arbejder iterativt og test-driven med design og implementering
 # Software (programmet)
 
 Koden skal som minimum indeholde:
-•	Flere klasser, indholdene indkapsling
-•	Logisk opdeling af relaterede klasser i packages
-•	Relevante datastrukturer såsom Array/ArrayList
-•	Nedarvning og/eller interfaces
-•	Gemme data i en database (persistens), således, at data bevares/hentes.
-•	Simpel tekstbaseret brugergrænseflade
-•	Relevante unit tests
+1. Flere klasser, indholdene indkapsling
+2. Logisk opdeling af relaterede klasser i packages
+3. Relevante datastrukturer såsom Array/ArrayList
+4. Nedarvning og/eller interfaces
+5. Gemme data i en database (persistens), således, at data bevares/hentes.
+6. Simpel tekstbaseret brugergrænseflade
+7. Relevante unit tests
 
 ## Aflevering 
 Følgende afleveres på Moodle senest torsdag d. 9. maj kl 18.00 som enten link til github repository eller en zip-fil indeholdende: 
