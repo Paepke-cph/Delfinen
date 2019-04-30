@@ -75,4 +75,14 @@ public class UIControllerTest {
         // Assert
         assertEquals(12, mockUI.getOutput().size());
     }
+
+    @Test
+    public void testadMember() {
+        // Arrange
+        
+        // Act
+        
+        // Assert
+        
+    }
 }

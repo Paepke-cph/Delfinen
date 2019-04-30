@@ -67,6 +67,15 @@ public class UIController {
             }
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
     private void admKontingenterMenu() {
         int choice = 0;
