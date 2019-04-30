@@ -11,4 +11,5 @@ import java.util.Map;
 public interface Storage {
     
     public ArrayList<Map<String, String>> getMembers();
+
 }

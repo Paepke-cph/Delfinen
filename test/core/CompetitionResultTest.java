@@ -13,12 +13,13 @@ import static org.junit.Assert.*;
  * @author Alexander
  */
 public class CompetitionResultTest {
+
+    CompetitionResult comp;
     
-    public CompetitionResultTest() {
-    }
 
     @Test
-    public void testSomeMethod() {
+    public void testGetSwmmingDiscipline(){
+        
     }
     
 }
