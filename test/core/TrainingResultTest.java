@@ -15,37 +15,27 @@ import org.junit.Before;
  *
  * @author Alexander
  */
-public class CompetitionResultTest {
+public class TrainingResultTest {
     Member member = new Member("Aleander", 29, 1);
-    CompetitionResult comp;
-    String event = "DM";
+    TrainingResult comp;
     LocalDate date = LocalDate.now();
     LocalTime time = LocalTime.of(0, 10, 20, 43);
-    int placement = 5;
 
     @Before
-    public void setUp() {
-        comp = new CompetitionResult(event,placement, SwimmingDiscipline.BUTTERFLY, date, time, member);
+    public void Setup() {
+        comp = new TrainingResult(SwimmingDiscipline.BUTTERFLY, date, time, member);
     }
 
     /**
-     * Test of getSwimmingDiscipline method, of class CompetitionResult.
+     * Test of getSwimmingDiscipline method, of class TrainingResult.
      */
     @Test
-    public void testGetSwmmingDiscipline() {
+    public void testGetSwimmingDiscipline() {
         assertEquals("BUTTERFLY", comp.getSwimmingDiscipline().getDisciplineName());
     }
 
     /**
-     * Test of getEvent method, of class CompetitionResult.
-     */
-    @Test
-    public void testGetEvent() {
-        assertEquals(event, comp.getEvent());
-    }
-
-    /**
-     * Test of getDate method, of class CompetitionResult.
+     * Test of getDate method, of class TrainingResult.
      */
     @Test
     public void testGetDate() {
@@ -53,7 +43,7 @@ public class CompetitionResultTest {
     }
 
     /**
-     * Test of getTime method, of class CompetitionResult.
+     * Test of getTime method, of class TrainingResult.
      */
     @Test
     public void testGetTime() {
@@ -61,11 +51,11 @@ public class CompetitionResultTest {
     }
 
     /**
-     * Test of getPlacement method, of class CompetitionResult.
+     * Test of getMember method, of class TrainingResult.
      */
     @Test
-    public void testGetPlacement() {
-        assertEquals(placement, comp.getPlacement());
+    public void testGetMember() {
+        assertEquals(member, comp.getMember());
     }
 
 }
