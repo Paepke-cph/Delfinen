@@ -16,7 +16,7 @@ import org.junit.Before;
  * @author Alexander
  */
 public class CompetitionResultTest {
-
+    Member member = new Member("Aleander", 29, 1);
     CompetitionResult comp;
     String event = "DM";
     LocalDate date = LocalDate.now();
@@ -25,7 +25,7 @@ public class CompetitionResultTest {
 
     @Before
     public void setUp() {
-        comp = new CompetitionResult(event,placement, SwimmingDiscipline.BUTTERFLY, date, time);
+        comp = new CompetitionResult(event,placement, SwimmingDiscipline.BUTTERFLY, date, time, member);
     }
 
     /**

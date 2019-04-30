@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import storage.Storage;
 import ui.UI;
@@ -10,7 +11,7 @@ import ui.UI;
  * @author Alexander
  */
 public class Members {
-    private Map<String,ArrayList<Member>> members;
+    private HashMap<String,ArrayList<Member>> members;
     private Storage storage;
     private UI ui;
 
@@ -27,7 +28,7 @@ public class Members {
         return false;
     }
 
-    public Map<String,ArrayList<Member>> getMembers() {
+    public HashMap<String,ArrayList<Member>> getMembers() {
         return members;
     }
     

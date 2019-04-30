@@ -5,6 +5,8 @@
  */
 package core;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import storage.Storage;
 import ui.UI;
 
@@ -16,10 +18,12 @@ public class UIController {
 
     private UI ui;
     private Storage storage;
+    private Members memberHandler;
 
     public UIController(UI ui, Storage storage) {
         this.ui = ui;
         this.storage = storage;
+        memberHandler = new Members(storage);
     }
 
     public void startProgram() {
@@ -32,7 +36,7 @@ public class UIController {
             ui.println("3) Resultater");
             ui.println("\n9) afslut");
 
-            choice = parseMenuChoice();
+            choice = parseUserInputToInt();
             switch (choice) {
                 case 1:
                     admMemberMenu();
@@ -56,7 +60,7 @@ public class UIController {
             ui.println("3) Fjern");
             ui.println("\n9) Tilbage");
 
-            choice = parseMenuChoice();
+            choice = parseUserInputToInt();
             switch (choice) {
                 case 1:
                     break;
@@ -68,6 +72,33 @@ public class UIController {
         }
     }
 
+    private void addMember() {
+        ui.print("Navn: ");
+        String name = ui.getUserInput();
+        ui.print("\nAlder: ");
+        int age = parseUserInputToInt();
+        boolean notDone = true;
+        while (notDone) {
+            ui.print("\nKompetitiv svømmer? (ja/nej): ");
+            String competitiveSwimming = ui.getUserInput();
+            if (competitiveSwimming.equalsIgnoreCase("ja")) {
+                notDone = false;
+                // Lav kompetitiv
+            } else if (competitiveSwimming.equalsIgnoreCase("nej")) {
+                notDone = false;
+                // Lav motionist
+            }
+        }
+
+//        ui.println("\nVælg svømme disciplin: ");
+//        ui.println("1) " + SwimmingDiscipline.BUTTERFLY.getDisciplineName());
+//        ui.println("2) " + SwimmingDiscipline.BREASTSTROKE.getDisciplineName());
+//        ui.println("3) " + SwimmingDiscipline.BACKSTROKE.getDisciplineName());
+//        ui.println("4) " + SwimmingDiscipline.CRAWL.getDisciplineName());
+//        ui.print("\nDer kan vælges flere: ");
+//        int disciplin = parseUserInputToInt();
+    }
+
     private void admKontingenterMenu() {
         int choice = 0;
         while (choice != 9) {
@@ -77,7 +108,7 @@ public class UIController {
             ui.println("2) Registrer betaling");
             ui.println("\n9) Tilbage");
 
-            choice = parseMenuChoice();
+            choice = parseUserInputToInt();
             switch (choice) {
                 case 1:
                     break;
@@ -86,8 +117,8 @@ public class UIController {
             }
         }
     }
-    
-    private void resultaterMenu(){
+
+    private void resultaterMenu() {
         int choice = 0;
         while (choice != 9) {
             showHeader();
@@ -96,7 +127,7 @@ public class UIController {
             ui.println("2) Indskriv resultater");
             ui.println("\n9) Tilbage");
 
-            choice = parseMenuChoice();
+            choice = parseUserInputToInt();
             switch (choice) {
                 case 1:
                     break;
@@ -110,7 +141,7 @@ public class UIController {
         ui.println("---------------Delfinen---------------");
     }
 
-    private int parseMenuChoice() {
+    private int parseUserInputToInt() {
         int value = 0;
         boolean running = true;
         while (running) {
@@ -122,6 +153,10 @@ public class UIController {
             }
         }
         return value;
+    }
+
+    public HashMap<String, ArrayList<Member>> getAllMembers() {
+        return memberHandler.getMembers();
     }
 
 }
