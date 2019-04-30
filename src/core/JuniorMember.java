@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 /**
@@ -10,13 +5,30 @@ package core;
  * @author rando
  */
 public class JuniorMember extends Member {
+    private double subscription;
+    private boolean active;
     
-    public JuniorMember(String name, int age, int id) {
+    public JuniorMember(boolean active, String name, int age, int id) {
         super(name, age, id);
+        this.subscription = calculatePrice();
+        this.active = active;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
     
     @Override
     public double calculatePrice(){
-        return 1000;
+        double inactive = 500;
+        double subscription = 1000;
+        if(!this.active)
+            return inactive;
+        else
+            return subscription;
     }
 }
