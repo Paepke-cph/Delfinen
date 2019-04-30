@@ -19,6 +19,14 @@ public class Members {
         loadMembersFromStorage();
     }
 
+    public boolean setMember(String cat, Member member) {
+        if(members.containsKey(cat)) {
+            members.get(cat).add(member);
+            return true;
+        }
+        return false;
+    }
+
     public Map<String,ArrayList<Member>> getMembers() {
         return members;
     }
