@@ -98,4 +98,58 @@ public class MembersTest {
         assertFalse(members.setMember("blabla", member1));
     }
 
+    @Test
+    public void testReturnSeniorMembers() {
+        mockStorage = new MockStorage();
+        HashMap<String, String> map = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map.put("name", "Alexander");
+        map.put("age", "29");
+        map.put("id", "1");
+        map.put("active", "true");
+        map.put("subscription", "1600");
+        list.add(map);
+        mockStorage.setMembers(list);
+        members = new Members(mockStorage);
+        String expected = members.getMembers().get("SeniorMember").get(0).toString();
+        String result = members.returnSeniorMembers().get(0);
+        assertTrue(expected.equals(result));
+    }
+
+    @Test
+    public void testReturnCoaches() {
+        mockStorage = new MockStorage();
+        HashMap<String, String> map = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map.put("name", "Alexander");
+        map.put("age", "29");
+        map.put("id", "1");
+        map.put("subscription", "0");
+        map.put("active", "true");
+        list.add(map);
+        mockStorage.setMembers(list);
+        members = new Members(mockStorage);
+        String expected = members.getMembers().get("Coach").get(0).toString();
+        String result = members.returnCoaches().get(0);
+        assertTrue(expected.equals(result));
+    }
+
+    @Test
+    public void testJuniorMembers() {
+        mockStorage = new MockStorage();
+        HashMap<String, String> map = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map.put("name", "Alexander");
+        map.put("age", "15");
+        map.put("id", "1");
+        map.put("active", "true");
+        map.put("subscription", "1000");
+        list.add(map);
+        mockStorage.setMembers(list);
+        members = new Members(mockStorage);
+        String expected = members.getMembers().get("JuniorMember").get(0).toString();
+        String result = members.returnJuniorMembers().get(0);
+        assertTrue(expected.equals(result));
+    }
+
 }

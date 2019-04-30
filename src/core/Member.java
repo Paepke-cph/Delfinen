@@ -46,7 +46,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member{" + "name=" + name + ", age=" + age + ", id=" + id + '}';
+        return name + ", " + age + ", " + id;
     }
 
 }

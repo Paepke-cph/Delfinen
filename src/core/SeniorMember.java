@@ -8,7 +8,6 @@ public class SeniorMember extends JuniorMember{
 
     public SeniorMember(boolean active, String name, int age, int id) {
         super(active, name, age, id);
-        calculatePrice();
     }
 
     @Override
@@ -22,8 +21,6 @@ public class SeniorMember extends JuniorMember{
             return discount * subscription;
         else
             return subscription;
-    }
-    
-    
+    }    
 
 }

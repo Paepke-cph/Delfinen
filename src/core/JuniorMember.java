@@ -14,6 +14,10 @@ public class JuniorMember extends Member {
         this.subscription = calculatePrice();
     }
 
+    public void setSubscription(double subscription) {
+        this.subscription = subscription;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -34,7 +38,7 @@ public class JuniorMember extends Member {
 
     @Override
     public String toString() {
-        return "JuniorMember{" + "name="+ this.getName()+ " " +"subscription=" + subscription + ", active=" + active + '}';
+        return super.toString() + " " + subscription + ", " + active;
     }
     
     
