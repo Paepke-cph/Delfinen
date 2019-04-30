@@ -10,8 +10,8 @@ public class JuniorMember extends Member {
     
     public JuniorMember(boolean active, String name, int age, int id) {
         super(name, age, id);
-        this.subscription = calculatePrice();
         this.active = active;
+        this.subscription = calculatePrice();
     }
 
     public boolean isActive() {
@@ -31,4 +31,11 @@ public class JuniorMember extends Member {
         else
             return subscription;
     }
+
+    @Override
+    public String toString() {
+        return "JuniorMember{" + "name="+ this.getName()+ " " +"subscription=" + subscription + ", active=" + active + '}';
+    }
+    
+    
 }

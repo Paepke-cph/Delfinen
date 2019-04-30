@@ -59,8 +59,21 @@ public class MemberTest {
         int result = member.getId();
         assertEquals(expected, result);
     }
-    
-    
-    
+
+    /**
+     * Test of calculatePrice method, of class Member.
+     */
+    @Test
+    public void testCalculatePrice() {
+        assertEquals(0, member.calculatePrice(),0);
+    }
+
+    /**
+     * Test of toString method, of class Member.
+     */
+    @Test
+    public void testToString() {
+    }
+      
     
 }
