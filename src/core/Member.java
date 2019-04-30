@@ -40,6 +40,9 @@ public class Member {
         this.id = id;
     }
     
+    public double calculatePrice(){
+        return 0;
+    }
     
 
 }

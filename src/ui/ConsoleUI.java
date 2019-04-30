@@ -29,5 +29,10 @@ public class ConsoleUI implements UI {
     public String getUserInput() {
         return scan.nextLine();
     }
+
+    @Override
+    public void print(String output) {
+        System.out.print(output);
+    }
     
 }

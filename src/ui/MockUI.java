@@ -40,5 +40,10 @@ public class MockUI implements UI{
     public ArrayList<String> getOutput() {
         return output;
     }
+
+    @Override
+    public void print(String output) {
+        this.output.add(output);
+    }
     
 }
