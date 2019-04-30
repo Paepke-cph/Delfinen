@@ -2,6 +2,7 @@ package storage;
 
 import core.Member;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *
@@ -9,17 +10,17 @@ import java.util.ArrayList;
  */
 public class MockStorage implements Storage{
 
-    private ArrayList<Member> members;
+    private ArrayList<Map<String, String>> members;
 
     public MockStorage() {
     }
     
     @Override
-    public ArrayList<Member> getMembers() {
+    public ArrayList<Map<String, String>> getMembers() {
         return members;
     }
 
-    public void setMembers(ArrayList<Member> members) {
+    public void setMembers(ArrayList<Map<String, String>> members) {
         this.members = members;
     }
     
