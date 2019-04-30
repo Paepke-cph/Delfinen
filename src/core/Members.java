@@ -1,6 +1,7 @@
 package core;
 
 import java.util.ArrayList;
+import java.util.Map;
 import storage.Storage;
 import ui.UI;
 
@@ -9,19 +10,21 @@ import ui.UI;
  * @author Alexander
  */
 public class Members {
-    private ArrayList<Member> members;
+    private Map<String,ArrayList<Member>> members;
     private Storage storage;
     private UI ui;
 
     public Members(Storage storage) {
         this.storage = storage;
-        this.members = storage.getMembers();
+        loadMembersFromStorage();
     }
 
-    public ArrayList<Member> getMembers() {
+    public Map<String,ArrayList<Member>> getMembers() {
         return members;
     }
     
-    
+    public void loadMembersFromStorage(){
+        
+    }
     
 }
