@@ -10,4 +10,5 @@ import java.util.ArrayList;
 public interface Storage {
     
     public ArrayList<Member> getMembers();
+    
 }

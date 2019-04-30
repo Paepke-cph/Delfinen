@@ -36,5 +36,9 @@ public class MockUI implements UI{
     public String getUserInput() {
         return input[inputIndex++];
     }
+
+    public ArrayList<String> getOutput() {
+        return output;
+    }
     
 }

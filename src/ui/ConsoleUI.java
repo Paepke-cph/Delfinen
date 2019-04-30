@@ -5,25 +5,29 @@
  */
 package ui;
 
+import java.util.Scanner;
+
 /**
  *
  * @author rando
  */
 public class ConsoleUI implements UI {
-
+    private Scanner scan = new Scanner(System.in);
+            
+            
     @Override
     public void println(String output) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(output);
     }
 
     @Override
     public void printf(String output, Object... format) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.printf(output,format);
     }
 
     @Override
     public String getUserInput() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return scan.nextLine();
     }
     
 }
