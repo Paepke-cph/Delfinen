@@ -55,26 +55,26 @@ public class Members {
     }
 
     private void createMember(HashMap<String, String> map) {
-        String name = map.get("name");
+        String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("id"));
+        int id = Integer.parseInt(map.get("member_id"));
         Member member = new Member(name, age, id);
         addMember("Coach", member);
     }
 
     private void createJuniorMember(HashMap<String, String> map) {
-        String name = map.get("name");
+        String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("id"));
+        int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
         JuniorMember member = new JuniorMember(active, name, age, id);
         addMember("JuniorMember", member);
     }
 
     private void createSeniorMember(HashMap<String, String> map) {
-        String name = map.get("name");
+        String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("id"));
+        int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
         SeniorMember member = new SeniorMember(active, name, age, id);
         addMember("SeniorMember", member);
