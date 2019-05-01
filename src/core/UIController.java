@@ -75,25 +75,33 @@ public class UIController {
     }
 
     private void addMember() {
+        //TODO: Hent næste member ID fra database.
+        int id = 0;
         ui.print("Navn: ");
         String name = ui.getUserInput();
         ui.print("Alder: ");
         int age = parseUserInputToInt();
-        boolean junior = (age < 18);
-//TODO: Hent næste member ID fra database.
-        CompetitionSwimmer comp = createCompetitiveSwimmer();
-
-        boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
         Member member;
-        if (junior) {
-            member = new JuniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
-            memberHandler.addMember("JuniorMember", member);
-        } else {
-            member = new SeniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
-            memberHandler.addMember("SeniorMember", member);
+        if(!yesNoOption("Opret Træner?")) {
+            boolean junior = (age < 18);
+            CompetitionSwimmer comp = createCompetitiveSwimmer();
+            boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
+            if (junior) {
+                member = new JuniorMember(active, name, age, id, comp);//ID ER HER IKKE ENDNU
+                memberHandler.addMember("JuniorMember", member);
+            } else {
+                member = new SeniorMember(active, name, age, id, comp);//ID ER HER IKKE ENDNU
+                memberHandler.addMember("SeniorMember", member);
+            }
+            ui.println("\nNyt Medlem Oprettet");
+            ui.println(member.toString());
         }
-        ui.println("\nNyt Medlem Oprettet");
-        ui.println(member.toString());
+        else {
+            member = new Member(name,age,id,null);
+            memberHandler.addMember("Coach", member);
+            ui.println("\nNyt Træner Oprettet");
+            ui.println(member.toString());
+        }
     }
 
     private CompetitionSwimmer createCompetitiveSwimmer() {
