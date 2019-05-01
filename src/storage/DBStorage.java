@@ -24,7 +24,7 @@ public class DBStorage implements Storage{
     }
 
     // TODO: getNextMemberID
-
+    @Override
     public int getNextMemberID () {
         String getMaxID = "SELECT MAX(MEMBER_ID) AS 'MEMBER_ID' FROM MEMBERS";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMaxID);
@@ -34,4 +34,19 @@ public class DBStorage implements Storage{
     // TODO: Remove Member
     // TODO: Create new member
     // TODO: Change Sub
+
+    @Override
+    public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<String> getSwimmingDiscplines(int member_id) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
