@@ -77,6 +77,8 @@ public class UIController {
         String name = ui.getUserInput();
         ui.print("\nAlder: ");
         int age = parseUserInputToInt();
+        boolean junior = (age < 18);
+//TODO: Hent næste member ID fra database.
         boolean notDone = true;
         while (notDone) {
             ui.print("\nKompetitiv svømmer? (ja/nej): ");
@@ -84,10 +86,15 @@ public class UIController {
             if (competitiveSwimming.equalsIgnoreCase("ja")) {
                 notDone = false;
                 // Lav kompetitiv
+                // Samler descipliner
+                // Sætter træner
+                // Laver kompetitivt element.
             } else if (competitiveSwimming.equalsIgnoreCase("nej")) {
                 notDone = false;
-                // Lav motionist
             }
+        }
+        if(junior){
+            Member memeber = new JuniorMember();
         }
 
 //        ui.println("\nVælg svømme disciplin: ");
