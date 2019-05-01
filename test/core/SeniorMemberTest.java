@@ -19,7 +19,7 @@ public class SeniorMemberTest {
 
     @Before
     public void setUp() {
-        member = new SeniorMember(true, "Alexander", 29, 1);
+        member = new SeniorMember(true, "Alexander", 29, 1, null);
     }
 
     /**

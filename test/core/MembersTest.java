@@ -20,12 +20,12 @@ public class MembersTest {
 
     @Test
     public void testConstructor() {
-        Member member1 = new Member("Alexander", 29, 1);
-        Member member2 = new Member("Mads", 25, 2);
-        SeniorMember seniorMember = new SeniorMember(true, "Benjamin", 26, 3);
-        SeniorMember seniorMember2 = new SeniorMember(true, "Benjamin", 26, 6);
-        JuniorMember juniorMember = new JuniorMember(true, "Tobias", 15, 4);
-        JuniorMember juniorMember2 = new JuniorMember(true, "Henrik", 15, 5);
+        Member member1 = new Member("Alexander", 29, 1, null);
+        Member member2 = new Member("Mads", 25, 2, null);
+        SeniorMember seniorMember = new SeniorMember(true, "Benjamin", 26, 3, null);
+        SeniorMember seniorMember2 = new SeniorMember(true, "Benjamin", 26, 6, null);
+        JuniorMember juniorMember = new JuniorMember(true, "Tobias", 15, 4, null);
+        JuniorMember juniorMember2 = new JuniorMember(true, "Henrik", 15, 5, null);
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
@@ -83,7 +83,7 @@ public class MembersTest {
      */
     @Test
     public void testSetMember() {
-        Member member1 = new Member("Alexander", 29, 1);
+        Member member1 = new Member("Alexander", 29, 1, null);
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         ArrayList<HashMap<String, String>> list = new ArrayList<>();

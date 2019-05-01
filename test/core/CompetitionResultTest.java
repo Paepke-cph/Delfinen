@@ -16,7 +16,7 @@ import org.junit.Before;
  * @author Alexander
  */
 public class CompetitionResultTest {
-    Member member = new Member("Aleander", 29, 1);
+    Member member = new Member("Aleander", 29, 1, null);
     CompetitionResult comp;
     String event = "DM";
     LocalDate date = LocalDate.now();

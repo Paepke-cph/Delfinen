@@ -73,18 +73,42 @@ public class UIControllerTest {
         // Act
         UIC.startProgram();
         // Assert
-        assertEquals(12, mockUI.getOutput().size());
+        assertEquals(17, mockUI.getOutput().size());
     }
 
     @Test
     public void testAddMember_AddJunior() {
         // Arrange
-        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "nej", "1", "9", "9", "9"});
+        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "nej", "ja", "9", "9"});
         MockStorage mockStorage = new MockStorage();
         UIController UIC = new UIController(mockUI, mockStorage);
         // Act
         UIC.startProgram();
         // Assert
-        assertEquals(1, UIC.getAllMembers().get("Junior").size());
+        assertEquals(1, UIC.getAllMembers().get("JuniorMember").size());
+    }
+
+    @Test
+    public void testAddMember_AddSenior() {
+        // Arrange
+        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "22", "nej", "ja", "9", "9"});
+        MockStorage mockStorage = new MockStorage();
+        UIController UIC = new UIController(mockUI, mockStorage);
+        // Act
+        UIC.startProgram();
+        // Assert
+        assertEquals(1, UIC.getAllMembers().get("SeniorMember").size());
+    }
+
+    @Test
+    public void testAddMember_AddCompJunior() {
+        // Arrange
+        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "ja", "ja", "9", "9"});
+        MockStorage mockStorage = new MockStorage();
+        UIController UIC = new UIController(mockUI, mockStorage);
+        // Act
+        UIC.startProgram();
+        // Assert
+        assertEquals(1, UIC.getAllMembers().get("JuniorMember").size());
     }
 }
