@@ -18,6 +18,10 @@ public class Member {
         this.competition = competition;
     }
 
+    public CompetitionSwimmer getCompetition() {
+        return competition;
+    }
+
     public String getName() {
         return name;
     }
@@ -48,7 +52,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return name + ", " + age + ", " + id;
+        return name + ", " + age + ", " + id + ", " + competition;
     }
 
 }

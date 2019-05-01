@@ -113,7 +113,7 @@ public class MembersTest {
         members = new Members(mockStorage);
         String expected = members.getMembers().get("SeniorMember").get(0).toString();
         String result = members.returnSeniorMembers().get(0);
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test
@@ -131,11 +131,11 @@ public class MembersTest {
         members = new Members(mockStorage);
         String expected = members.getMembers().get("Coach").get(0).toString();
         String result = members.returnCoaches().get(0);
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test
-    public void testJuniorMembers() {
+    public void testReturnJuniorMembers() {
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
@@ -144,12 +144,52 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
+        map.put("coach", null);
         list.add(map);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
         String expected = members.getMembers().get("JuniorMember").get(0).toString();
         String result = members.returnJuniorMembers().get(0);
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
+
+    @Test
+    public void testJuniorCompSwimmer () {
+        mockStorage = new MockStorage();
+        HashMap<String, String> map = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map.put("member_name", "Alexander");
+        map.put("age", "15");
+        map.put("member_id", "1");
+        map.put("active", "1");
+        map.put("subscription", "1000");
+        map.put("coach", "3");
+        list.add(map);
+        mockStorage.setMembers(list);
+        members = new Members(mockStorage);
+
+        assertNotNull(members.searchMemberById(1).getCompetition());
+    }
+
+    @Test
+    public void testSearchMemberByID () {
+        mockStorage = new MockStorage();
+        HashMap<String, String> map = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map.put("member_name", "Alexander");
+        map.put("age", "15");
+        map.put("member_id", "1");
+        map.put("active", "1");
+        map.put("subscription", "1000");
+        map.put("coach", null);
+        list.add(map);
+        Member actual = members.searchMemberById(1);
+        int expected = 1;
+        assertEquals(expected, actual.getId());
+    }
+
+
+
+
 
 }

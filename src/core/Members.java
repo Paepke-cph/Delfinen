@@ -13,7 +13,6 @@ import ui.UI;
 public class Members {
 
     // TODO: Remove member
-
     private HashMap<String, ArrayList<Member>> members;
     private Storage storage;
     private UI ui;
@@ -58,7 +57,7 @@ public class Members {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
-        Member member = new Member(name, age, id);
+        Member member = new Member(name, age, id, null);
         addMember("Coach", member);
     }
 
@@ -67,7 +66,13 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        JuniorMember member = new JuniorMember(active, name, age, id);
+        JuniorMember member;
+        if (map.get("coach") == null) {
+            member = new JuniorMember(active, name, age, id, null);
+        } else {
+            // TODO: Method to return competition swimmer
+            member = new JuniorMember(active, name, age, id, null);
+        }
         addMember("JuniorMember", member);
     }
 
@@ -77,7 +82,7 @@ public class Members {
         int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
         
-        SeniorMember member = new SeniorMember(active, name, age, id);
+        SeniorMember member = new SeniorMember(active, name, age, id, null);
         addMember("SeniorMember", member);
     }
 
@@ -130,5 +135,25 @@ public class Members {
             coaches.add(member.toString());
         }
         return coaches;
+    }
+
+    public Member searchMemberById (int member_id) {
+
+        for (Member member : members.get("Coach")) {
+            if (member.getId() == member_id) {
+                return member;
+            }
+        }
+        for (Member member : members.get("JuniorMember")) {
+            if (member.getId() == member_id) {
+                return member;
+            }
+        }
+        for (Member member : members.get("SeniorMember")) {
+            if (member.getId() == member_id) {
+                return member;
+            }
+        }
+        return null;
     }
 }
