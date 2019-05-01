@@ -111,4 +111,16 @@ public class UIControllerTest {
         // Assert
         assertEquals(1, UIC.getAllMembers().get("JuniorMember").size());
     }
+
+    @Test
+    public void testAddMember_AddCompSenior() {
+        // Arrange
+        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "80", "ja", "2", "9", "ja", "9", "9"});
+        MockStorage mockStorage = new MockStorage();
+        UIController UIC = new UIController(mockUI, mockStorage);
+        // Act
+        UIC.startProgram();
+        // Assert
+        assertEquals(1, UIC.getAllMembers().get("SeniorMember").size());
+    }
 }
