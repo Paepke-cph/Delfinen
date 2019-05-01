@@ -53,27 +53,27 @@ public class Members {
     }
 
     private void createMember(HashMap<String, String> map) {
-        String name = map.get("name");
+        String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("id"));
+        int id = Integer.parseInt(map.get("member_id"));
         Member member = new Member(name, age, id);
         addMember("Coach", member);
     }
 
     private void createJuniorMember(HashMap<String, String> map) {
-        String name = map.get("name");
+        String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("id"));
-        boolean active = Boolean.parseBoolean(map.get("active"));
+        int id = Integer.parseInt(map.get("member_id"));
+        boolean active = map.get("active").equalsIgnoreCase("1");
         JuniorMember member = new JuniorMember(active, name, age, id);
         addMember("JuniorMember", member);
     }
 
     private void createSeniorMember(HashMap<String, String> map) {
-        String name = map.get("name");
+        String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("id"));
-        boolean active = Boolean.parseBoolean(map.get("active"));
+        int id = Integer.parseInt(map.get("member_id"));
+        boolean active = map.get("active").equalsIgnoreCase("1");
         SeniorMember member = new SeniorMember(active, name, age, id);
         addMember("SeniorMember", member);
     }
@@ -114,19 +114,19 @@ public class Members {
     }
 
     public ArrayList<String> returnJuniorMembers() {
-        ArrayList<String> seniors = new ArrayList<>();
+        ArrayList<String> juniors = new ArrayList<>();
         for (Member member : members.get("JuniorMember")) {
-            seniors.add(member.toString());
+            juniors.add(member.toString());
         }
-        return seniors;
+        return juniors;
     }
 
     public ArrayList<String> returnCoaches() {
-        ArrayList<String> seniors = new ArrayList<>();
+        ArrayList<String> coaches = new ArrayList<>();
         for (Member member : members.get("Coach")) {
-            seniors.add(member.toString());
+            coaches.add(member.toString());
         }
-        return seniors;
+        return coaches;
     }
 
 }
