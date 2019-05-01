@@ -17,7 +17,8 @@ public class Main {
 
         try {
             DBStorage storage = new DBStorage();
-            System.out.println(storage.getNextMemberID());
+            Members members = new Members(storage);
+            System.out.println(members.searchMemberById(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }

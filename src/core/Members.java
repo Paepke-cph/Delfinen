@@ -81,7 +81,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        
+
         SeniorMember member = new SeniorMember(active, name, age, id, null);
         addMember("SeniorMember", member);
     }
@@ -137,21 +137,26 @@ public class Members {
         return coaches;
     }
 
-    public Member searchMemberById (int member_id) {
-
-        for (Member member : members.get("Coach")) {
-            if (member.getId() == member_id) {
-                return member;
+    public Member searchMemberById(int member_id) {
+        if (members.containsKey("Coach")) {
+            for (Member member : members.get("Coach")) {
+                if (member.getId() == member_id) {
+                    return member;
+                }
             }
         }
-        for (Member member : members.get("JuniorMember")) {
-            if (member.getId() == member_id) {
-                return member;
+        if (members.containsKey("JuniorMember")) {
+            for (Member member : members.get("JuniorMember")) {
+                if (member.getId() == member_id) {
+                    return member;
+                }
             }
         }
-        for (Member member : members.get("SeniorMember")) {
-            if (member.getId() == member_id) {
-                return member;
+        if (members.containsKey("SeniorMember")) {
+            for (Member member : members.get("SeniorMember")) {
+                if (member.getId() == member_id) {
+                    return member;
+                }
             }
         }
         return null;
