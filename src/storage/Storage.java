@@ -2,6 +2,7 @@ package storage;
 
 import core.Member;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -10,6 +11,6 @@ import java.util.Map;
  */
 public interface Storage {
     
-    public ArrayList<Map<String, String>> getMembers();
+    public ArrayList<HashMap<String, String>> getMembers();
 
 }

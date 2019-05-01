@@ -39,10 +39,14 @@ public class Member {
     public void setId(int id) {
         this.id = id;
     }
-    
-    public double calculatePrice(){
+
+    public double calculatePrice() {
         return 0;
     }
-    
+
+    @Override
+    public String toString() {
+        return name + ", " + age + ", " + id;
+    }
 
 }
