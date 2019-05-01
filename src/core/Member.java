@@ -5,15 +5,17 @@ package core;
  * @author Alexander
  */
 public class Member {
-
+    
+    private CompetitionSwimmer competition;
     private String name;
     private int age;
     private int id;
 
-    public Member(String name, int age, int id) {
+    public Member(String name, int age, int id, CompetitionSwimmer competition) {
         this.name = name;
         this.age = age;
         this.id = id;
+        this.competition = competition;
     }
 
     public String getName() {
