@@ -1,5 +1,6 @@
 package storage;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -11,7 +12,7 @@ public class DBStorage implements Storage{
 
     SQLConnector sqlConnector;
     
-    public DBStorage() throws Exception {
+    public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
     }
 
