@@ -62,16 +62,8 @@ public class MockStorage implements Storage{
         this.trainingResults = trainingResults;
     }
 
-    public void setHighestNumber(int highestNumber) {
-        this.highestNumber = highestNumber;
-    }
-
     public void setGetSwimmingDiscplines(ArrayList<String> getSwimmingDiscplines) {
         this.getSwimmingDiscplines = getSwimmingDiscplines;
     }
-    
-    
-    
->>>>>>> ee9bb576649b61b7e422afb7899ad04e3a8758a3
 
 }
