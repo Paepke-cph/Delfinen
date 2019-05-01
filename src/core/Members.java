@@ -12,6 +12,8 @@ import ui.UI;
  */
 public class Members {
 
+    // TODO: Remove member
+
     private HashMap<String, ArrayList<Member>> members;
     private Storage storage;
     private UI ui;
@@ -56,7 +58,7 @@ public class Members {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
-        Member member = new Member(name, age, id, null);
+        Member member = new Member(name, age, id);
         addMember("Coach", member);
     }
 
@@ -65,7 +67,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        JuniorMember member = new JuniorMember(active, name, age, id, null);
+        JuniorMember member = new JuniorMember(active, name, age, id);
         addMember("JuniorMember", member);
     }
 
@@ -74,7 +76,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        SeniorMember member = new SeniorMember(active, name, age, id, null);
+        SeniorMember member = new SeniorMember(active, name, age, id);
         addMember("SeniorMember", member);
     }
 
@@ -128,5 +130,4 @@ public class Members {
         }
         return coaches;
     }
-
 }
