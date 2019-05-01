@@ -46,7 +46,7 @@ public class DBStorage implements Storage{
     }
 
     @Override
-    public ArrayList<String> getSwimmingDiscplines(int member_id) {
+    public ArrayList<String> getSwimmingDisciplines(int member_id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

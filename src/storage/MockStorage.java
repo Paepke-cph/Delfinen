@@ -40,7 +40,7 @@ public class MockStorage implements Storage{
     }
 
     @Override
-    public ArrayList<String> getSwimmingDiscplines(int member_id) {
+    public ArrayList<String> getSwimmingDisciplines(int member_id) {
         return swimmingDiscplines;
     }
 

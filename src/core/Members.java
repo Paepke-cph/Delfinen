@@ -180,7 +180,7 @@ public class Members {
     // TODO: Create trainingresults
     // TODO: Create compResults
     private ArrayList<SwimmingDiscipline> createDisciplines (int member_id) {
-        ArrayList<String> list = storage.getSwimmingDiscplines(member_id);
+        ArrayList<String> list = storage.getSwimmingDisciplines(member_id);
         ArrayList<SwimmingDiscipline> swimmingDisciplines = new ArrayList<>();
         for(SwimmingDiscipline disc : SwimmingDiscipline.getDisciplinesAsList()){
             for(String str : list){
