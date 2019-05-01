@@ -16,16 +16,16 @@ import org.junit.Before;
  * @author Alexander
  */
 public class CompetitionResultTest {
-    Member member = new Member("Aleander", 29, 1, null);
     CompetitionResult comp;
     String event = "DM";
     LocalDate date = LocalDate.now();
     LocalTime time = LocalTime.of(0, 10, 20, 43);
     int placement = 5;
+    int id = 2;
 
     @Before
     public void setUp() {
-        comp = new CompetitionResult(event,placement, SwimmingDiscipline.BUTTERFLY, date, time, member);
+        comp = new CompetitionResult(event,placement, SwimmingDiscipline.BUTTERFLY, date, time, id);
     }
 
     /**

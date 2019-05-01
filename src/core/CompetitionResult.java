@@ -12,8 +12,8 @@ public class CompetitionResult extends TrainingResult{
     private String event;
     private int placement;
 
-    public CompetitionResult(String event, int placement, SwimmingDiscipline swimmingDiscipline, LocalDate date, LocalTime time, Member member, int id) {
-        super(swimmingDiscipline, date, time, member, id);
+    public CompetitionResult(String event, int placement, SwimmingDiscipline swimmingDiscipline, LocalDate date, LocalTime time, int id) {
+        super(swimmingDiscipline, date, time, id);
         this.event = event;
         this.placement = placement;
     }
