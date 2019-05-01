@@ -116,18 +116,18 @@ public class Members {
     }
 
     public ArrayList<String> returnJuniorMembers() {
-        ArrayList<String> seniors = new ArrayList<>();
+        ArrayList<String> juniors = new ArrayList<>();
         for (Member member : members.get("JuniorMember")) {
-            seniors.add(member.toString());
+            juniors.add(member.toString());
         }
-        return seniors;
+        return juniors;
     }
 
     public ArrayList<String> returnCoaches() {
-        ArrayList<String> seniors = new ArrayList<>();
+        ArrayList<String> coaches = new ArrayList<>();
         for (Member member : members.get("Coach")) {
-            seniors.add(member.toString());
+            coaches.add(member.toString());
         }
-        return seniors;
+        return coaches;
     }
 }
