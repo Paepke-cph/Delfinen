@@ -64,7 +64,7 @@ public class Members {
         String name = map.get("name");
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("id"));
-        boolean active = Boolean.parseBoolean(map.get("active"));
+        boolean active = map.get("active").equalsIgnoreCase("1");
         JuniorMember member = new JuniorMember(active, name, age, id);
         addMember("JuniorMember", member);
     }
@@ -73,7 +73,7 @@ public class Members {
         String name = map.get("name");
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("id"));
-        boolean active = Boolean.parseBoolean(map.get("active"));
+        boolean active = map.get("active").equalsIgnoreCase("1");
         SeniorMember member = new SeniorMember(active, name, age, id);
         addMember("SeniorMember", member);
     }
