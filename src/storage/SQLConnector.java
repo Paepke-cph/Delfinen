@@ -20,7 +20,7 @@ public class SQLConnector implements AutoCloseable {
     private Connection connection;
     private Statement statement;
 
-    public SQLConnector() throws Exception{
+    public SQLConnector() throws SQLException{
         this.connection = DriverManager.getConnection(url,user,password);
         this.statement = connection.prepareStatement(url);
     }
@@ -41,6 +41,18 @@ public class SQLConnector implements AutoCloseable {
             return result;
         } catch (SQLException ex) {
             return null;
+        }
+    }
+    
+    public boolean insertUpdateDeleteQuery(String query) {
+        try {
+            if(statement.executeUpdate(query) == 1)
+                return true;
+            else
+                return false;
+        }
+        catch(SQLException e) {
+            return false;
         }
     }
     
