@@ -6,8 +6,8 @@ package core;
  */
 public class SeniorMember extends JuniorMember{
 
-    public SeniorMember(boolean active, String name, int age, int id) {
-        super(active, name, age, id);
+    public SeniorMember(boolean active, String name, int age, int id, CompetitionSwimmer competition) {
+        super(active, name, age, id, competition);
     }
 
     @Override

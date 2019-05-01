@@ -36,7 +36,7 @@ public class UIController {
             ui.println("3) Resultater");
             ui.println("\n9) afslut");
 
-            choice = parseUserInputToInt();
+            choice = parseUserInputToInt(1, 2, 3, 9);
             switch (choice) {
                 case 1:
                     admMemberMenu();
@@ -45,6 +45,7 @@ public class UIController {
                     admKontingenterMenu();
                     break;
                 case 3:
+                    resultsMenu();
                     break;
             }
         }
@@ -54,15 +55,16 @@ public class UIController {
         int choice = 0;
         while (choice != 9) {
             showHeader();
-            ui.println("------------Adm. Medlemmer------------\n");
+            ui.println("------------Adm. Medlemmer------------");
             ui.println("1) Tilføj");
             ui.println("2) Rediger");
             ui.println("3) Fjern");
             ui.println("\n9) Tilbage");
 
-            choice = parseUserInputToInt();
+            choice = parseUserInputToInt(1, 2, 3, 9);
             switch (choice) {
                 case 1:
+                    addMember();
                     break;
                 case 2:
                     break;
@@ -75,40 +77,70 @@ public class UIController {
     private void addMember() {
         ui.print("Navn: ");
         String name = ui.getUserInput();
-        ui.print("\nAlder: ");
+        ui.print("Alder: ");
         int age = parseUserInputToInt();
-        boolean notDone = true;
-        while (notDone) {
-            ui.print("\nKompetitiv svømmer? (ja/nej): ");
-            String competitiveSwimming = ui.getUserInput();
-            if (competitiveSwimming.equalsIgnoreCase("ja")) {
-                notDone = false;
-                // Lav kompetitiv
-            } else if (competitiveSwimming.equalsIgnoreCase("nej")) {
-                notDone = false;
-                // Lav motionist
-            }
-        }
+        boolean junior = (age < 18);
+//TODO: Hent næste member ID fra database.
+        CompetitionSwimmer comp = createCompetitiveSwimmer();
 
-//        ui.println("\nVælg svømme disciplin: ");
-//        ui.println("1) " + SwimmingDiscipline.BUTTERFLY.getDisciplineName());
-//        ui.println("2) " + SwimmingDiscipline.BREASTSTROKE.getDisciplineName());
-//        ui.println("3) " + SwimmingDiscipline.BACKSTROKE.getDisciplineName());
-//        ui.println("4) " + SwimmingDiscipline.CRAWL.getDisciplineName());
-//        ui.print("\nDer kan vælges flere: ");
-//        int disciplin = parseUserInputToInt();
+        boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
+        Member member;
+        if (junior) {
+            member = new JuniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
+            memberHandler.addMember("JuniorMember", member);
+        } else {
+            member = new SeniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
+            memberHandler.addMember("SeniorMember", member);
+        }
+        ui.println("\nNyt Medlem Oprettet");
+        ui.println(member.toString());
+    }
+
+    private CompetitionSwimmer createCompetitiveSwimmer() {
+        if (yesNoOption("Kompetitiv svømmer?")) {
+            ui.println("Vælg alle discipliner du ønsker: ");
+            boolean notDone = true;
+            ArrayList<SwimmingDiscipline> discipline = SwimmingDiscipline.getDisciplinesAsList();
+            ArrayList<SwimmingDiscipline> selectedDiscipline = new ArrayList<>();
+            int[] options;
+            while (notDone && discipline.size() > 0) {
+                if (selectedDiscipline.size() > 0) {
+                    options = new int[discipline.size() + 1];
+                } else {
+                    options = new int[discipline.size()];
+                }
+                for (int i = 0; i < discipline.size(); i++) {
+                    ui.println(i + 1 + ") " + discipline.get(i).getDisciplineName());
+                    options[i] = i + 1;
+                }
+                if (selectedDiscipline.size() > 0) {
+                    ui.println("\n9) Fortsæt");
+                    options[options.length - 1] = 9;
+                }
+                int choice = parseUserInputToInt(options);
+                if (choice == 9) {
+                    notDone = false;
+                } else {
+                    selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
+                }
+            }
+            // TODO: Hent træner fra database, ved brug af navn?
+            return new CompetitionSwimmer(null, selectedDiscipline);
+
+        }
+        return null;
     }
 
     private void admKontingenterMenu() {
         int choice = 0;
         while (choice != 9) {
             showHeader();
-            ui.println("-----------Adm. Kontingenter----------\n");
+            ui.println("-----------Adm. Kontingenter----------");
             ui.println("1) Se medlemmer i restance");
             ui.println("2) Registrer betaling");
             ui.println("\n9) Tilbage");
 
-            choice = parseUserInputToInt();
+            choice = parseUserInputToInt(1, 2, 9);
             switch (choice) {
                 case 1:
                     break;
@@ -118,16 +150,16 @@ public class UIController {
         }
     }
 
-    private void resultaterMenu() {
+    private void resultsMenu() {
         int choice = 0;
         while (choice != 9) {
             showHeader();
-            ui.println("--------------Resultater--------------\n");
+            ui.println("--------------Resultater--------------");
             ui.println("1) Se resultater");
             ui.println("2) Indskriv resultater");
             ui.println("\n9) Tilbage");
 
-            choice = parseUserInputToInt();
+            choice = parseUserInputToInt(1, 2, 9);
             switch (choice) {
                 case 1:
                     break;
@@ -141,18 +173,40 @@ public class UIController {
         ui.println("---------------Delfinen---------------");
     }
 
-    private int parseUserInputToInt() {
+    private int parseUserInputToInt(int... options) {
         int value = 0;
         boolean running = true;
         while (running) {
             try {
                 value = Integer.parseInt(ui.getUserInput());
-                running = false;
+                if (options.length != 0) {
+                    for (int option : options) {
+                        if (option == value) {
+                            running = false;
+                        }
+                    }
+                } else {
+                    running = false;
+                }
             } catch (NumberFormatException e) {
                 ui.println("Du er en skovl. Brug et tal.");
             }
         }
         return value;
+    }
+
+    private boolean yesNoOption(String question) {
+        boolean notDone = true;
+        while (notDone) {
+            ui.print(question + " (ja/nej): ");
+            String anw = ui.getUserInput();
+            if (anw.equalsIgnoreCase("ja")) {
+                return true;
+            } else if (anw.equalsIgnoreCase("nej")) {
+                return false;
+            }
+        }
+        return false;
     }
 
     public HashMap<String, ArrayList<Member>> getAllMembers() {

@@ -16,7 +16,7 @@ import org.junit.Before;
  * @author Alexander
  */
 public class TrainingResultTest {
-    Member member = new Member("Aleander", 29, 1);
+    Member member = new Member("Aleander", 29, 1, null);
     TrainingResult comp;
     LocalDate date = LocalDate.now();
     LocalTime time = LocalTime.of(0, 10, 20, 43);

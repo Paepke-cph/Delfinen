@@ -18,7 +18,7 @@ public class JuniorMemberTest {
 
     @Before
     public void setUp(){
-        member = new JuniorMember(true,"Alexander", 12, 1);
+        member = new JuniorMember(true,"Alexander", 12, 1, null);
     }
 
     /**

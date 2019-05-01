@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class MockStorage implements Storage{
 
-    private ArrayList<HashMap<String, String>> members;
+    private ArrayList<HashMap<String, String>> members = new ArrayList<>();
 
     public MockStorage() {
     }

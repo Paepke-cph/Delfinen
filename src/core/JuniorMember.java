@@ -8,8 +8,8 @@ public class JuniorMember extends Member {
     private double subscription;
     private boolean active;
     
-    public JuniorMember(boolean active, String name, int age, int id) {
-        super(name, age, id);
+    public JuniorMember(boolean active, String name, int age, int id, CompetitionSwimmer competition) {
+        super(name, age, id, competition);
         this.active = active;
         this.subscription = calculatePrice();
     }
