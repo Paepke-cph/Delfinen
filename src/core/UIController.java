@@ -55,7 +55,7 @@ public class UIController {
         int choice = 0;
         while (choice != 9) {
             showHeader();
-            ui.println("------------Adm. Medlemmer------------\n");
+            ui.println("------------Adm. Medlemmer------------");
             ui.println("1) Tilføj");
             ui.println("2) Rediger");
             ui.println("3) Fjern");
@@ -77,28 +77,28 @@ public class UIController {
     private void addMember() {
         ui.print("Navn: ");
         String name = ui.getUserInput();
-        ui.print("\nAlder: ");
+        ui.print("Alder: ");
         int age = parseUserInputToInt();
         boolean junior = (age < 18);
 //TODO: Hent næste member ID fra database.
         CompetitionSwimmer comp = createCompetitiveSwimmer();
 
         boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
+        Member member;
         if (junior) {
-            Member member = new JuniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
+            member = new JuniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
             memberHandler.addMember("JuniorMember", member);
-            ui.println("Nyt Junior Medlem Oprettet");
-            ui.println(member.toString());
         } else {
-            Member member = new SeniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
+            member = new SeniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
             memberHandler.addMember("SeniorMember", member);
-            ui.println("Nyt Senior Medlem Oprettet");
-            ui.println(member.toString());
         }
+        ui.println("\nNyt Medlem Oprettet");
+        ui.println(member.toString());
     }
 
     private CompetitionSwimmer createCompetitiveSwimmer() {
         if (yesNoOption("Kompetitiv svømmer?")) {
+            ui.println("Vælg alle discipliner du ønsker: ");
             boolean notDone = true;
             ArrayList<SwimmingDiscipline> discipline = SwimmingDiscipline.getDisciplinesAsList();
             ArrayList<SwimmingDiscipline> selectedDiscipline = new ArrayList<>();
@@ -124,7 +124,7 @@ public class UIController {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
             }
-// TODO: Hent træner fra database, ved brug af navn?
+            // TODO: Hent træner fra database, ved brug af navn?
             return new CompetitionSwimmer(null, selectedDiscipline);
 
         }
@@ -135,7 +135,7 @@ public class UIController {
         int choice = 0;
         while (choice != 9) {
             showHeader();
-            ui.println("-----------Adm. Kontingenter----------\n");
+            ui.println("-----------Adm. Kontingenter----------");
             ui.println("1) Se medlemmer i restance");
             ui.println("2) Registrer betaling");
             ui.println("\n9) Tilbage");
@@ -154,7 +154,7 @@ public class UIController {
         int choice = 0;
         while (choice != 9) {
             showHeader();
-            ui.println("--------------Resultater--------------\n");
+            ui.println("--------------Resultater--------------");
             ui.println("1) Se resultater");
             ui.println("2) Indskriv resultater");
             ui.println("\n9) Tilbage");
@@ -198,7 +198,7 @@ public class UIController {
     private boolean yesNoOption(String question) {
         boolean notDone = true;
         while (notDone) {
-            ui.print("\n" + question + " (ja/nej): ");
+            ui.print(question + " (ja/nej): ");
             String anw = ui.getUserInput();
             if (anw.equalsIgnoreCase("ja")) {
                 return true;
