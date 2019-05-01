@@ -27,12 +27,17 @@ public class MembersTest {
         JuniorMember juniorMember = new JuniorMember(true, "Tobias", 15, 4, null);
         JuniorMember juniorMember2 = new JuniorMember(true, "Henrik", 15, 5, null);
         mockStorage = new MockStorage();
+        ArrayList<String> swimDisc = new ArrayList<>();
+        swimDisc.add("Crawl");
+        swimDisc.add("butterfly");
+        mockStorage.setSwimmingDiscplines(swimDisc);
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
         HashMap<String, String> map3 = new HashMap();
         HashMap<String, String> map4 = new HashMap();
         HashMap<String, String> map5 = new HashMap();
         HashMap<String, String> map6 = new HashMap();
+        HashMap<String, String> map7 = new HashMap();
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
         map.put("member_name", "Alexander");
         map.put("age", "29");
@@ -68,6 +73,13 @@ public class MembersTest {
         map6.put("active", "1");
         map6.put("subscription", "1600");
         list.add(map6);
+        map7.put("member_name", "Nicklas");
+        map7.put("age", "26");
+        map7.put("member_id", "7");
+        map7.put("active", "1");
+        map7.put("subscription", "1600");
+        map7.put("coach", "6");
+        list.add(map7);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
         assertEquals(member1.getId(), members.getMembers().get("Coach").get(0).getId());
@@ -157,7 +169,17 @@ public class MembersTest {
     public void testJuniorCompSwimmer () {
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
+        HashMap<String, String> map2 = new HashMap();
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        ArrayList<String> swimDisc = new ArrayList<>();
+        swimDisc.add("Crawl");
+        swimDisc.add("butterfly");
+        map2.put("member_name", "Benjamin");
+        map2.put("age", "26");
+        map2.put("member_id", "6");
+        map2.put("active", "1");
+        map2.put("subscription", "0");
+        list.add(map2);
         map.put("member_name", "Alexander");
         map.put("age", "15");
         map.put("member_id", "1");
@@ -165,6 +187,8 @@ public class MembersTest {
         map.put("subscription", "1000");
         map.put("coach", "3");
         list.add(map);
+        
+        mockStorage.setSwimmingDiscplines(swimDisc);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
 
@@ -175,6 +199,7 @@ public class MembersTest {
     public void testSearchMemberByID () {
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
+        HashMap<String, String> map2 = new HashMap();
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
         map.put("member_name", "Alexander");
         map.put("age", "15");
@@ -183,12 +208,58 @@ public class MembersTest {
         map.put("subscription", "1000");
         map.put("coach", null);
         list.add(map);
+        map2.put("member_name", "Alexander");
+        map2.put("age", "40");
+        map2.put("member_id", "2");
+        map2.put("active", "1");
+        map2.put("subscription", "1600");
+        map2.put("coach", null);
+        list.add(map2);
+        mockStorage.setMembers(list);
+        members = new Members(mockStorage);
         Member actual = members.searchMemberById(1);
+        Member actual2 = members.searchMemberById(2);
         int expected = 1;
+        int expected2 = 2;
         assertEquals(expected, actual.getId());
+        assertEquals(expected2, actual2.getId());
     }
 
-
+    @Test
+    public void testCreateCompetition(){
+        mockStorage = new MockStorage();
+        HashMap<String, String> map = new HashMap();
+        HashMap<String, String> map2 = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        ArrayList<String> swimDisc = new ArrayList<>();
+        swimDisc.add("Crawl");
+        swimDisc.add("butterfly");
+        map2.put("member_name", "Hans");
+        map2.put("age", "30");
+        map2.put("member_id", "2");
+        map2.put("active", "1");
+        map2.put("subscription", "0");
+        map2.put("coach", null);
+        list.add(map2);
+        map.put("member_name", "Alexander");
+        map.put("age", "15");
+        map.put("member_id", "1");
+        map.put("active", "1");
+        map.put("subscription", "1000");
+        map.put("coach", "2");
+        list.add(map);
+        
+        mockStorage.setSwimmingDiscplines(swimDisc);
+        mockStorage.setMembers(list);
+        members = new Members(mockStorage);
+        Member member = members.searchMemberById(1);
+        
+        ArrayList<SwimmingDiscipline> expected = new ArrayList<>();
+        expected.add(SwimmingDiscipline.BUTTERFLY);
+        expected.add(SwimmingDiscipline.CRAWL);
+        ArrayList<SwimmingDiscipline> result = member.getCompetition().getSwimmingDiscipline();
+        assertTrue(expected.equals(result));
+    }
 
 
 

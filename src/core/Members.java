@@ -36,7 +36,7 @@ public class Members {
         return members;
     }
 
-    public void loadMembersFromStorage() {
+    private void loadMembersFromStorage() {
         ArrayList<HashMap<String, String>> list = storage.getMembers();
         for (HashMap<String, String> map : list) {
             int subscription = 0;
@@ -65,14 +65,15 @@ public class Members {
     private void createJuniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("member_id"));
+        int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
         JuniorMember member;
         if (map.get("coach") == null) {
-            member = new JuniorMember(active, name, age, id, null);
+            member = new JuniorMember(active, name, age, member_id, null);
         } else {
-            // TODO: Method to return competition swimmer
-            member = new JuniorMember(active, name, age, id, null);
+            int coach_id = Integer.parseInt(map.get("coach"));
+            CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
+            member = new JuniorMember(active, name, age, member_id, compSwim);
         }
         addMember("JuniorMember", member);
     }
@@ -80,10 +81,16 @@ public class Members {
     private void createSeniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
-        int id = Integer.parseInt(map.get("member_id"));
+        int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-
-        SeniorMember member = new SeniorMember(active, name, age, id, null);
+        SeniorMember member;
+        if (map.get("coach") == null) {
+            member = new SeniorMember(active, name, age, member_id, null);
+        } else {
+            int coach_id = Integer.parseInt(map.get("coach"));
+            CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
+            member = new SeniorMember(active, name, age, member_id, compSwim);
+        }
         addMember("SeniorMember", member);
     }
 
@@ -163,20 +170,25 @@ public class Members {
         return null;
     }
 
-    // TODO: Create competition
-    public CompetitionSwimmer createCompetition (int member_id) {
-
+    private CompetitionSwimmer createCompetition (int member_id, int coach_id) {
+        Member coach = searchMemberById(coach_id);
+        ArrayList<SwimmingDiscipline> disc = createDisciplines(member_id);
+        CompetitionSwimmer compSwim = new CompetitionSwimmer(coach, disc);
+        return compSwim;
     }
 
     // TODO: Create trainingresults
     // TODO: Create compResults
-    // TODO: Create Disciplines
-    public ArrayList<SwimmingDiscipline> createDisciplines (int member_id) {
+    private ArrayList<SwimmingDiscipline> createDisciplines (int member_id) {
         ArrayList<String> list = storage.getSwimmingDiscplines(member_id);
         ArrayList<SwimmingDiscipline> swimmingDisciplines = new ArrayList<>();
-
-        for (String disc : list) {
-            swimmingDisciplines.add()
+        for(SwimmingDiscipline disc : SwimmingDiscipline.getDisciplinesAsList()){
+            for(String str : list){
+                if(disc.getDisciplineName().equalsIgnoreCase(str)){
+                    swimmingDisciplines.add(disc);
+                }
+            }
         }
+        return swimmingDisciplines;
     }
 }
