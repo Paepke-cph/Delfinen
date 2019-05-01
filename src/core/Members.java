@@ -1,5 +1,6 @@
 package core;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -160,5 +161,22 @@ public class Members {
             }
         }
         return null;
+    }
+
+    // TODO: Create competition
+    public CompetitionSwimmer createCompetition (int member_id) {
+
+    }
+
+    // TODO: Create trainingresults
+    // TODO: Create compResults
+    // TODO: Create Disciplines
+    public ArrayList<SwimmingDiscipline> createDisciplines (int member_id) {
+        ArrayList<String> list = storage.getSwimmingDiscplines(member_id);
+        ArrayList<SwimmingDiscipline> swimmingDisciplines = new ArrayList<>();
+
+        for (String disc : list) {
+            swimmingDisciplines.add()
+        }
     }
 }
