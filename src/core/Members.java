@@ -76,6 +76,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
+        
         SeniorMember member = new SeniorMember(active, name, age, id);
         addMember("SeniorMember", member);
     }
