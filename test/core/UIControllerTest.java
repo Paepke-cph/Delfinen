@@ -103,7 +103,7 @@ public class UIControllerTest {
     @Test
     public void testAddMember_AddCompJunior() {
         // Arrange
-        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "ja", "ja", "9", "9"});
+        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "ja", "2", "9", "ja", "9", "9"});
         MockStorage mockStorage = new MockStorage();
         UIController UIC = new UIController(mockUI, mockStorage);
         // Act

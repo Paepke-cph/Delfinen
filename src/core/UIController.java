@@ -77,7 +77,7 @@ public class UIController {
     private void addMember() {
         ui.print("Navn: ");
         String name = ui.getUserInput();
-        ui.print("\nAlder: ");
+        ui.print("Alder: ");
         int age = parseUserInputToInt();
         boolean junior = (age < 18);
 //TODO: Hent næste member ID fra database.
@@ -87,12 +87,12 @@ public class UIController {
         if (junior) {
             Member member = new JuniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
             memberHandler.addMember("JuniorMember", member);
-            ui.println("Nyt Junior Medlem Oprettet");
+            ui.println("\nNyt Junior Medlem Oprettet");
             ui.println(member.toString());
         } else {
             Member member = new SeniorMember(active, name, age, 0, comp);//ID ER HER IKKE ENDNU
             memberHandler.addMember("SeniorMember", member);
-            ui.println("Nyt Senior Medlem Oprettet");
+            ui.println("\nNyt Senior Medlem Oprettet");
             ui.println(member.toString());
         }
     }
@@ -123,6 +123,7 @@ public class UIController {
                 } else {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
+                ui.println("");//Empty Line
             }
 // TODO: Hent træner fra database, ved brug af navn?
             return new CompetitionSwimmer(null, selectedDiscipline);
@@ -198,7 +199,7 @@ public class UIController {
     private boolean yesNoOption(String question) {
         boolean notDone = true;
         while (notDone) {
-            ui.print("\n" + question + " (ja/nej): ");
+            ui.print(question + " (ja/nej): ");
             String anw = ui.getUserInput();
             if (anw.equalsIgnoreCase("ja")) {
                 return true;
