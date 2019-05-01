@@ -12,5 +12,6 @@ import java.util.Map;
 public interface Storage {
     
     public ArrayList<HashMap<String, String>> getMembers();
+    public int getNextMemberID();
 
 }

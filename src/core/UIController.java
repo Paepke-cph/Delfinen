@@ -75,8 +75,7 @@ public class UIController {
     }
 
     private void addMember() {
-        //TODO: Hent næste member ID fra database.
-        int id = 0;
+        int id = storage.getNextMemberID();
         ui.print("Navn: ");
         String name = ui.getUserInput();
         ui.print("Alder: ");
