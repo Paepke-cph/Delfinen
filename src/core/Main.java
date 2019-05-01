@@ -19,7 +19,7 @@ public class Main {
         try {
             storage = new DBStorage();
             Members members = new Members(storage);
-            for (String string : members.returnSeniorMembers())
+            for (String string : members.returnJuniorMembers())
                 System.out.println(string);
         } catch (Exception e){
             System.out.println(e.getMessage());
