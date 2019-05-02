@@ -64,6 +64,10 @@ public class Member {
         return 0;
     }
 
+    public boolean isArrears() {
+        return arrears;
+    }
+
     @Override
     public String toString() {
         return name + ", " + age + ", " + id + ", " + competition;
