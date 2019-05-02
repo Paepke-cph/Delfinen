@@ -69,6 +69,7 @@ public class UIController {
                 case 2:
                     break;
                 case 3:
+                    removeMember();
                     break;
             }
         }
@@ -82,7 +83,7 @@ public class UIController {
         ui.print("Alder: ");
         int age = parseUserInputToInt();
         Member member;
-        if(!yesNoOption("Opret Træner?")) {
+        if (!yesNoOption("Opret Træner?")) {
             boolean junior = (age < 18);
             CompetitionSwimmer comp = createCompetitiveSwimmer();
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
@@ -95,9 +96,8 @@ public class UIController {
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
-        }
-        else {
-            member = new Member(name,age,id,null);
+        } else {
+            member = new Member(name, age, id, null);
             memberHandler.addMember("Coach", member);
             ui.println("\nNyt Træner Oprettet");
             ui.println(member.toString());
@@ -138,6 +138,32 @@ public class UIController {
 
         }
         return null;
+    }
+
+    private void removeMember() {
+        boolean notDone = true;
+        while (notDone) {
+            ui.print("Søg efter navn: ");
+            ArrayList<Member> resultList = memberHandler.getMembersByName(ui.getUserInput());
+            if (resultList.isEmpty()) {
+                ui.println("Din søgning gav ingen resultater.");
+            } else {
+                int[] mID = new int[resultList.size() + 1];
+                for (int i = 0; i < resultList.size(); i++) {
+                    ui.println(resultList.get(i).toString());
+                    mID[i] = resultList.get(i).getId();
+                }
+                mID[mID.length-1] = -1;
+                ui.println("Du kan vælge et ID som skal fjernes, eller bruge \"-1\" for at gå tilbage");
+                int choice = parseUserInputToInt(mID);
+                if(choice == -1){
+// TODO(Tobias): indsæt remove metoden når den er lavet.
+                }
+            }
+            if (yesNoOption("\nEr du færdig med din søgning?")) {
+                notDone = false;
+            }
+        }
     }
 
     private void admKontingenterMenu() {

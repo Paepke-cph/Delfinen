@@ -15,7 +15,7 @@ public class Member {
         this.name = name;
         this.age = age;
         this.id = id;
-        this.competition = competition;
+        this.competition = competition; 
     }
 
     public CompetitionSwimmer getCompetition() {

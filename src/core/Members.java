@@ -38,6 +38,19 @@ public class Members {
         return members;
     }
 
+    public ArrayList<Member> getMembersByName(String name){
+        ArrayList<HashMap<String, String>> collection = storage.getMembersByName(name);
+        ArrayList<Member> result = new ArrayList<>();
+        for (HashMap<String, String> hashMap : collection) {
+            String mName = hashMap.get("member_name");
+            int mAge = Integer.parseInt(hashMap.get("age"));
+            int mID = Integer.parseInt(hashMap.get("member_id"));
+// TODO(Benjamin): Skal vi håndtere competitive swimmer her?
+            Member member = new Member(mName, mAge, mID, null);
+            result.add(member);
+        }
+        return result;
+    }
     private void loadMembersFromStorage() {
         ArrayList<HashMap<String, String>> list = storage.getMembers();
         for (HashMap<String, String> map : list) {

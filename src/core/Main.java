@@ -12,13 +12,11 @@ import ui.ConsoleUI;
 public class Main {
 
     public static void main(String[] args) {
-        // UIController UIC = new UIController(new ConsoleUI(), new MockStorage());
-        // UIC.startProgram();
 
         try {
             DBStorage storage = new DBStorage();
-            Members members = new Members(storage);
-            System.out.println(members.searchMemberById(1));
+            UIController UIC = new UIController(new ConsoleUI(), storage);
+            UIC.startProgram();
         } catch (SQLException e) {
             e.printStackTrace();
         }
