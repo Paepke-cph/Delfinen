@@ -19,7 +19,6 @@ public class Members {
     private static final String JUNIOR_CAT = "JuniorMember";
     private static final String SENIOR_CAT = "SeniorMember";
 
-    // TODO: Remove member
     private HashMap<String, ArrayList<Member>> members;
     private Storage storage;
     private UI ui;
@@ -80,6 +79,8 @@ public class Members {
         Member member = new Member(name, age, id, null);
         addMember(COACH_CAT, member);
     }
+
+    // TODO: Remove member
 
     private void createJuniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");
