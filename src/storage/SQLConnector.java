@@ -11,7 +11,9 @@ import java.util.HashMap;
 public class SQLConnector implements AutoCloseable {
 
     private final static String user = "root";
-    private final static String password = "Nu66ets";
+    private final static String password = "Vsc4n2504!";
+//    private final static String user = "root";
+//    private final static String password = "Nu66ets";
     private final static String IP = "127.0.0.1";
     private final static String PORT = "3306";
     private final static String DATABASE = "Delfinen";

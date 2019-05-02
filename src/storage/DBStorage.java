@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class DBStorage implements Storage{
 
     SQLConnector sqlConnector;
-    
+
     public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
     }
@@ -25,6 +25,7 @@ public class DBStorage implements Storage{
 
     @Override
     public int getNextMemberID () {
+        // TODO(Benjamin): This won't work correctly if you remove the latest added member and then add a new member
         String getMaxID = "SELECT MAX(MEMBER_ID) AS 'MEMBER_ID' FROM MEMBERS";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMaxID);
         return Integer.parseInt(list.get(0).get("member_id")) + 1;
@@ -54,6 +55,11 @@ public class DBStorage implements Storage{
     @Override
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<String> getSwimmingDiscplines(int member_id) {
+        return null;
     }
 
     @Override
