@@ -70,7 +70,6 @@ public class UIController {
                 case 2:
                     break;
                 case 3:
-                    removeMember();
                     break;
             }
         }
@@ -88,17 +87,16 @@ public class UIController {
             CompetitionSwimmer comp = createCompetitiveSwimmer();
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
             if (junior) {
-                member = new JuniorMember(active, name, age, id, comp);
+                member = new JuniorMember(active, name, age, id, false, comp);
                 memberHandler.addMember(Members.getJuniorCat(), member);
             } else {
-                member = new SeniorMember(active, name, age, id, comp);
+                member = new SeniorMember(active, name, age, id, false, comp);
                 memberHandler.addMember(Members.getSeniorCat(), member);
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
         } else {
-            member = new Member(name, age, id, null);
-            memberHandler.addMember("Coach", member);
+            member = new Member(true, name, age, id, false, null);
             ui.println("\nNyt Træner Oprettet");
             ui.println(member.toString());
         }
@@ -131,24 +129,12 @@ public class UIController {
                 } else {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
-                ui.println("");//Empty Line
             }
             // TODO: Hent træner fra database, ved brug af navn?
             return new CompetitionSwimmer(null, selectedDiscipline);
 
         }
         return null;
-    }
-
-    private void removeMember() {
-        int[] mID = findMemberByName();
-        if (mID != null) {
-            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \"-1\" for at gå tilbage: ");
-            int choice = parseUserInputToInt(mID);
-            if (choice != -1) {
-                storage.removeMember(choice);
-            }
-        }
     }
 
     private void admKontingenterMenu() {
@@ -175,15 +161,13 @@ public class UIController {
         while (choice != 9) {
             showHeader();
             ui.println("--------------Resultater--------------");
-            ui.println("1) Se resultater for medlem");
-            ui.println("2) Se resultater indenfor given disciplin");
-            ui.println("3) Indskriv resultater");
+            ui.println("1) Se resultater");
+            ui.println("2) Indskriv resultater");
             ui.println("\n9) Tilbage");
 
-            choice = parseUserInputToInt(1, 2, 3, 9);
+            choice = parseUserInputToInt(1, 2, 9);
             switch (choice) {
                 case 1:
-                    memberResult();
                     break;
                 case 2:
                     disciplineResult();
@@ -230,10 +214,9 @@ public class UIController {
                     SortedQueue<TrainingResult> results = memberHandler.getCompetitionResult(disciplines.get(choice - 1));
                     //int size = (results.size() < 4) ? results.size() : 4;
                     int size = 0;
-                    if(results.size() < 4) {
+                    if (results.size() < 4) {
                         size = results.size();
-                    }
-                    else { 
+                    } else {
                         size = 4;
                     }
                     for (int i = 0; i < size; i++) {

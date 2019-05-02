@@ -13,7 +13,7 @@ public class MemberTest {
 
     @Before
     public void setUp(){
-        member = new Member("Alexander", 29, 1, null);
+        member = new Member(true, "Alexander", 29, 1,false, null);
     }
     @Test
     public void testGetName() {

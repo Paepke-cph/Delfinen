@@ -33,12 +33,29 @@ public class DBStorage implements Storage {
 
     @Override
     public int getNextMemberID() {
-        String getMaxID
-                = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
+        String getNextID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
                 + "WHERE TABLE_SCHEMA = Delfinen "
                 + "AND TABLE_NAME = MEMBERS";
-        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMaxID);
+        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
         return Integer.parseInt(list.get(0).get("member_id"));
+    }
+
+    @Override
+    public int getNextCompetitionID() {
+        String getNextID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = Delfinen "
+                + "AND TABLE_NAME = COMPETITION_RESULTS";
+        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
+        return Integer.parseInt(list.get(0).get("competition_id"));
+    }
+
+    @Override
+    public int getNextTrainingID() {
+        String getNextID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = Delfinen "
+                + "AND TABLE_NAME = TRAINING_RESULTS";
+        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
+        return Integer.parseInt(list.get(0).get("training_id"));
     }
 
     // TODO: Create new member
@@ -61,7 +78,21 @@ public class DBStorage implements Storage {
 
     @Override
     public boolean createMember(Member member) {
-        return false;
+        boolean active = member.isActive();
+        String memberName = member.getName();
+        int memberAge = member.getAge();
+        double subscription = member.calculatePrice();
+        boolean arrears = member.isArrears();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (")
+                .append(memberName).append(", ")
+                .append(memberAge).append(", ")
+                .append(subscription).append(", ")
+                .append(active).append(", ")
+                .append(arrears).append(", ");
+
+        return sqlConnector.insertUpdateDeleteQuery(sb.toString());
     }
 
     // TODO: Change Sub

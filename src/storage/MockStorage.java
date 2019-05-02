@@ -11,24 +11,21 @@ import java.util.Map;
  *
  * @author Alexander
  */
-public class MockStorage implements Storage {
+public class MockStorage implements Storage{
 
     private ArrayList<HashMap<String, String>> members = new ArrayList<>();
     private ArrayList<HashMap<String, String>> competitionResults = new ArrayList<>();
     private ArrayList<HashMap<String, String>> trainingResults = new ArrayList<>();
-    private ArrayList<String> getSwimmingDiscplines;
     private int highestNumber;
     private ArrayList<Integer> swimmingDiscplines;
 
     private int[] memberIDs;
     private int memberIDIndex = 0;
 
-    public MockStorage() {
-    }
+    public MockStorage() {}
 
     public MockStorage(int[] memberIDs) {
         this.memberIDs = memberIDs;
-
     }
 
     @Override
@@ -39,7 +36,6 @@ public class MockStorage implements Storage {
     public void setMembers(ArrayList<HashMap<String, String>> members) {
         this.members = members;
     }
-
     public int getNextMemberID() {
         return memberIDs[memberIDIndex++];
     }
@@ -64,11 +60,6 @@ public class MockStorage implements Storage {
         return false;
     }
 
-    @Override
-    public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     public void setCompetitionResults(ArrayList<HashMap<String, String>> competitionResults) {
         this.competitionResults = competitionResults;
     }
@@ -77,12 +68,27 @@ public class MockStorage implements Storage {
         this.trainingResults = trainingResults;
     }
 
-    public void setGetSwimmingDiscplines(ArrayList<String> getSwimmingDiscplines) {
-        this.getSwimmingDiscplines = getSwimmingDiscplines;
-    }
-
     public void setSwimmingDiscplines(ArrayList<Integer> swimmingDiscplines) {
         this.swimmingDiscplines = swimmingDiscplines;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getMembersByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean createMember(Member member, int active) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getNextCompetitionID() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getNextTrainingID() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

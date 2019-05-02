@@ -20,12 +20,12 @@ public class MembersTest {
 
     @Test
     public void testConstructor() {
-        Member member1 = new Member("Alexander", 29, 1, null);
-        Member member2 = new Member("Mads", 25, 2, null);
-        SeniorMember seniorMember = new SeniorMember(true, "Benjamin", 26, 3, null);
-        SeniorMember seniorMember2 = new SeniorMember(true, "Benjamin", 26, 6, null);
-        JuniorMember juniorMember = new JuniorMember(true, "Tobias", 15, 4, null);
-        JuniorMember juniorMember2 = new JuniorMember(true, "Henrik", 15, 5, null);
+        Member member1 = new Member(true, "Alexander", 29, 1, false, null);
+        Member member2 = new Member(true, "Mads", 25, 2, false, null);
+        SeniorMember seniorMember = new SeniorMember(true, "Benjamin", 26, 3, false, null);
+        SeniorMember seniorMember2 = new SeniorMember(true, "Benjamin", 26, 6, false, null);
+        JuniorMember juniorMember = new JuniorMember(true, "Tobias", 15, 4, false, null);
+        JuniorMember juniorMember2 = new JuniorMember(true, "Henrik", 15, 5, false, null);
         mockStorage = new MockStorage();
         ArrayList<Integer> swimDisc = new ArrayList<>();
         swimDisc.add(1);
@@ -43,42 +43,49 @@ public class MembersTest {
         map.put("age", "29");
         map.put("member_id", "1");
         map.put("subscription", "0");
+        map.put("arrears", "0");
         list.add(map);
         map2.put("member_name", "Mads");
         map2.put("age", "25");
         map2.put("member_id", "2");
         map2.put("subscription", null);
+        map2.put("arrears", "0");
         list.add(map2);
         map3.put("member_name", "Benjamin");
         map3.put("age", "26");
         map3.put("member_id", "3");
         map3.put("active", "1");
         map3.put("subscription", "1600");
+        map3.put("arrears", "0");
         list.add(map3);
         map4.put("member_name", "Tobias");
         map4.put("age", "15");
         map4.put("member_id", "4");
         map4.put("active", "1");
         map4.put("subscription", "1000");
+        map4.put("arrears", "0");
         list.add(map4);
         map5.put("member_name", "Henrik");
         map5.put("age", "15");
         map5.put("member_id", "5");
         map5.put("active", "1");
         map5.put("subscription", "1000");
+        map5.put("arrears", "0");
         list.add(map5);
         map6.put("member_name", "Benjamin");
         map6.put("age", "26");
         map6.put("member_id", "6");
         map6.put("active", "1");
         map6.put("subscription", "1600");
+        map6.put("arrears", "0");
         list.add(map6);
         map7.put("member_name", "Nicklas");
         map7.put("age", "26");
         map7.put("member_id", "7");
         map7.put("active", "1");
         map7.put("subscription", "1600");
-        map7.put("coach", "6");
+        map7.put("coach_id", "6");
+        map7.put("arrears", "0");
         list.add(map7);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -95,7 +102,7 @@ public class MembersTest {
      */
     @Test
     public void testSetMember() {
-        Member member1 = new Member("Alexander", 29, 1, null);
+        Member member1 = new Member(true, "Alexander", 29, 1, false, null);
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
@@ -103,6 +110,7 @@ public class MembersTest {
         map.put("age", "29");
         map.put("member_id", "1");
         map.put("subscription", "0");
+        map.put("arrears", "0");
         list.add(map);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -120,6 +128,7 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1600");
+        map.put("arrears", "0");
         list.add(map);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -138,6 +147,7 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("subscription", "0");
         map.put("active", "1");
+        map.put("arrears", "0");
         list.add(map);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -156,7 +166,8 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", null);
+        map.put("coach_id", null);
+        map.put("arrears", "0");
         list.add(map);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -179,13 +190,15 @@ public class MembersTest {
         map2.put("member_id", "6");
         map2.put("active", "1");
         map2.put("subscription", "0");
+        map2.put("arrears", "0");
         list.add(map2);
         map.put("member_name", "Alexander");
         map.put("age", "15");
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", "3");
+        map.put("coach_id", "3");
+        map.put("arrears", "0");
         list.add(map);
         
         mockStorage.setSwimmingDiscplines(swimDisc);
@@ -206,14 +219,16 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", null);
+        map.put("coach_id", null);
+        map.put("arrears", "0");
         list.add(map);
         map2.put("member_name", "Alexander");
         map2.put("age", "40");
         map2.put("member_id", "2");
         map2.put("active", "1");
         map2.put("subscription", "1600");
-        map2.put("coach", null);
+        map2.put("coach_id", null);
+        map2.put("arrears", "0");
         list.add(map2);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -243,14 +258,16 @@ public class MembersTest {
         map2.put("member_id", "2");
         map2.put("active", "1");
         map2.put("subscription", "0");
-        map2.put("coach", null);
+        map2.put("coach_id", null);
+        map2.put("arrears", "0");
         list.add(map2);
         map.put("member_name", "Alexander");
         map.put("age", "15");
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", "2");
+        map.put("coach_id", "2");
+        map.put("arrears", "0");
         list.add(map);
         comp.put("event", "dm");
         comp.put("placement", "3");
@@ -272,9 +289,10 @@ public class MembersTest {
         Member member = members.searchMemberById(1);
         
         ArrayList<SwimmingDiscipline> expected = new ArrayList<>();
-        expected.add(SwimmingDiscipline.BUTTERFLY);
-        expected.add(SwimmingDiscipline.CRAWL);
+        expected.add(SwimmingDiscipline.BACKSTROKE);
+        expected.add(SwimmingDiscipline.BREASTSTROKE);
         ArrayList<SwimmingDiscipline> result = member.getCompetition().getSwimmingDiscipline();
+        
         assertTrue(expected.equals(result));
     }
 

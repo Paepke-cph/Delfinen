@@ -10,16 +10,30 @@ public class Member {
     private String name;
     private int age;
     private int id;
+    private double subscription;
+    private boolean active;
+    private boolean arrears;
 
-    public Member(String name, int age, int id, CompetitionSwimmer competition) {
+    public Member(boolean active, String name, int age, int id, boolean arrears, CompetitionSwimmer competition) {
         this.name = name;
         this.age = age;
         this.id = id;
-        this.competition = competition; 
+        this.competition = competition;
+        this.subscription = calculatePrice();
+        this.active = active;
+        this.arrears = arrears;
     }
 
     public CompetitionSwimmer getCompetition() {
         return competition;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public String getName() {
@@ -48,6 +62,10 @@ public class Member {
 
     public double calculatePrice() {
         return 0;
+    }
+
+    public boolean isArrears() {
+        return arrears;
     }
 
     @Override
