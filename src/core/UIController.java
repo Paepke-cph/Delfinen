@@ -76,8 +76,7 @@ public class UIController {
     }
 
     private void addMember() {
-        //TODO: Hent næste member ID fra database.
-        int id = 0;
+        int id = storage.getNextMemberID();
         ui.print("Navn: ");
         String name = ui.getUserInput();
         ui.print("Alder: ");
@@ -88,11 +87,11 @@ public class UIController {
             CompetitionSwimmer comp = createCompetitiveSwimmer();
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
             if (junior) {
-                member = new JuniorMember(active, name, age, id, comp);//ID ER HER IKKE ENDNU
-                memberHandler.addMember("JuniorMember", member);
+                member = new JuniorMember(active, name, age, id, comp);
+                memberHandler.addMember(Members.getJuniorCat(), member);
             } else {
-                member = new SeniorMember(active, name, age, id, comp);//ID ER HER IKKE ENDNU
-                memberHandler.addMember("SeniorMember", member);
+                member = new SeniorMember(active, name, age, id, comp);
+                memberHandler.addMember(Members.getSeniorCat(), member);
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
@@ -153,10 +152,10 @@ public class UIController {
                     ui.println(resultList.get(i).toString());
                     mID[i] = resultList.get(i).getId();
                 }
-                mID[mID.length-1] = -1;
+                mID[mID.length - 1] = -1;
                 ui.println("Du kan vælge et ID som skal fjernes, eller bruge \"-1\" for at gå tilbage");
                 int choice = parseUserInputToInt(mID);
-                if(choice == -1){
+                if (choice == -1) {
 // TODO(Tobias): indsæt remove metoden når den er lavet.
                 }
             }
