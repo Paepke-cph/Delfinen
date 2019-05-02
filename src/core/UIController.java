@@ -140,27 +140,12 @@ public class UIController {
     }
 
     private void removeMember() {
-        boolean notDone = true;
-        while (notDone) {
-            ui.print("Søg efter navn: ");
-            ArrayList<Member> resultList = memberHandler.getMembersByName(ui.getUserInput());
-            if (resultList.isEmpty()) {
-                ui.println("Din søgning gav ingen resultater.");
-            } else {
-                int[] mID = new int[resultList.size() + 1];
-                for (int i = 0; i < resultList.size(); i++) {
-                    ui.println(resultList.get(i).toString());
-                    mID[i] = resultList.get(i).getId();
-                }
-                mID[mID.length - 1] = -1;
-                ui.println("Du kan vælge et ID som skal fjernes, eller bruge \"-1\" for at gå tilbage");
-                int choice = parseUserInputToInt(mID);
-                if (choice == -1) {
-// TODO(Tobias): indsæt remove metoden når den er lavet.
-                }
-            }
-            if (yesNoOption("\nEr du færdig med din søgning?")) {
-                notDone = false;
+        int[] mID = findMemberByName();
+        if (mID != null) {
+            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \"-1\" for at gå tilbage: ");
+            int choice = parseUserInputToInt(mID);
+            if (choice != -1) {
+                storage.removeMember(choice);
             }
         }
     }
@@ -189,18 +174,66 @@ public class UIController {
         while (choice != 9) {
             showHeader();
             ui.println("--------------Resultater--------------");
-            ui.println("1) Se resultater");
-            ui.println("2) Indskriv resultater");
+            ui.println("1) Se resultater for medlem");
+            ui.println("2) Se resultater indenfor given disciplin");
+            ui.println("3) Indskriv resultater");
             ui.println("\n9) Tilbage");
 
-            choice = parseUserInputToInt(1, 2, 9);
+            choice = parseUserInputToInt(1, 2, 3, 9);
             switch (choice) {
                 case 1:
+                    memberResult();
                     break;
                 case 2:
                     break;
+                case 3:
+                    break;
             }
         }
+    }
+
+    private void memberResult() {
+        int[] mID = findMemberByName();
+        if (mID != null) {
+            ui.print("\nSkriv medlems id for at vælge: ");
+            int choice = parseUserInputToInt(mID);
+            Member member = memberHandler.searchMemberById(choice);
+            if (member.getCompetition() != null) {
+                ui.println("Competition Result: ");
+                for (CompetitionResult result : member.getCompetition().getCompetitionResult()) {
+                    ui.println(result.toString());
+                }
+                ui.println("\nTraining Result: ");
+                for (TrainingResult result : member.getCompetition().getTrainingResult()) {
+                    ui.println(result.toString());
+                }
+            } else {
+                ui.println("Det valgte medlem er ikke en kompetitiv svømmer.\n");
+            }
+        }
+    }
+
+    private int[] findMemberByName() {
+        int[] mID = null;
+        boolean notDone = true;
+        while (notDone) {
+            ui.print("Søg efter navn: ");
+            ArrayList<Member> resultList = memberHandler.getMembersByName(ui.getUserInput());
+            if (resultList.isEmpty()) {
+                ui.println("Din søgning gav ingen resultater.");
+            } else {
+                mID = new int[resultList.size() + 1];
+                for (int i = 0; i < resultList.size(); i++) {
+                    ui.println(resultList.get(i).toString());
+                    mID[i] = resultList.get(i).getId();
+                }
+                mID[mID.length - 1] = -1;
+            }
+            if (yesNoOption("\nEr du færdig med din søgning?")) {
+                notDone = false;
+            }
+        }
+        return mID;
     }
 
     private void showHeader() {
