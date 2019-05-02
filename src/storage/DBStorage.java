@@ -63,16 +63,18 @@ public class DBStorage implements Storage{
 
     @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String getCompResults = "SELECT * FROM COMPETITION_RESULTS WHERE MEMBER_ID = " + member_id;
+        return sqlConnector.selectQuery(getCompResults);
     }
 
     @Override
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String getTrainingResults = "SELECT * FROM TRAINING_RESULTS WHERE MEMBER_ID = " + member_id;
+        return sqlConnector.selectQuery(getTrainingResults);
     }
 
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 }
