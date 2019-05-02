@@ -52,22 +52,12 @@ public class MockStorage implements Storage{
     }
 
     @Override
-    public ArrayList<String> getSwimmingDiscplines(int member_id) {
-        return null;
-    }
-
-    @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
         return swimmingDiscplines;
     }
 
     @Override
     public boolean removeMember(int member_id) {
-        return false;
-    }
-
-    @Override
-    public boolean createMember(Member member) {
         return false;
     }
 
@@ -85,5 +75,15 @@ public class MockStorage implements Storage{
 
     public void setSwimmingDiscplines(ArrayList<Integer> swimmingDiscplines) {
         this.swimmingDiscplines = swimmingDiscplines;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getMembersByName(String name) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean createMember(Member member, int active) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

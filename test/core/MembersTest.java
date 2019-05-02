@@ -78,7 +78,7 @@ public class MembersTest {
         map7.put("member_id", "7");
         map7.put("active", "1");
         map7.put("subscription", "1600");
-        map7.put("coach", "6");
+        map7.put("coach_id", "6");
         list.add(map7);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -156,7 +156,7 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", null);
+        map.put("coach_id", null);
         list.add(map);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -185,7 +185,7 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", "3");
+        map.put("coach_id", "3");
         list.add(map);
         
         mockStorage.setSwimmingDiscplines(swimDisc);
@@ -206,14 +206,14 @@ public class MembersTest {
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", null);
+        map.put("coach_id", null);
         list.add(map);
         map2.put("member_name", "Alexander");
         map2.put("age", "40");
         map2.put("member_id", "2");
         map2.put("active", "1");
         map2.put("subscription", "1600");
-        map2.put("coach", null);
+        map2.put("coach_id", null);
         list.add(map2);
         mockStorage.setMembers(list);
         members = new Members(mockStorage);
@@ -243,14 +243,14 @@ public class MembersTest {
         map2.put("member_id", "2");
         map2.put("active", "1");
         map2.put("subscription", "0");
-        map2.put("coach", null);
+        map2.put("coach_id", null);
         list.add(map2);
         map.put("member_name", "Alexander");
         map.put("age", "15");
         map.put("member_id", "1");
         map.put("active", "1");
         map.put("subscription", "1000");
-        map.put("coach", "2");
+        map.put("coach_id", "2");
         list.add(map);
         comp.put("event", "dm");
         comp.put("placement", "3");
