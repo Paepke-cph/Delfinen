@@ -10,7 +10,7 @@ import java.util.HashMap;
  *
  * @author Alexander
  */
-public class DBStorage implements Storage{
+public class DBStorage implements Storage {
 
     SQLConnector sqlConnector;
 
@@ -24,19 +24,24 @@ public class DBStorage implements Storage{
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMembersFromStorage);
         return list;
     }
+    
+    @Override
+    public ArrayList<HashMap<String, String>> getMembersByName(String name) {
+        String getMembersFromStorage = "SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"";
+        return sqlConnector.selectQuery(getMembersFromStorage);
+    }
 
     @Override
-    public int getNextMemberID () {
-        String getMaxID =
-                "SELECT AUTO_INCREMENT FROM information_schema.TABLES " +
-                "WHERE TABLE_SCHEMA = Delfinen " +
-                "AND TABLE_NAME = MEMBERS";
+    public int getNextMemberID() {
+        String getMaxID
+                = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = Delfinen "
+                + "AND TABLE_NAME = MEMBERS";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMaxID);
         return Integer.parseInt(list.get(0).get("member_id"));
     }
 
     // TODO: Create new member
-
     // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
@@ -65,7 +70,6 @@ public class DBStorage implements Storage{
     }
 
     // TODO: Change Sub
-
     @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
         String getCompResults = "SELECT * FROM COMPETITION_RESULTS WHERE MEMBER_ID = " + member_id;
@@ -80,6 +84,16 @@ public class DBStorage implements Storage{
 
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-
+        String query = "SELECT * FROM discipline_member WHERE member_id = " + member_id;
+        ArrayList<HashMap<String, String>> swimList = sqlConnector.selectQuery(query);
+        ArrayList<Integer> swimDisc = new ArrayList<>();
+        if (!swimList.isEmpty()) {
+            for (HashMap<String, String> map : swimList) {
+                swimDisc.add(Integer.parseInt(map.get("discipline_id")));
+            }
+            return swimDisc;
+        }
+        return null;
     }
+
 }

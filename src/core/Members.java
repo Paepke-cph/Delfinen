@@ -1,11 +1,13 @@
 package core;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Map;
 import storage.Storage;
+import ui.ConsoleUI;
 import ui.UI;
 
 /**
@@ -39,6 +41,19 @@ public class Members {
         return members;
     }
 
+    public ArrayList<Member> getMembersByName(String name){
+        ArrayList<HashMap<String, String>> collection = storage.getMembersByName(name);
+        ArrayList<Member> result = new ArrayList<>();
+        for (HashMap<String, String> hashMap : collection) {
+            String mName = hashMap.get("member_name");
+            int mAge = Integer.parseInt(hashMap.get("age"));
+            int mID = Integer.parseInt(hashMap.get("member_id"));
+// TODO(Benjamin): Skal vi håndtere competitive swimmer her?
+            Member member = new Member(mName, mAge, mID, null);
+            result.add(member);
+        }
+        return result;
+    }
     private void loadMembersFromStorage() {
         ArrayList<HashMap<String, String>> list = storage.getMembers();
         for (HashMap<String, String> map : list) {
@@ -48,7 +63,7 @@ public class Members {
             }
             int age = Integer.parseInt(map.get("age"));
             if (map.get("subscription") == null || subscription < 500) {
-                createCoach(map);
+                createMember(map);
             } else if (age < 18) {
                 createJuniorMember(map);
             } else {
@@ -57,13 +72,11 @@ public class Members {
         }
     }
 
-    private void createCoach(HashMap<String, String> map) {
+    private void createMember(HashMap<String, String> map) {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
-        boolean active = map.get("active").equalsIgnoreCase("1");
-        boolean arrears = map.get("arrears").equalsIgnoreCase("1");
-        Member member = new Member(active, name, age, id, arrears, null);
+        Member member = new Member(name, age, id, null);
         addMember(COACH_CAT, member);
     }
 
@@ -74,14 +87,13 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        boolean arrears = map.get("arrears").equalsIgnoreCase("1");
         JuniorMember member;
-        if (map.get("coach") == null) {
-            member = new JuniorMember(active, name, age, member_id, arrears, null);
+        if (map.get("coach_id") == null) {
+            member = new JuniorMember(active, name, age, member_id, null);
         } else {
-            int coach_id = Integer.parseInt(map.get("coach"));
+            int coach_id = Integer.parseInt(map.get("coach_id"));
             CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
-            member = new JuniorMember(active, name, age, member_id, arrears, compSwim);
+            member = new JuniorMember(active, name, age, member_id, compSwim);
         }
         addMember(JUNIOR_CAT, member);
     }
@@ -91,14 +103,13 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        boolean arrears = map.get("arrears").equalsIgnoreCase("1");
         SeniorMember member;
-        if (map.get("coach") == null) {
-            member = new SeniorMember(active, name, age, member_id, arrears, null);
+        if (map.get("coach_id") == null) {
+            member = new SeniorMember(active, name, age, member_id, null);
         } else {
-            int coach_id = Integer.parseInt(map.get("coach"));
+            int coach_id = Integer.parseInt(map.get("coach_id"));
             CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
-            member = new SeniorMember(active, name, age, member_id, arrears, compSwim);
+            member = new SeniorMember(active, name, age, member_id, compSwim);
         }
         addMember(SENIOR_CAT, member);
     }
