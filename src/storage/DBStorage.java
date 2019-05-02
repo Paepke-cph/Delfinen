@@ -1,5 +1,7 @@
 package storage;
 
+import core.Member;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,25 +27,37 @@ public class DBStorage implements Storage{
 
     @Override
     public int getNextMemberID () {
-        // TODO(Benjamin): This won't work correctly if you remove the latest added member and then add a new member
-        String getMaxID = "SELECT MAX(MEMBER_ID) AS 'MEMBER_ID' FROM MEMBERS";
+        String getMaxID =
+                "SELECT AUTO_INCREMENT FROM information_schema.TABLES " +
+                "WHERE TABLE_SCHEMA = Delfinen " +
+                "AND TABLE_NAME = MEMBERS";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMaxID);
-        return Integer.parseInt(list.get(0).get("member_id")) + 1;
+        return Integer.parseInt(list.get(0).get("member_id"));
     }
+
+    // TODO: Create new member
 
     // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
-        String deleteTrainingResults = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE " + member_id;
-        sqlConnector.insertUpdateDeleteQuery(deleteTrainingResults);
-        String deleteCompResults = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE " + member_id;
-        sqlConnector.insertUpdateDeleteQuery(deleteCompResults);
-        String deleteMember = "DELETE FROM MEMBERS WHERE MEMBER_ID LIKE " + member_id;
-        sqlConnector.insertUpdateDeleteQuery(deleteMember);
-        return true;
+        String string = "SELECT * FROM MEMBERS WHERE MEMBER_ID LIKE " + member_id;
+        ArrayList<HashMap<String, String>> memberExists = sqlConnector.selectQuery(string);
+        if (!memberExists.isEmpty()) {
+            String deleteTrainingResults = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE " + member_id;
+            sqlConnector.insertUpdateDeleteQuery(deleteTrainingResults);
+            String deleteCompResults = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE " + member_id;
+            sqlConnector.insertUpdateDeleteQuery(deleteCompResults);
+            String deleteMember = "DELETE FROM MEMBERS WHERE MEMBER_ID LIKE " + member_id;
+            sqlConnector.insertUpdateDeleteQuery(deleteMember);
+            return true;
+        }
+        return false;
     }
 
-    // TODO: Create new member
+    @Override
+    public boolean createMember(Member member) {
+        return false;
+    }
 
     // TODO: Change Sub
 
