@@ -76,4 +76,9 @@ public class MockStorage implements Storage{
     public void setSwimmingDiscplines(ArrayList<Integer> swimmingDiscplines) {
         this.swimmingDiscplines = swimmingDiscplines;
     }
+
+    @Override
+    public boolean createMember(Member member) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

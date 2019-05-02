@@ -75,6 +75,15 @@ public class DBStorage implements Storage{
 
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-
+        String query = "SELECT * FROM discipline_member WHERE member_id = " + member_id;
+        ArrayList<HashMap<String, String>> swimList = sqlConnector.selectQuery(query);
+        ArrayList<Integer> swimDisc = new ArrayList<>();
+        if(!swimList.isEmpty()){
+            for(HashMap<String, String> map : swimList){
+                swimDisc.add(Integer.parseInt(map.get("discipline_id")));
+            }
+            return swimDisc;
+        }
+        return null;
     }
 }
