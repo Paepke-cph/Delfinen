@@ -56,8 +56,6 @@ public class SQLConnector implements AutoCloseable {
         }
     }
     
-    
-    
     @Override
     public void close() throws Exception {
         if (!connection.isClosed()) {

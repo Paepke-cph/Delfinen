@@ -58,7 +58,6 @@ public class DBStorage implements Storage {
         return Integer.parseInt(list.get(0).get("training_id"));
     }
 
-    // TODO: Create new member
     // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
@@ -76,6 +75,7 @@ public class DBStorage implements Storage {
         return false;
     }
 
+    // TODO: Create new member
     @Override
     public boolean createMember(Member member) {
         boolean active = member.isActive();
@@ -91,11 +91,30 @@ public class DBStorage implements Storage {
                 .append(subscription).append(", ")
                 .append(active).append(", ")
                 .append(arrears).append(", ");
-
         return sqlConnector.insertUpdateDeleteQuery(sb.toString());
     }
 
-    // TODO: Change Sub
+    // TODO: Update member
+    @Override
+    public boolean updateMember(Member member) {
+        boolean active = member.isActive();
+        String memberName = member.getName();
+        int memberAge = member.getAge();
+        double subscription = member.calculatePrice();
+        boolean arrears = member.isArrears();
+        int memberID = member.getId();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("UPDATE MEMBERS SET ")
+                .append("MEMBER_NAME = ").append(memberName).append(" ")
+                .append("AGE = ").append(memberAge).append(" ")
+                .append("SUBSCRIPTION = ").append(subscription).append(" ")
+                .append("ACTIVE = ").append(active).append(" ")
+                .append("ARREARS = ").append(arrears).append(" ")
+                .append("WHERE MEMBER_ID = ").append(memberID);
+        return sqlConnector.insertUpdateDeleteQuery(sb.toString());
+    }
+
     @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
         String getCompResults = "SELECT * FROM COMPETITION_RESULTS WHERE MEMBER_ID = " + member_id;
