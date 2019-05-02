@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import storage.Storage;
+import ui.ConsoleUI;
 import ui.UI;
 
 /**
@@ -14,6 +15,9 @@ import ui.UI;
  * @author Alexander
  */
 public class Members {
+    private static final String COACH_CAT = "Coach";
+    private static final String JUNIOR_CAT = "JuniorMember";
+    private static final String SENIOR_CAT = "SeniorMember";
 
     // TODO: Remove member
     private HashMap<String, ArrayList<Member>> members;
@@ -61,7 +65,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
         Member member = new Member(name, age, id, null);
-        addMember("Coach", member);
+        addMember(COACH_CAT, member);
     }
 
     private void createJuniorMember(HashMap<String, String> map) {
@@ -77,7 +81,7 @@ public class Members {
             CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
             member = new JuniorMember(active, name, age, member_id, compSwim);
         }
-        addMember("JuniorMember", member);
+        addMember(JUNIOR_CAT, member);
     }
 
     private void createSeniorMember(HashMap<String, String> map) {
@@ -93,39 +97,36 @@ public class Members {
             CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
             member = new SeniorMember(active, name, age, member_id, compSwim);
         }
-        addMember("SeniorMember", member);
+        addMember(SENIOR_CAT, member);
     }
 
     public void addMember(String cat, Member member) {
-        String coach = "Coach";
-        String seniorMember = "SeniorMember";
-        String juniorMember = "JuniorMember";
         ArrayList<Member> list = new ArrayList<>();
         list.add(member);
-        if (cat.equalsIgnoreCase(coach)) {
-            if (members.containsKey(coach)) {
-                members.get(coach).add(member);
+        if (cat.equalsIgnoreCase(COACH_CAT)) {
+            if (members.containsKey(COACH_CAT)) {
+                members.get(COACH_CAT).add(member);
             } else {
-                members.put(coach, list);
+                members.put(COACH_CAT, list);
             }
-        } else if (cat.equalsIgnoreCase(seniorMember)) {
-            if (members.containsKey(seniorMember)) {
-                members.get(seniorMember).add(member);
+        } else if (cat.equalsIgnoreCase(SENIOR_CAT)) {
+            if (members.containsKey(SENIOR_CAT)) {
+                members.get(SENIOR_CAT).add(member);
             } else {
-                members.put(seniorMember, list);
+                members.put(SENIOR_CAT, list);
             }
-        } else if (cat.equalsIgnoreCase(juniorMember)) {
-            if (members.containsKey(juniorMember)) {
-                members.get(juniorMember).add(member);
+        } else if (cat.equalsIgnoreCase(JUNIOR_CAT)) {
+            if (members.containsKey(JUNIOR_CAT)) {
+                members.get(JUNIOR_CAT).add(member);
             } else {
-                members.put(juniorMember, list);
+                members.put(JUNIOR_CAT, list);
             }
         }
     }
 
     public ArrayList<String> returnSeniorMembers() {
         ArrayList<String> seniors = new ArrayList<>();
-        for (Member member : members.get("SeniorMember")) {
+        for (Member member : members.get(SENIOR_CAT)) {
             seniors.add(member.toString());
         }
         return seniors;
@@ -133,7 +134,7 @@ public class Members {
 
     public ArrayList<String> returnJuniorMembers() {
         ArrayList<String> juniors = new ArrayList<>();
-        for (Member member : members.get("JuniorMember")) {
+        for (Member member : members.get(JUNIOR_CAT)) {
             juniors.add(member.toString());
         }
         return juniors;
@@ -141,29 +142,29 @@ public class Members {
 
     public ArrayList<String> returnCoaches() {
         ArrayList<String> coaches = new ArrayList<>();
-        for (Member member : members.get("Coach")) {
+        for (Member member : members.get(COACH_CAT)) {
             coaches.add(member.toString());
         }
         return coaches;
     }
 
     public Member searchMemberById(int member_id) {
-        if (members.containsKey("Coach")) {
-            for (Member member : members.get("Coach")) {
+        if (members.containsKey(COACH_CAT)) {
+            for (Member member : members.get(COACH_CAT)) {
                 if (member.getId() == member_id) {
                     return member;
                 }
             }
         }
-        if (members.containsKey("JuniorMember")) {
-            for (Member member : members.get("JuniorMember")) {
+        if (members.containsKey(JUNIOR_CAT)) {
+            for (Member member : members.get(JUNIOR_CAT)) {
                 if (member.getId() == member_id) {
                     return member;
                 }
             }
         }
-        if (members.containsKey("SeniorMember")) {
-            for (Member member : members.get("SeniorMember")) {
+        if (members.containsKey(SENIOR_CAT)) {
+            for (Member member : members.get(SENIOR_CAT)) {
                 if (member.getId() == member_id) {
                     return member;
                 }
@@ -234,4 +235,8 @@ public class Members {
                 return SwimmingDiscipline.BREASTSTROKE;
         }
     }
+
+    public static String getCoachCat() { return COACH_CAT; }
+    public static String getJuniorCat() { return JUNIOR_CAT; }
+    public static String getSeniorCat() { return SENIOR_CAT; }
 }

@@ -73,4 +73,7 @@ public class MockStorage implements Storage{
         this.getSwimmingDiscplines = getSwimmingDiscplines;
     }
 
+    public void setSwimmingDiscplines(ArrayList<Integer> swimmingDiscplines) {
+        this.swimmingDiscplines = swimmingDiscplines;
+    }
 }

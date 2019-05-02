@@ -45,8 +45,18 @@ public class CompetitionSwimmer {
     public ArrayList<CompetitionResult> getCompetitionResult() {
         return competitionResult;
     }
-    
-    
-    
-    
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("[");
+        for (int i = 0; i < swimmingDiscipline.size(); i++) {
+            stringBuilder.append(swimmingDiscipline.get(i).getDisciplineName());
+            if(i < swimmingDiscipline.size()-1) {
+                stringBuilder.append(", ");
+            }
+        }
+        stringBuilder.append("]");
+        return coach + " " + stringBuilder.toString();
+    }
 }

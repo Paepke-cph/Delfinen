@@ -16,8 +16,8 @@ public class Main {
 //         UIC.startProgram();
         try {
             DBStorage storage = new DBStorage();
-            Members members = new Members(storage);
-            System.out.println(members.searchMemberById(1));
+            UIController controller = new UIController(new ConsoleUI(), storage);
+            controller.startProgram();
         } catch (SQLException e) {
             e.printStackTrace();
         }
