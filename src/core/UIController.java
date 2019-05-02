@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import storage.Storage;
 import ui.UI;
+import util.SortedQueue;
 
 /**
  *
@@ -185,6 +186,7 @@ public class UIController {
                     memberResult();
                     break;
                 case 2:
+                    disciplineResult();
                     break;
                 case 3:
                     break;
@@ -209,6 +211,42 @@ public class UIController {
                 }
             } else {
                 ui.println("Det valgte medlem er ikke en kompetitiv svømmer.\n");
+            }
+        }
+    }
+
+    private void disciplineResult() {
+        ArrayList<SwimmingDiscipline> disciplines = SwimmingDiscipline.getDisciplinesAsList();
+        int choice = 0;
+        while (choice != 9) {
+            ui.println("Top 5:");
+            for (int i = 0; i < disciplines.size(); i++) {
+                ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
+            }
+            ui.println("\n9) Tilbage");
+            choice = parseUserInputToInt(1, 2, 3, 4, 9);
+            switch (choice) {
+                case 1:
+                    SortedQueue<TrainingResult> results = memberHandler.getCompetitionResult(disciplines.get(choice - 1));
+                    //int size = (results.size() < 4) ? results.size() : 4;
+                    int size = 0;
+                    if(results.size() < 4) {
+                        size = results.size();
+                    }
+                    else { 
+                        size = 4;
+                    }
+                    for (int i = 0; i < size; i++) {
+                        ui.println(results.get(i).toString());
+                    }
+                    ui.println("");//insert empty line.
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
             }
         }
     }

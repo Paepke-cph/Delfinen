@@ -9,12 +9,14 @@ import java.util.Map;
 import storage.Storage;
 import ui.ConsoleUI;
 import ui.UI;
+import util.SortedQueue;
 
 /**
  *
  * @author Alexander
  */
 public class Members {
+
     private static final String COACH_CAT = "Coach";
     private static final String JUNIOR_CAT = "JuniorMember";
     private static final String SENIOR_CAT = "SeniorMember";
@@ -41,7 +43,7 @@ public class Members {
         return members;
     }
 
-    public ArrayList<Member> getMembersByName(String name){
+    public ArrayList<Member> getMembersByName(String name) {
         ArrayList<HashMap<String, String>> collection = storage.getMembersByName(name);
         ArrayList<Member> result = new ArrayList<>();
         for (HashMap<String, String> hashMap : collection) {
@@ -54,6 +56,7 @@ public class Members {
         }
         return result;
     }
+
     private void loadMembersFromStorage() {
         ArrayList<HashMap<String, String>> list = storage.getMembers();
         for (HashMap<String, String> map : list) {
@@ -81,7 +84,6 @@ public class Members {
     }
 
     // TODO: Remove member
-
     private void createJuniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
@@ -154,6 +156,29 @@ public class Members {
         return juniors;
     }
 
+    public SortedQueue<TrainingResult> getCompetitionResult(SwimmingDiscipline discipline) {
+        SortedQueue<TrainingResult> result = new SortedQueue<>();
+        for (Member member : members.get(JUNIOR_CAT)) {
+            if (member.getCompetition() != null) {
+                for (CompetitionResult competitionResult : member.getCompetition().getCompetitionResult()) {
+                    if (competitionResult.getSwimmingDiscipline() == discipline) {
+                        result.add(competitionResult);
+                    }
+                }
+            }
+        }
+        for (Member member : members.get(SENIOR_CAT)) {
+            if (member.getCompetition() != null) {
+                for (CompetitionResult competitionResult : member.getCompetition().getCompetitionResult()) {
+                    if (competitionResult.getSwimmingDiscipline() == discipline) {
+                        result.add(competitionResult);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public ArrayList<String> returnCoaches() {
         ArrayList<String> coaches = new ArrayList<>();
         for (Member member : members.get(COACH_CAT)) {
@@ -210,7 +235,7 @@ public class Members {
             }
         }
     }
-    
+
     private void createCompetitionResultFromStorage(int member_id, CompetitionSwimmer compSwim) {
         ArrayList<HashMap<String, String>> getResultsFromStorage = storage.getCompetitionResults(member_id);
         if (!getResultsFromStorage.isEmpty()) {
@@ -250,7 +275,15 @@ public class Members {
         }
     }
 
-    public static String getCoachCat() { return COACH_CAT; }
-    public static String getJuniorCat() { return JUNIOR_CAT; }
-    public static String getSeniorCat() { return SENIOR_CAT; }
+    public static String getCoachCat() {
+        return COACH_CAT;
+    }
+
+    public static String getJuniorCat() {
+        return JUNIOR_CAT;
+    }
+
+    public static String getSeniorCat() {
+        return SENIOR_CAT;
+    }
 }
