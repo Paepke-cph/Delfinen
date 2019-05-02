@@ -12,9 +12,9 @@ import java.util.Map;
 public interface Storage {
     
     public ArrayList<HashMap<String, String>> getMembers();
-    public int getNextMemberID();
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id);
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id);
     public ArrayList<String> getSwimmingDiscplines(int member_id);
-
+    public ArrayList<Integer> getSwimmingDisciplines(int member_id);
+    public int getNextMemberID();
 }

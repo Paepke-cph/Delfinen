@@ -17,6 +17,8 @@ public class MockStorage implements Storage{
     private ArrayList<HashMap<String, String>> competitionResults = new ArrayList<>();
     private ArrayList<HashMap<String, String>> trainingResults = new ArrayList<>();
     private ArrayList<String> getSwimmingDiscplines;
+    private int highestNumber;
+    private ArrayList<Integer> swimmingDiscplines;
 
     private int[] memberIDs;
     private int memberIDIndex = 0;
@@ -51,7 +53,12 @@ public class MockStorage implements Storage{
 
     @Override
     public ArrayList<String> getSwimmingDiscplines(int member_id) {
-        return getSwimmingDiscplines;
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
+        return swimmingDiscplines;
     }
 
     public void setCompetitionResults(ArrayList<HashMap<String, String>> competitionResults) {

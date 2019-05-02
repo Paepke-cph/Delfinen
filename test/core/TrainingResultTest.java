@@ -16,14 +16,14 @@ import org.junit.Before;
  * @author Alexander
  */
 public class TrainingResultTest {
-    Member member = new Member("Aleander", 29, 1, null);
     TrainingResult comp;
     LocalDate date = LocalDate.now();
     LocalTime time = LocalTime.of(0, 10, 20, 43);
+    int id = 2;
 
     @Before
     public void Setup() {
-        comp = new TrainingResult(SwimmingDiscipline.BUTTERFLY, date, time, member);
+        comp = new TrainingResult(SwimmingDiscipline.BUTTERFLY, date, time, id);
     }
 
     /**
@@ -48,14 +48,6 @@ public class TrainingResultTest {
     @Test
     public void testGetTime() {
         assertEquals(time, comp.getTime());
-    }
-
-    /**
-     * Test of getMember method, of class TrainingResult.
-     */
-    @Test
-    public void testGetMember() {
-        assertEquals(member, comp.getMember());
     }
 
 }
