@@ -23,7 +23,6 @@ public class DBStorage implements Storage{
         return list;
     }
 
-    // TODO: getNextMemberID
     @Override
     public int getNextMemberID () {
         String getMaxID = "SELECT MAX(MEMBER_ID) AS 'MEMBER_ID' FROM MEMBERS";
@@ -32,7 +31,19 @@ public class DBStorage implements Storage{
     }
 
     // TODO: Remove Member
+    @Override
+    public boolean removeMember(int member_id) {
+        String deleteTrainingResults = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE " + member_id;
+        sqlConnector.insertUpdateDeleteQuery(deleteTrainingResults);
+        String deleteCompResults = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE " + member_id;
+        sqlConnector.insertUpdateDeleteQuery(deleteCompResults);
+        String deleteMember = "DELETE FROM MEMBERS WHERE MEMBER_ID LIKE " + member_id;
+        sqlConnector.insertUpdateDeleteQuery(deleteMember);
+        return true;
+    }
+
     // TODO: Create new member
+
     // TODO: Change Sub
 
     @Override

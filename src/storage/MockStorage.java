@@ -49,6 +49,11 @@ public class MockStorage implements Storage{
         return highestNumber + 1;
     }
 
+    @Override
+    public boolean removeMember(int member_id) {
+        return false;
+    }
+
     public void setCompetitionResults(ArrayList<HashMap<String, String>> competitionResults) {
         this.competitionResults = competitionResults;
     }
