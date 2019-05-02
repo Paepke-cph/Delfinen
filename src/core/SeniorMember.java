@@ -25,7 +25,7 @@ public class SeniorMember extends Member {
         double discount = 0.75;
         double subscription = 1600;
         double inactive = 500;
-        if(!this.isActive())
+        if(!this.active)
             return inactive;
         else if (this.getAge() > 60)
             return discount * subscription;
