@@ -88,10 +88,10 @@ public class Members {
         int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
         JuniorMember member;
-        if (map.get("coach") == null) {
+        if (map.get("coach_id") == null) {
             member = new JuniorMember(active, name, age, member_id, null);
         } else {
-            int coach_id = Integer.parseInt(map.get("coach"));
+            int coach_id = Integer.parseInt(map.get("coach_id"));
             CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
             member = new JuniorMember(active, name, age, member_id, compSwim);
         }
@@ -104,10 +104,10 @@ public class Members {
         int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
         SeniorMember member;
-        if (map.get("coach") == null) {
+        if (map.get("coach_id") == null) {
             member = new SeniorMember(active, name, age, member_id, null);
         } else {
-            int coach_id = Integer.parseInt(map.get("coach"));
+            int coach_id = Integer.parseInt(map.get("coach_id"));
             CompetitionSwimmer compSwim = createCompetition(member_id, coach_id);
             member = new SeniorMember(active, name, age, member_id, compSwim);
         }
