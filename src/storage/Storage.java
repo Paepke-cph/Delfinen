@@ -17,5 +17,6 @@ public interface Storage {
     public ArrayList<Integer> getSwimmingDisciplines(int member_id);
     public int getNextMemberID();
     public boolean removeMember (int member_id);
-    public boolean createMember (Member member);
+
+    public boolean createMember(Member member, int active);
 }

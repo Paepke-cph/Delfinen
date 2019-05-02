@@ -55,7 +55,12 @@ public class DBStorage implements Storage{
     }
 
     @Override
-    public boolean createMember(Member member) {
+    public boolean createMember(Member member, int active) {
+        String memberName = member.getName();
+        int memberAge = member.getAge();
+        double subscription = member.calculatePrice();
+
+
         return false;
     }
 

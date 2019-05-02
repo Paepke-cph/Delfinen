@@ -4,10 +4,20 @@ package core;
  *
  * @author Alexander
  */
-public class SeniorMember extends JuniorMember{
+public class SeniorMember extends Member {
+    private double subscription;
+    private boolean active;
 
-    public SeniorMember(boolean active, String name, int age, int id, CompetitionSwimmer competition) {
-        super(active, name, age, id, competition);
+    public SeniorMember(boolean active, String name, int age, int id, boolean arrears, CompetitionSwimmer competition) {
+        super(active, name, age, id, arrears, competition);
+        this.active = active;
+        this.subscription = calculatePrice();
+    }
+
+    @Override
+    public void setActive(boolean active) {
+        this.active = active;
+        this.subscription = calculatePrice();
     }
 
     @Override

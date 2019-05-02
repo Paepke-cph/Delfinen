@@ -86,17 +86,17 @@ public class UIController {
             CompetitionSwimmer comp = createCompetitiveSwimmer();
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
             if (junior) {
-                member = new JuniorMember(active, name, age, id, comp);
+                member = new JuniorMember(active, name, age, id, false, comp);
                 memberHandler.addMember(Members.getJuniorCat(), member);
             } else {
-                member = new SeniorMember(active, name, age, id, comp);
+                member = new SeniorMember(active, name, age, id, false, comp);
                 memberHandler.addMember(Members.getSeniorCat(), member);
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
         }
         else {
-            member = new Member(name,age,id,null);
+            member = new Member(true, name, age, id, false, null);
             ui.println("\nNyt Træner Oprettet");
             ui.println(member.toString());
         }

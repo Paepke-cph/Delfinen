@@ -66,6 +66,11 @@ public class MockStorage implements Storage{
         return false;
     }
 
+    @Override
+    public boolean createMember(Member member) {
+        return false;
+    }
+
     public void setCompetitionResults(ArrayList<HashMap<String, String>> competitionResults) {
         this.competitionResults = competitionResults;
     }
