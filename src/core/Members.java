@@ -50,7 +50,7 @@ public class Members {
             String mName = hashMap.get("member_name");
             int mAge = Integer.parseInt(hashMap.get("age"));
             int mID = Integer.parseInt(hashMap.get("member_id"));
-// TODO(Benjamin): Skal vi håndtere competitive swimmer her?
+            // TODO(Benjamin): Skal vi håndtere competitive swimmer her?
             Member member = new Member(true, mName, mAge, mID, false ,null);
             result.add(member);
         }

@@ -11,9 +11,11 @@ import java.util.Map;
  */
 public interface Storage {
 
-    public int getNextMemberID();
-    public int getNextCompetitionID();
-    public int getNextTrainingID();
+    public Integer getNextMemberID();
+
+    public Integer getNextCompetitionID();
+
+    public Integer getNextTrainingID();
     public boolean removeMember(int member_id);
     public boolean createMember(Member member);
 
