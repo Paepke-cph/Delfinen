@@ -1,5 +1,6 @@
 package core;
 
+import java.time.LocalDate;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -13,7 +14,8 @@ public class MemberTest {
 
     @Before
     public void setUp(){
-        member = new Member(true, "Alexander", 29, 1,false, null);
+        LocalDate date = LocalDate.now();
+        member = new Member(true, "Alexander", 29, 1,date, null);
     }
     @Test
     public void testGetName() {

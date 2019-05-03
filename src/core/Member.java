@@ -1,5 +1,7 @@
 package core;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Alexander
@@ -12,9 +14,18 @@ public class Member {
     private int id;
     private double subscription;
     private boolean active;
-    private boolean arrears;
+    private LocalDate arrears;
 
-    public Member(boolean active, String name, int age, int id, boolean arrears, CompetitionSwimmer competition) {
+    public Member(String name, int age, int id, boolean active) {
+        this.name = name;
+        this.age = age;
+        this.id = id;
+        this.active = active;
+    }
+
+    
+    
+    public Member(boolean active, String name, int age, int id, LocalDate arrears, CompetitionSwimmer competition) {
         this.name = name;
         this.age = age;
         this.id = id;
@@ -64,7 +75,7 @@ public class Member {
         return 0;
     }
 
-    public boolean isArrears() {
+    public LocalDate getArrears() {
         return arrears;
     }
 

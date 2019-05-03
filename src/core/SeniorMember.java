@@ -1,5 +1,7 @@
 package core;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Alexander
@@ -8,7 +10,7 @@ public class SeniorMember extends Member {
     private double subscription;
     private boolean active;
 
-    public SeniorMember(boolean active, String name, int age, int id, boolean arrears, CompetitionSwimmer competition) {
+    public SeniorMember(boolean active, String name, int age, int id, LocalDate arrears, CompetitionSwimmer competition) {
         super(active, name, age, id, arrears, competition);
         this.active = active;
         this.subscription = calculatePrice();

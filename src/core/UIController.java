@@ -19,12 +19,12 @@ public class UIController {
 
     private UI ui;
     private Storage storage;
-    private Members memberHandler;
+    private StorageController memberHandler;
 
     public UIController(UI ui, Storage storage) {
         this.ui = ui;
         this.storage = storage;
-        memberHandler = new Members(storage);
+        memberHandler = new StorageController(storage);
     }
 
     public void startProgram() {
@@ -88,10 +88,10 @@ public class UIController {
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
             if (junior) {
                 member = new JuniorMember(active, name, age, id, false, comp);
-                memberHandler.addMember(Members.getJuniorCat(), member);
+                memberHandler.addMember(StorageController.getJuniorCat(), member);
             } else {
                 member = new SeniorMember(active, name, age, id, false, comp);
-                memberHandler.addMember(Members.getSeniorCat(), member);
+                memberHandler.addMember(StorageController.getSeniorCat(), member);
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
