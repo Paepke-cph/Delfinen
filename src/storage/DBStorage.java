@@ -16,6 +16,7 @@ public class DBStorage implements Storage {
     SQLConnector sqlConnector;
     private final String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
     private final String PREP_GET_RESULTS = "SELECT * FROM ? WHERE MEMBER_ID = ?";
+    private final String get_Top_Results_By_Discipline = "SELECT * FROM ? join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
 
     public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
@@ -32,7 +33,7 @@ public class DBStorage implements Storage {
         }
         return null;
     }
-    
+
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
         PreparedStatement preparedStatement = null;
@@ -48,8 +49,8 @@ public class DBStorage implements Storage {
     @Override
     public Integer getNextMemberID() {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "Delfinen");
-            preparedStatement.setString(2, "MEMBERS");
+            preparedStatement.setString(1, "\"Delfinen\"");
+            preparedStatement.setString(2, "\"MEMBERS\"");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
         } catch (SQLException e) {
@@ -61,7 +62,7 @@ public class DBStorage implements Storage {
     @Override
     public Integer getNextCompetitionID() {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "Delfinen");
+            preparedStatement.setString(1, "\"Delfinen\"");
             preparedStatement.setString(2, "COMPETITION_RESULTS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
@@ -74,7 +75,7 @@ public class DBStorage implements Storage {
     @Override
     public Integer getNextTrainingID() {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "Delfinen");
+            preparedStatement.setString(1, "\"Delfinen\"");
             preparedStatement.setString(2, "TRAINING_RESULTS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
@@ -215,6 +216,50 @@ public class DBStorage implements Storage {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<HashMap<String, String>> getTopFiveTrainingResults(int discipline_id) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline);
+            preparedStatement.setString(1, "competition_results");
+            preparedStatement.setString(2, "competition_results.MEMBER_ID");
+            preparedStatement.setInt(3, discipline_id);
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+    
+    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResults(int discipline_id) {
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline);
+            preparedStatement.setString(1, "competition_results");
+            preparedStatement.setString(2, "competition_results.MEMBER_ID");
+            preparedStatement.setInt(3, discipline_id);
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (preparedStatement != null) {
+                    preparedStatement.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

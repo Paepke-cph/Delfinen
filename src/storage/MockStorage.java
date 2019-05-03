@@ -36,17 +36,17 @@ public class MockStorage implements Storage{
     public void setMembers(ArrayList<HashMap<String, String>> members) {
         this.members = members;
     }
-    public int getNextMemberID() {
+    public Integer getNextMemberID() {
         return memberIDs[memberIDIndex++];
     }
 
     @Override
-    public int getNextCompetitionID() {
+    public Integer getNextCompetitionID() {
         return 0;
     }
 
     @Override
-    public int getNextTrainingID() {
+    public Integer getNextTrainingID() {
         return 0;
     }
 
