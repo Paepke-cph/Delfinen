@@ -203,35 +203,32 @@ public class UIController {
 
     private void disciplineResult() {
         ArrayList<SwimmingDiscipline> disciplines = SwimmingDiscipline.getDisciplinesAsList();
+        ui.println("Vælg resultats kategori:");
+        ui.println("1) Trænings resultater:");
+        ui.println("2) Kompetitive resultater:");
+        ui.println("\n9) Tilbage");
         int choice = 0;
-        while (choice != 9) {
-            ui.println("Top 5:");
-            for (int i = 0; i < disciplines.size(); i++) {
-                ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
-            }
-            ui.println("\n9) Tilbage");
-            choice = parseUserInputToInt(1, 2, 3, 4, 9);
-            switch (choice) {
-                case 1:
-                    SortedQueue<TrainingResult> results = memberHandler.getCompetitionResult(disciplines.get(choice - 1));
-                    //int size = (results.size() < 4) ? results.size() : 4;
-                    int size = 0;
-                    if (results.size() < 4) {
-                        size = results.size();
-                    } else {
-                        size = 4;
+        choice = parseUserInputToInt(1,2,9);
+        boolean traningResults = (choice == 1);
+        if(choice != 9) {
+            choice = 0;
+            while (choice != 9) {
+                ui.println("Top 5:");
+                for (int i = 0; i < disciplines.size(); i++) {
+                    ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
+                }
+                ui.println("\n9) Tilbage");
+                choice = parseUserInputToInt(1, 2, 3, 4, 9);
+
+                // TODO(Benjamin) Check if choice is equivalent with discipline_id in DB.
+                if(choice != 9){
+                    if(traningResults) {
+                        //getTopFiveTrain(disciplines.get(choice));
                     }
-                    for (int i = 0; i < size; i++) {
-                        ui.println(results.get(i).toString());
+                    else {
+                        //getTopFiveComp(disciplines.get(choice));
                     }
-                    ui.println("");//insert empty line.
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
-                case 4:
-                    break;
+                }
             }
         }
     }

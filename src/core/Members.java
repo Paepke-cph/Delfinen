@@ -50,7 +50,7 @@ public class Members {
             String mName = hashMap.get("member_name");
             int mAge = Integer.parseInt(hashMap.get("age"));
             int mID = Integer.parseInt(hashMap.get("member_id"));
-// TODO(Benjamin): Skal vi håndtere competitive swimmer her?
+            // TODO(Benjamin): Skal vi håndtere competitive swimmer her?
             Member member = new Member(true, mName, mAge, mID, false ,null);
             result.add(member);
         }
@@ -157,29 +157,6 @@ public class Members {
             juniors.add(member.toString());
         }
         return juniors;
-    }
-
-    public SortedQueue<TrainingResult> getCompetitionResult(SwimmingDiscipline discipline) {
-        SortedQueue<TrainingResult> result = new SortedQueue<>();
-        for (Member member : members.get(JUNIOR_CAT)) {
-            if (member.getCompetition() != null) {
-                for (CompetitionResult competitionResult : member.getCompetition().getCompetitionResult()) {
-                    if (competitionResult.getSwimmingDiscipline() == discipline) {
-                        result.add(competitionResult);
-                    }
-                }
-            }
-        }
-        for (Member member : members.get(SENIOR_CAT)) {
-            if (member.getCompetition() != null) {
-                for (CompetitionResult competitionResult : member.getCompetition().getCompetitionResult()) {
-                    if (competitionResult.getSwimmingDiscipline() == discipline) {
-                        result.add(competitionResult);
-                    }
-                }
-            }
-        }
-        return result;
     }
 
     public ArrayList<String> returnCoaches() {

@@ -25,10 +25,10 @@ public class SQLConnector implements AutoCloseable {
         this.statement = connection.prepareStatement(url);
     }
 
-    public ArrayList<HashMap<String, String>> selectQuery(String query) {
+    public ArrayList<HashMap<String, String>> selectQuery(PreparedStatement query) {
         ArrayList<HashMap<String, String>> result = new ArrayList<>();
         try {
-            ResultSet rs = statement.executeQuery(query);
+            ResultSet rs = query.executeQuery();
             ResultSetMetaData rsdm = rs.getMetaData();
             while (rs.next()) {
                 HashMap<String, String> column = new HashMap<>();
@@ -40,16 +40,14 @@ public class SQLConnector implements AutoCloseable {
             }
             return result;
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return null;
         }
     }
-    
-    public boolean insertUpdateDeleteQuery(String query) {
+
+    public boolean insertUpdateDeleteQuery(PreparedStatement query) {
         try {
-            if(statement.executeUpdate(query) == 1)
-                return true;
-            else
-                return false;
+            return query.executeUpdate() == 1;
         }
         catch(SQLException e) {
             return false;
@@ -63,4 +61,7 @@ public class SQLConnector implements AutoCloseable {
         }
     }
 
+    public Connection getConnection() {
+        return connection;
+    }
 }
