@@ -49,8 +49,8 @@ public class DBStorage implements Storage {
     @Override
     public Integer getNextMemberID() {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "\"Delfinen\"");
-            preparedStatement.setString(2, "\"MEMBERS\"");
+            preparedStatement.setString(1, "Delfinen");
+            preparedStatement.setString(2, "MEMBERS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
         } catch (SQLException e) {
@@ -62,7 +62,7 @@ public class DBStorage implements Storage {
     @Override
     public Integer getNextCompetitionID() {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "\"Delfinen\"");
+            preparedStatement.setString(1, "Delfinen");
             preparedStatement.setString(2, "COMPETITION_RESULTS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
@@ -75,7 +75,7 @@ public class DBStorage implements Storage {
     @Override
     public Integer getNextTrainingID() {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "\"Delfinen\"");
+            preparedStatement.setString(1, "Delfinen");
             preparedStatement.setString(2, "TRAINING_RESULTS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
