@@ -2,6 +2,7 @@ package storage;
 
 import core.Member;
 
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,6 +14,8 @@ import java.util.HashMap;
 public class DBStorage implements Storage {
 
     SQLConnector sqlConnector;
+    private final String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+    private final String PREP_GET_RESULTS = "SELECT * FROM ? WHERE MEMBER_ID = ?";
 
     public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
@@ -20,57 +23,104 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembers() {
-        String getMembersFromStorage = "SELECT * FROM MEMBERS";
-        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getMembersFromStorage);
-        return list;
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS");
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
     
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        String getMembersFromStorage = "SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"";
-        return sqlConnector.selectQuery(getMembersFromStorage);
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"");
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public int getNextMemberID() {
-        String getNextID = "SELECT AUTO_INCREMENT as member_id FROM information_schema.TABLES "
-                + "WHERE TABLE_SCHEMA = \"Delfinen\" "
-                + "AND TABLE_NAME = \"MEMBERS\"";
-        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
-        return Integer.parseInt(list.get(0).get("member_id"));
+    public Integer getNextMemberID() {
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
+            preparedStatement.setString(1, "Delfinen");
+            preparedStatement.setString(2, "MEMBERS");
+            ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
+            return Integer.parseInt(list.get(0).get("member_id"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public int getNextCompetitionID() {
-        String getNextID = "SELECT AUTO_INCREMENT as competition_id FROM information_schema.TABLES "
-                + "WHERE TABLE_SCHEMA = \"Delfinen\" "
-                + "AND TABLE_NAME = \"COMPETITION_RESULTS\"";
-        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
-        return Integer.parseInt(list.get(0).get("competition_id"));
+    public Integer getNextCompetitionID() {
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
+            preparedStatement.setString(1, "Delfinen");
+            preparedStatement.setString(2, "COMPETITION_RESULTS");
+            ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
+            return Integer.parseInt(list.get(0).get("member_id"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
-    public int getNextTrainingID() {
-        String getNextID = "SELECT AUTO_INCREMENT as trainning_id FROM information_schema.TABLES "
-                + "WHERE TABLE_SCHEMA = \"Delfinen\" "
-                + "AND TABLE_NAME = \"TRAINING_RESULTS\"";
-        ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
-        return Integer.parseInt(list.get(0).get("training_id"));
+    public Integer getNextTrainingID() {
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
+            preparedStatement.setString(1, "Delfinen");
+            preparedStatement.setString(2, "TRAINING_RESULTS");
+            ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
+            return Integer.parseInt(list.get(0).get("member_id"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
-        String string = "SELECT * FROM MEMBERS WHERE MEMBER_ID LIKE " + member_id;
-        ArrayList<HashMap<String, String>> memberExists = sqlConnector.selectQuery(string);
-        if (!memberExists.isEmpty()) {
-            String deleteTrainingResults = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE " + member_id;
-            sqlConnector.insertUpdateDeleteQuery(deleteTrainingResults);
-            String deleteCompResults = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE " + member_id;
-            sqlConnector.insertUpdateDeleteQuery(deleteCompResults);
-            String deleteMember = "DELETE FROM MEMBERS WHERE MEMBER_ID LIKE " + member_id;
-            sqlConnector.insertUpdateDeleteQuery(deleteMember);
-            return true;
+        String prepSelect = "SELECT * FROM MEMBERS WHERE MEMBER_ID LIKE ?";
+        String prepDelete = "DELETE FROM ? WHERE MEMBER_ID LIKE ?";
+
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = sqlConnector.getConnection()
+                    .prepareStatement(prepSelect);
+            preparedStatement.setInt(1, member_id);
+            ArrayList<HashMap<String, String>> memberExists = sqlConnector.selectQuery(preparedStatement);
+
+            if (!memberExists.isEmpty()) {
+                preparedStatement = sqlConnector.getConnection()
+                        .prepareStatement(prepDelete);
+                preparedStatement.setString(1, "TRAINING_RESULTS");
+                preparedStatement.setInt(2, member_id);
+                sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+                preparedStatement.setString(1, "COMPETITION_RESULTS");
+                preparedStatement.setInt(2, member_id);
+                sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+                preparedStatement.setString(1, "MEMBERS");
+                preparedStatement.setInt(2, member_id);
+                sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if (preparedStatement != null) {
+                try {
+                    preparedStatement.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         return false;
     }
@@ -84,14 +134,19 @@ public class DBStorage implements Storage {
         double subscription = member.calculatePrice();
         boolean arrears = member.isArrears();
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (")
-                .append("\""+memberName+"\"").append(", ")
-                .append(memberAge).append(", ")
-                .append(subscription).append(", ")
-                .append(active).append(", ")
-                .append(arrears).append(")");
-        return sqlConnector.insertUpdateDeleteQuery(sb.toString());
+        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (?. ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertMember)) {
+            preparedStatement.setString(1, memberName);
+            preparedStatement.setInt(2, memberAge);
+            preparedStatement.setDouble(3, subscription);
+            preparedStatement.setBoolean(4, active);
+            preparedStatement.setBoolean(5, arrears);
+            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     // TODO: Update member
@@ -103,41 +158,64 @@ public class DBStorage implements Storage {
         double subscription = member.calculatePrice();
         boolean arrears = member.isArrears();
         int memberID = member.getId();
-        StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE MEMBERS SET ")
-                .append("MEMBER_NAME = ").append(memberName).append(" ")
-                .append("AGE = ").append(memberAge).append(" ")
-                .append("SUBSCRIPTION = ").append(subscription).append(" ")
-                .append("ACTIVE = ").append(active).append(" ")
-                .append("ARREARS = ").append(arrears).append(" ")
-                .append("WHERE MEMBER_ID = ").append(memberID);
-        return sqlConnector.insertUpdateDeleteQuery(sb.toString());
+
+        String updateMember = "UPDATE MEMBERS SET MEMBER_NAME = ? AGE = ? SUBSCRIPTION = ? ACTIVE = ? ARREARS = ? WHERE MEMBER_ID = ?";
+
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(updateMember)) {
+            preparedStatement.setString(1, memberName);
+            preparedStatement.setInt(2, memberAge);
+            preparedStatement.setDouble(3, subscription);
+            preparedStatement.setBoolean(4, active);
+            preparedStatement.setBoolean(5, arrears);
+            preparedStatement.setInt(6, memberID);
+            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
-        String getCompResults = "SELECT * FROM COMPETITION_RESULTS WHERE MEMBER_ID = " + member_id;
-        return sqlConnector.selectQuery(getCompResults);
-    }
-
-    @Override
-    public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
-        String getTrainingResults = "SELECT * FROM TRAINING_RESULTS WHERE MEMBER_ID = " + member_id;
-        return sqlConnector.selectQuery(getTrainingResults);
-    }
-
-    @Override
-    public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-        String query = "SELECT * FROM discipline_member WHERE member_id = " + member_id;
-        ArrayList<HashMap<String, String>> swimList = sqlConnector.selectQuery(query);
-        ArrayList<Integer> swimDisc = new ArrayList<>();
-        if (!swimList.isEmpty()) {
-            for (HashMap<String, String> map : swimList) {
-                swimDisc.add(Integer.parseInt(map.get("discipline_id")));
-            }
-            return swimDisc;
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
+            preparedStatement.setString(1, "COMPETITION_RESULTS");
+            preparedStatement.setInt(2, member_id);
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }
 
+    @Override
+    public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
+            preparedStatement.setString(1, "TRAINING_RESULTS");
+            preparedStatement.setInt(2, member_id);
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
+
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
+            preparedStatement.setString(1, "DISCIPLINE_MEMBER");
+            preparedStatement.setInt(2, member_id);
+            ArrayList<HashMap<String, String>> swimList = sqlConnector.selectQuery(preparedStatement);
+            ArrayList<Integer> swimDisc = new ArrayList<>();
+            if (!swimList.isEmpty()) {
+                for (HashMap<String, String> map : swimList) {
+                    swimDisc.add(Integer.parseInt(map.get("discipline_id")));
+                }
+                return swimDisc;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
