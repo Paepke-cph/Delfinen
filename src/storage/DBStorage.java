@@ -202,7 +202,6 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
             preparedStatement.setString(1, "DISCIPLINE_MEMBER");
             preparedStatement.setInt(2, member_id);
@@ -220,7 +219,7 @@ public class DBStorage implements Storage {
         return null;
     }
 
-    public ArrayList<HashMap<String, String>> getTopFiveTrainingResults(int discipline_id) {
+    public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id) {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
             preparedStatement.setString(1, "competition_results");
             preparedStatement.setString(2, "competition_results.MEMBER_ID");
@@ -232,7 +231,7 @@ public class DBStorage implements Storage {
         return null;
     }
 
-    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResults(int discipline_id) {
+    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
             preparedStatement.setString(1, "competition_results");
             preparedStatement.setString(2, "competition_results.MEMBER_ID");
