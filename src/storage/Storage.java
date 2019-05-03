@@ -29,5 +29,5 @@ public interface Storage {
 
     public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id);
 
-    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id)
+    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id);
 }
