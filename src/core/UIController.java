@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import storage.Storage;
 import ui.UI;
+import util.SortedQueue;
 
 /**
  *
@@ -81,7 +82,7 @@ public class UIController {
         ui.print("Alder: ");
         int age = parseUserInputToInt();
         Member member;
-        if(!yesNoOption("Opret Træner?")) {
+        if (!yesNoOption("Opret Træner?")) {
             boolean junior = (age < 18);
             CompetitionSwimmer comp = createCompetitiveSwimmer();
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
@@ -94,8 +95,7 @@ public class UIController {
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
-        }
-        else {
+        } else {
             member = new Member(true, name, age, id, false, null);
             ui.println("\nNyt Træner Oprettet");
             ui.println(member.toString());
@@ -170,9 +170,91 @@ public class UIController {
                 case 1:
                     break;
                 case 2:
+                    disciplineResult();
+                    break;
+                case 3:
                     break;
             }
         }
+    }
+
+    private void memberResult() {
+        int[] mID = findMemberByName();
+        if (mID != null) {
+            ui.print("\nSkriv medlems id for at vælge: ");
+            int choice = parseUserInputToInt(mID);
+            Member member = memberHandler.searchMemberById(choice);
+            if (member.getCompetition() != null) {
+                ui.println("Competition Result: ");
+                for (CompetitionResult result : member.getCompetition().getCompetitionResult()) {
+                    ui.println(result.toString());
+                }
+                ui.println("\nTraining Result: ");
+                for (TrainingResult result : member.getCompetition().getTrainingResult()) {
+                    ui.println(result.toString());
+                }
+            } else {
+                ui.println("Det valgte medlem er ikke en kompetitiv svømmer.\n");
+            }
+        }
+    }
+
+    private void disciplineResult() {
+        ArrayList<SwimmingDiscipline> disciplines = SwimmingDiscipline.getDisciplinesAsList();
+        int choice = 0;
+        while (choice != 9) {
+            ui.println("Top 5:");
+            for (int i = 0; i < disciplines.size(); i++) {
+                ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
+            }
+            ui.println("\n9) Tilbage");
+            choice = parseUserInputToInt(1, 2, 3, 4, 9);
+            switch (choice) {
+                case 1:
+                    SortedQueue<TrainingResult> results = memberHandler.getCompetitionResult(disciplines.get(choice - 1));
+                    //int size = (results.size() < 4) ? results.size() : 4;
+                    int size = 0;
+                    if (results.size() < 4) {
+                        size = results.size();
+                    } else {
+                        size = 4;
+                    }
+                    for (int i = 0; i < size; i++) {
+                        ui.println(results.get(i).toString());
+                    }
+                    ui.println("");//insert empty line.
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+        }
+    }
+
+    private int[] findMemberByName() {
+        int[] mID = null;
+        boolean notDone = true;
+        while (notDone) {
+            ui.print("Søg efter navn: ");
+            ArrayList<Member> resultList = memberHandler.getMembersByName(ui.getUserInput());
+            if (resultList.isEmpty()) {
+                ui.println("Din søgning gav ingen resultater.");
+            } else {
+                mID = new int[resultList.size() + 1];
+                for (int i = 0; i < resultList.size(); i++) {
+                    ui.println(resultList.get(i).toString());
+                    mID[i] = resultList.get(i).getId();
+                }
+                mID[mID.length - 1] = -1;
+            }
+            if (yesNoOption("\nEr du færdig med din søgning?")) {
+                notDone = false;
+            }
+        }
+        return mID;
     }
 
     private void showHeader() {

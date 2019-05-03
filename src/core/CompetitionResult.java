@@ -7,7 +7,7 @@ import java.time.LocalTime;
  *
  * @author Alexander
  */
-public class CompetitionResult extends TrainingResult{
+public class CompetitionResult extends TrainingResult implements Comparable<TrainingResult> {
 
     private String event;
     private int placement;
@@ -25,6 +25,10 @@ public class CompetitionResult extends TrainingResult{
     public int getPlacement() {
         return placement;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return super.toString() + "\nCompetitionResult{" + "event=" + event + ", placement=" + placement + '}';
+    }
+
 }

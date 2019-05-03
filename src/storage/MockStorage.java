@@ -59,7 +59,7 @@ public class MockStorage implements Storage{
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
         return trainingResults;
     }
-
+    
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
         return swimmingDiscplines;
@@ -92,7 +92,8 @@ public class MockStorage implements Storage{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public boolean createMember(Member member, int active) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    @Override
+    public boolean updateMember(Member member) {
+        return false;
     }
 }
