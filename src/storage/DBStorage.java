@@ -15,7 +15,6 @@ public class DBStorage implements Storage {
 
     SQLConnector sqlConnector;
     private final String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
-    private final String PREP_GET_RESULTS = "SELECT * FROM ? WHERE MEMBER_ID = ?";
 
     public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
@@ -177,9 +176,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
+        String PREP_GET_RESULTS = "SELECT * FROM COMPETITION_RESULTS WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
-            preparedStatement.setString(1, "COMPETITION_RESULTS");
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -189,9 +188,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
+        String PREP_GET_RESULTS = "SELECT * FROM TRAINING_RESULTS WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
-            preparedStatement.setString(1, "TRAINING_RESULTS");
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -201,10 +200,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-
+        String PREP_GET_RESULTS = "SELECT * FROM DISCIPLINE_MEMBER WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
-            preparedStatement.setString(1, "DISCIPLINE_MEMBER");
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             ArrayList<HashMap<String, String>> swimList = sqlConnector.selectQuery(preparedStatement);
             ArrayList<Integer> swimDisc = new ArrayList<>();
             if (!swimList.isEmpty()) {

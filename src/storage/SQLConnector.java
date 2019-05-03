@@ -40,6 +40,7 @@ public class SQLConnector implements AutoCloseable {
             }
             return result;
         } catch (SQLException ex) {
+            ex.printStackTrace();
             return null;
         }
     }

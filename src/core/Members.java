@@ -159,29 +159,6 @@ public class Members {
         return juniors;
     }
 
-    public SortedQueue<TrainingResult> getCompetitionResult(SwimmingDiscipline discipline) {
-        SortedQueue<TrainingResult> result = new SortedQueue<>();
-        for (Member member : members.get(JUNIOR_CAT)) {
-            if (member.getCompetition() != null) {
-                for (CompetitionResult competitionResult : member.getCompetition().getCompetitionResult()) {
-                    if (competitionResult.getSwimmingDiscipline() == discipline) {
-                        result.add(competitionResult);
-                    }
-                }
-            }
-        }
-        for (Member member : members.get(SENIOR_CAT)) {
-            if (member.getCompetition() != null) {
-                for (CompetitionResult competitionResult : member.getCompetition().getCompetitionResult()) {
-                    if (competitionResult.getSwimmingDiscipline() == discipline) {
-                        result.add(competitionResult);
-                    }
-                }
-            }
-        }
-        return result;
-    }
-
     public ArrayList<String> returnCoaches() {
         ArrayList<String> coaches = new ArrayList<>();
         for (Member member : members.get(COACH_CAT)) {
