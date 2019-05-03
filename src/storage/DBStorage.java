@@ -221,45 +221,25 @@ public class DBStorage implements Storage {
     }
 
     public ArrayList<HashMap<String, String>> getTopFiveTrainingResults(int discipline_id) {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline);
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
             preparedStatement.setString(1, "competition_results");
             preparedStatement.setString(2, "competition_results.MEMBER_ID");
             preparedStatement.setInt(3, discipline_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }
-    
+
     public ArrayList<HashMap<String, String>> getTopFiveCompetitionResults(int discipline_id) {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline);
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
             preparedStatement.setString(1, "competition_results");
             preparedStatement.setString(2, "competition_results.MEMBER_ID");
             preparedStatement.setInt(3, discipline_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (preparedStatement != null) {
-                    preparedStatement.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return null;
     }
