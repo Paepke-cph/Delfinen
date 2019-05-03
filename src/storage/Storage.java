@@ -26,4 +26,8 @@ public interface Storage {
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id);
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id);
     public ArrayList<Integer> getSwimmingDisciplines(int member_id);
+
+    public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id);
+
+    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id);
 }

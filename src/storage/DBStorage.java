@@ -22,9 +22,7 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembers() {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS");
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS");) {
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,9 +32,7 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"");
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"");) {
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +105,7 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    public boolean removeTrainingResult(int member_id) {
+    private boolean removeTrainingResult(int member_id) {
         String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(2, member_id);
@@ -120,7 +116,7 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    public boolean removeCompResult(int member_id) {
+    private boolean removeCompResult(int member_id) {
         String prepDelete = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(1, member_id);
@@ -138,7 +134,7 @@ public class DBStorage implements Storage {
         String memberName = member.getName();
         int memberAge = member.getAge();
         double subscription = member.calculatePrice();
-        boolean arrears = member.isArrears();
+        String arrears = member.getArrears().toString();
 
         String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (?. ?, ?, ?, ?)";
 
@@ -147,7 +143,7 @@ public class DBStorage implements Storage {
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
-            preparedStatement.setBoolean(5, arrears);
+            preparedStatement.setString(5, arrears);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -162,7 +158,7 @@ public class DBStorage implements Storage {
         String memberName = member.getName();
         int memberAge = member.getAge();
         double subscription = member.calculatePrice();
-        boolean arrears = member.isArrears();
+        String arrears = member.getArrears().toString();
         int memberID = member.getId();
 
         String updateMember = "UPDATE MEMBERS SET MEMBER_NAME = ? AGE = ? SUBSCRIPTION = ? ACTIVE = ? ARREARS = ? WHERE MEMBER_ID = ?";
@@ -172,7 +168,7 @@ public class DBStorage implements Storage {
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
-            preparedStatement.setBoolean(5, arrears);
+            preparedStatement.setString(5, arrears);
             preparedStatement.setInt(6, memberID);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
         } catch (SQLException e) {
@@ -224,10 +220,11 @@ public class DBStorage implements Storage {
         return null;
     }
 
+    @Override
     public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id) {
-        String get_Top_Results_By_Discipline = "SELECT * FROM training_results join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
+        String get_Top_Results_By_Discipline = "SELECT * FROM TRAINING_RESULTS join MEMBERS on ? = MEMBERS.MEMBER_ID WHERE DISCIPLINE_ID = ? ORDER BY BEST_TIME LIMIT 5";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
-            preparedStatement.setString(1, "training_results.MEMBER_ID");
+            preparedStatement.setString(1, "TRAINING_RESULTS.MEMBER_ID");
             preparedStatement.setInt(2, discipline_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
@@ -236,10 +233,11 @@ public class DBStorage implements Storage {
         return null;
     }
 
+    @Override
     public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
-        String get_Top_Results_By_Discipline = "SELECT * FROM competition_results join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
+        String get_Top_Results_By_Discipline = "SELECT * FROM COMPETITIONS_RESULTS join MEMBERS on ? = MEMBERS.MEMBER_ID WHERE DISCIPLINE_ID = ? ORDER BY BEST_TIME LIMIT 5";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
-            preparedStatement.setString(1, "competition_results.MEMBER_ID");
+            preparedStatement.setString(1, "s");
             preparedStatement.setInt(2, discipline_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {

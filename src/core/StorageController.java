@@ -15,7 +15,7 @@ import util.SortedQueue;
  *
  * @author Alexander
  */
-public class Members {
+public class StorageController {
 
     private static final String COACH_CAT = "Coach";
     private static final String JUNIOR_CAT = "JuniorMember";
@@ -25,7 +25,7 @@ public class Members {
     private Storage storage;
     private UI ui;
 
-    public Members(Storage storage) {
+    public StorageController(Storage storage) {
         this.storage = storage;
         this.members = new HashMap<>();
         loadMembersFromStorage();
@@ -50,8 +50,7 @@ public class Members {
             String mName = hashMap.get("member_name");
             int mAge = Integer.parseInt(hashMap.get("age"));
             int mID = Integer.parseInt(hashMap.get("member_id"));
-            // TODO(Benjamin): Skal vi håndtere competitive swimmer her?
-            Member member = new Member(true, mName, mAge, mID, false ,null);
+            Member member = new Member(mName, mAge, mID, true);
             result.add(member);
         }
         return result;
@@ -79,7 +78,7 @@ public class Members {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
         int id = Integer.parseInt(map.get("member_id"));
-        boolean arrears = map.get("arrears").equalsIgnoreCase("1");
+        LocalDate arrears = LocalDate.parse(map.get("arrears"));
         Member member = new Member(true, name, age, id, arrears, null);
         addMember(COACH_CAT, member);
     }
@@ -90,7 +89,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        boolean arrears = map.get("arrears").equalsIgnoreCase("1");
+        LocalDate arrears = LocalDate.parse(map.get("arrears"));
         JuniorMember member;
         if (map.get("coach_id") == null) {
             member = new JuniorMember(active, name, age, member_id, arrears, null);
@@ -107,7 +106,7 @@ public class Members {
         int age = Integer.parseInt(map.get("age"));
         int member_id = Integer.parseInt(map.get("member_id"));
         boolean active = map.get("active").equalsIgnoreCase("1");
-        boolean arrears = map.get("arrears").equalsIgnoreCase("1");
+        LocalDate arrears = LocalDate.parse(map.get("arrears"));
         SeniorMember member;
         if (map.get("coach_id") == null) {
             member = new SeniorMember(active, name, age, member_id, arrears, null);

@@ -5,6 +5,7 @@
  */
 package core;
 
+import java.time.LocalDate;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -18,7 +19,8 @@ public class JuniorMemberTest {
 
     @Before
     public void setUp(){
-        member = new JuniorMember(true,"Alexander", 12, 1, false, null);
+        LocalDate date = LocalDate.now();
+        member = new JuniorMember(true,"Alexander", 12, 1, date, null);
     }
 
     /**

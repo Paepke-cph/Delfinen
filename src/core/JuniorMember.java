@@ -1,5 +1,7 @@
 package core;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author rando
@@ -8,7 +10,7 @@ public class JuniorMember extends Member {
     private double subscription;
     private boolean active;
 
-    public JuniorMember(boolean active, String name, int age, int id, boolean arrears, CompetitionSwimmer competition) {
+    public JuniorMember(boolean active, String name, int age, int id, LocalDate arrears, CompetitionSwimmer competition) {
         super(active, name, age, id, arrears, competition);
         this.active = active;
         this.subscription = calculatePrice();
