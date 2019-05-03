@@ -59,7 +59,7 @@ public class MockStorage implements Storage{
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
         return trainingResults;
     }
-    
+
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
         return swimmingDiscplines;

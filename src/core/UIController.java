@@ -161,13 +161,15 @@ public class UIController {
         while (choice != 9) {
             showHeader();
             ui.println("--------------Resultater--------------");
-            ui.println("1) Se resultater");
-            ui.println("2) Indskriv resultater");
+            ui.println("1) Se resultater for medlem");
+            ui.println("2) Se resultater indenfor given disciplin");
+            ui.println("3) Indskriv resultater");
             ui.println("\n9) Tilbage");
 
-            choice = parseUserInputToInt(1, 2, 9);
+            choice = parseUserInputToInt(1, 2, 3, 9);
             switch (choice) {
                 case 1:
+                    memberResult();
                     break;
                 case 2:
                     disciplineResult();
