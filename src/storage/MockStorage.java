@@ -41,6 +41,16 @@ public class MockStorage implements Storage{
     }
 
     @Override
+    public int getNextCompetitionID() {
+        return 0;
+    }
+
+    @Override
+    public int getNextTrainingID() {
+        return 0;
+    }
+
+    @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
         return competitionResults;
     }
@@ -57,6 +67,11 @@ public class MockStorage implements Storage{
 
     @Override
     public boolean removeMember(int member_id) {
+        return false;
+    }
+
+    @Override
+    public boolean createMember(Member member) {
         return false;
     }
 
@@ -77,7 +92,6 @@ public class MockStorage implements Storage{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
     public boolean createMember(Member member, int active) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

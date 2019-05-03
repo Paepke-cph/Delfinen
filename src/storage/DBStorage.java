@@ -33,27 +33,27 @@ public class DBStorage implements Storage {
 
     @Override
     public int getNextMemberID() {
-        String getNextID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
-                + "WHERE TABLE_SCHEMA = Delfinen "
-                + "AND TABLE_NAME = MEMBERS";
+        String getNextID = "SELECT AUTO_INCREMENT as member_id FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = \"Delfinen\" "
+                + "AND TABLE_NAME = \"MEMBERS\"";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
         return Integer.parseInt(list.get(0).get("member_id"));
     }
 
     @Override
     public int getNextCompetitionID() {
-        String getNextID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
-                + "WHERE TABLE_SCHEMA = Delfinen "
-                + "AND TABLE_NAME = COMPETITION_RESULTS";
+        String getNextID = "SELECT AUTO_INCREMENT as competition_id FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = \"Delfinen\" "
+                + "AND TABLE_NAME = \"COMPETITION_RESULTS\"";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
         return Integer.parseInt(list.get(0).get("competition_id"));
     }
 
     @Override
     public int getNextTrainingID() {
-        String getNextID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES "
-                + "WHERE TABLE_SCHEMA = Delfinen "
-                + "AND TABLE_NAME = TRAINING_RESULTS";
+        String getNextID = "SELECT AUTO_INCREMENT as trainning_id FROM information_schema.TABLES "
+                + "WHERE TABLE_SCHEMA = \"Delfinen\" "
+                + "AND TABLE_NAME = \"TRAINING_RESULTS\"";
         ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(getNextID);
         return Integer.parseInt(list.get(0).get("training_id"));
     }
@@ -86,11 +86,11 @@ public class DBStorage implements Storage {
 
         StringBuilder sb = new StringBuilder();
         sb.append("INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (")
-                .append(memberName).append(", ")
+                .append("\""+memberName+"\"").append(", ")
                 .append(memberAge).append(", ")
                 .append(subscription).append(", ")
                 .append(active).append(", ")
-                .append(arrears).append(", ");
+                .append(arrears).append(")");
 
         return sqlConnector.insertUpdateDeleteQuery(sb.toString());
     }

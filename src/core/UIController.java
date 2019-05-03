@@ -100,6 +100,7 @@ public class UIController {
             ui.println("\nNyt Træner Oprettet");
             ui.println(member.toString());
         }
+        storage.createMember(member);
     }
 
     private CompetitionSwimmer createCompetitiveSwimmer() {
@@ -130,9 +131,8 @@ public class UIController {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
             }
-            // TODO: Hent træner fra database, ved brug af navn?
+            // TODO(Benjamin): Find coach og sæt med på objektet:
             return new CompetitionSwimmer(null, selectedDiscipline);
-
         }
         return null;
     }
