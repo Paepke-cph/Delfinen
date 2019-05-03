@@ -237,7 +237,7 @@ public class DBStorage implements Storage {
     }
 
     public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
-        String get_Top_Results_By_Discipline = "SELECT * FROM competi½tion_results join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
+        String get_Top_Results_By_Discipline = "SELECT * FROM competition_results join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
             preparedStatement.setString(1, "competition_results.MEMBER_ID");
             preparedStatement.setInt(2, discipline_id);

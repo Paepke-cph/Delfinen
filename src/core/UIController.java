@@ -70,6 +70,7 @@ public class UIController {
                 case 2:
                     break;
                 case 3:
+                    removeMember();
                     break;
             }
         }
@@ -135,6 +136,17 @@ public class UIController {
             return new CompetitionSwimmer(null, selectedDiscipline);
         }
         return null;
+    }
+
+    private void removeMember() {
+        int[] mID = findMemberByName();
+        if (mID != null) {
+            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \"-1\" for at gå tilbage: ");
+            int choice = parseUserInputToInt(mID);
+            if (choice != -1) {
+                storage.removeMember(choice);
+            }
+        }
     }
 
     private void admKontingenterMenu() {
@@ -232,6 +244,8 @@ public class UIController {
             }
         }
     }
+
+
 
     private int[] findMemberByName() {
         int[] mID = null;
