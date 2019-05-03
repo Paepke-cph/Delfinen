@@ -22,9 +22,7 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembers() {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS");
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS");) {
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -34,9 +32,7 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"");
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"");) {
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -109,7 +105,7 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    public boolean removeTrainingResult(int member_id) {
+    private boolean removeTrainingResult(int member_id) {
         String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(2, member_id);
@@ -120,7 +116,7 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    public boolean removeCompResult(int member_id) {
+    private boolean removeCompResult(int member_id) {
         String prepDelete = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(1, member_id);
