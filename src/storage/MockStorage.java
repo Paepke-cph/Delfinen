@@ -96,6 +96,16 @@ public class MockStorage implements Storage{
     }
 
     @Override
+    public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
+        return null;
+    }
+
+    @Override
     public boolean updateMember(Member member) {
         return false;
     }
