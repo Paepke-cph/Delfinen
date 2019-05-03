@@ -36,34 +36,22 @@ public class MockStorage implements Storage{
     public void setMembers(ArrayList<HashMap<String, String>> members) {
         this.members = members;
     }
-    public int getNextMemberID() {
+
+    @Override
+    public Integer getNextMemberID() {
         return memberIDs[memberIDIndex++];
     }
 
     @Override
-    public int getNextCompetitionID() {
+    public Integer getNextCompetitionID() {
         return 0;
     }
 
     @Override
-    public int getNextTrainingID() {
+    public Integer getNextTrainingID() {
         return 0;
     }
 
-    @Override
-    public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
-        return competitionResults;
-    }
-
-    @Override
-    public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
-        return trainingResults;
-    }
-    
-    @Override
-    public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-        return swimmingDiscplines;
-    }
 
     @Override
     public boolean removeMember(int member_id) {
@@ -90,6 +78,21 @@ public class MockStorage implements Storage{
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
+        return null;
+    }
+
+    @Override
+    public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
+        return null;
     }
 
     @Override

@@ -15,7 +15,6 @@ public class DBStorage implements Storage {
 
     SQLConnector sqlConnector;
     private final String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
-    private final String PREP_GET_RESULTS = "SELECT * FROM ? WHERE MEMBER_ID = ?";
 
     public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
@@ -32,7 +31,7 @@ public class DBStorage implements Storage {
         }
         return null;
     }
-    
+
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
         PreparedStatement preparedStatement = null;
@@ -184,9 +183,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getCompetitionResults(int member_id) {
+        String PREP_GET_RESULTS = "SELECT * FROM COMPETITION_RESULTS WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
-            preparedStatement.setString(1, "COMPETITION_RESULTS");
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -196,9 +195,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getTrainingResults(int member_id) {
+        String PREP_GET_RESULTS = "SELECT * FROM TRAINING_RESULTS WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
-            preparedStatement.setString(1, "TRAINING_RESULTS");
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -208,10 +207,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<Integer> getSwimmingDisciplines(int member_id) {
-
+        String PREP_GET_RESULTS = "SELECT * FROM DISCIPLINE_MEMBER WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_RESULTS)) {
-            preparedStatement.setString(1, "DISCIPLINE_MEMBER");
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             ArrayList<HashMap<String, String>> swimList = sqlConnector.selectQuery(preparedStatement);
             ArrayList<Integer> swimDisc = new ArrayList<>();
             if (!swimList.isEmpty()) {
@@ -220,6 +218,31 @@ public class DBStorage implements Storage {
                 }
                 return swimDisc;
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id) {
+        String get_Top_Results_By_Discipline = "SELECT * FROM training_results join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
+            preparedStatement.setString(1, "training_results.MEMBER_ID");
+            preparedStatement.setInt(2, discipline_id);
+            return sqlConnector.selectQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
+        String get_Top_Results_By_Discipline = "SELECT * FROM competi½tion_results join members on ? = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
+            preparedStatement.setString(1, "competition_results");
+            preparedStatement.setString(2, "competition_results.MEMBER_ID");
+            preparedStatement.setInt(3, discipline_id);
+            return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
