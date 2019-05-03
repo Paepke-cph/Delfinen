@@ -1,9 +1,14 @@
 package storage;
 
+import core.CompetitionResult;
 import core.Member;
+import core.SwimmingDiscipline;
+import core.TrainingResult;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -244,5 +249,57 @@ public class DBStorage implements Storage {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public boolean addTrainingResult(TrainingResult result, int member_id) {
+        LocalDate date = result.getDate();
+        LocalTime time = result.getTime();
+        int discID = getDisciplineIDFromName(result.getSwimmingDiscipline());
+        String addResult = "INSERT INTO TRAINING_RESULTS (DISCIPLINE_ID, TRAINING_DATE, BEST_TIME, MEMBER_ID) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(addResult)) {
+            preparedStatement.setInt(1, discID);
+            preparedStatement.setString(2, date.toString());
+            preparedStatement.setString(3, time.toString());
+            preparedStatement.setInt(4, member_id);
+            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private int getDisciplineIDFromName(SwimmingDiscipline swimDisc) {
+        switch (swimDisc) {
+            case BUTTERFLY:
+                return 1;
+            case CRAWL:
+                return 2;
+            case BACKSTROKE:
+                return 3;
+            default:
+                return 4;
+        }
+    }
+
+    public boolean addCompResult(CompetitionResult result, int member_id) {
+        String name = result.getEvent();
+        int discID = getDisciplineIDFromName(result.getSwimmingDiscipline());
+        LocalDate date = result.getDate();
+        LocalTime time = result.getTime();
+        int placement = result.getPlacement();
+
+        String addResult = "INSERT INTO COMPETITION_RESULTS (EVENT_NAME, DISCIPLINE_ID, EVENT_DATE, BEST_TIME, PLACEMENT, MEMBER_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(addResult)) {
+            preparedStatement.setString(1, name);
+            preparedStatement.setInt(2, discID);
+            preparedStatement.setString(3, date.toString());
+            preparedStatement.setString(4, time.toString());
+            preparedStatement.setInt(5, placement);
+            preparedStatement.setInt(6, member_id);
+            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
