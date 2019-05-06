@@ -265,4 +265,27 @@ public class StorageController {
     public static String getSeniorCat() {
         return SENIOR_CAT;
     }
+
+    public ArrayList<Member> getArrears() {
+        ArrayList<Member> isArrears = new ArrayList<>();
+        LocalDate date = LocalDate.now().minusYears(1);
+        if (members.containsKey(SENIOR_CAT)) {
+            for (Member member : members.get(SENIOR_CAT)) {
+                if (member.getArrears().isBefore(date)) {
+                    isArrears.add(member);
+                }
+            }
+        }
+        if (members.containsKey(JUNIOR_CAT)) {
+            for (Member member : members.get(JUNIOR_CAT)) {
+                if (member.getArrears().isBefore(date)) {
+                    isArrears.add(member);
+                }
+            }
+        }
+        if (isArrears.isEmpty()) {
+            return null;
+        }
+        return isArrears;
+    }
 }

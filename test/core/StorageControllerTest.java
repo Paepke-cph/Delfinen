@@ -299,6 +299,58 @@ public class StorageControllerTest {
         assertTrue(expected.equals(result));
     }
 
-
+    @Test
+    public void testGetArrears(){
+        HashMap<String, String> map = new HashMap();
+        HashMap<String, String> map2 = new HashMap();
+        HashMap<String, String> map3 = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map3.put("member_name", "Alexander");
+        map3.put("age", "15");
+        map3.put("member_id", "1");
+        map3.put("active", "1");
+        map3.put("subscription", "1000");
+        map3.put("arrears", LocalDate.now().toString());
+        list.add(map3);
+        map2.put("member_name", "Hans");
+        map2.put("age", "30");
+        map2.put("member_id", "2");
+        map2.put("active", "1");
+        map2.put("subscription", "1600");
+        map2.put("arrears", "2017-04-05");
+        list.add(map2);
+        map.put("member_name", "Alexander");
+        map.put("age", "15");
+        map.put("member_id", "1");
+        map.put("active", "1");
+        map.put("subscription", "1000");
+        map.put("arrears", "2017-04-05");
+        list.add(map);
+        mockStorage = new MockStorage();
+        mockStorage.setMembers(list);
+        members = new StorageController(mockStorage);
+        int expected = 2;
+        int result = members.getArrears().size();
+        assertEquals(expected, result);
+    }
+    
+    @Test
+    public void testGetArrearsNull(){
+        HashMap<String, String> map = new HashMap();
+        HashMap<String, String> map2 = new HashMap();
+        HashMap<String, String> map3 = new HashMap();
+        ArrayList<HashMap<String, String>> list = new ArrayList<>();
+        map3.put("member_name", "Alexander");
+        map3.put("age", "15");
+        map3.put("member_id", "1");
+        map3.put("active", "1");
+        map3.put("subscription", "1000");
+        map3.put("arrears", LocalDate.now().toString());
+        list.add(map3);
+        mockStorage = new MockStorage();
+        mockStorage.setMembers(list);
+        members = new StorageController(mockStorage);
+        assertNull(members.getArrears());
+    }
 
 }
