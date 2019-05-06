@@ -84,7 +84,7 @@ public class StorageController {
         addMember(COACH_CAT, member);
     }
 
-    // TODO: Remove member
+
     private void createJuniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");
         int age = Integer.parseInt(map.get("age"));
@@ -139,6 +139,14 @@ public class StorageController {
                 members.get(JUNIOR_CAT).add(member);
             } else {
                 members.put(JUNIOR_CAT, list);
+            }
+        }
+    }
+
+    public void removeMember(String cat, Member member) {
+        if(members.containsKey(cat)) {
+            if(members.get(cat).remove(member)) {
+                System.out.println("Old member removed");
             }
         }
     }

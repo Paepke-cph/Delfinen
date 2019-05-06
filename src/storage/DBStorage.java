@@ -86,7 +86,6 @@ public class DBStorage implements Storage {
         return null;
     }
 
-    // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
         String prepDelete = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";
@@ -135,7 +134,6 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    // TODO: Create new member
     @Override
     public boolean createMember(Member member) {
         String memberName = member.getName();
@@ -145,7 +143,11 @@ public class DBStorage implements Storage {
         LocalDate arrears = member.getArrears();
         CompetitionSwimmer compSwim = member.getCompetition();
         int member_id = member.getId();
-        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        Integer coach_id = 0;
+        if(compSwim != null){
+            coach_id = compSwim.getCoach().getId();
+        }
+        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID, COACH_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
@@ -153,6 +155,7 @@ public class DBStorage implements Storage {
             preparedStatement.setBoolean(4, active);
             preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
             preparedStatement.setInt(6, member_id);
+            preparedStatement.setInt(7, coach_id);
             boolean success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
             if(compSwim != null){
                 return addSwimmingDisciplineToMember(compSwim, member_id);
@@ -187,17 +190,17 @@ public class DBStorage implements Storage {
         String memberName = member.getName();
         int memberAge = member.getAge();
         double subscription = member.calculatePrice();
-        String arrears = member.getArrears().toString();
+        LocalDate arrears = member.getArrears();
         int memberID = member.getId();
 
-        String updateMember = "UPDATE MEMBERS SET MEMBER_NAME = ? AGE = ? SUBSCRIPTION = ? ACTIVE = ? ARREARS = ? WHERE MEMBER_ID = ?";
+        String updateMember = "UPDATE MEMBERS SET MEMBER_NAME = ?, AGE = ?, SUBSCRIPTION = ?, ACTIVE = ?, ARREARS = ? WHERE MEMBER_ID = ?";
 
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(updateMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
-            preparedStatement.setString(5, arrears);
+            preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
             preparedStatement.setInt(6, memberID);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
         } catch (SQLException e) {

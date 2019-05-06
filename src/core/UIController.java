@@ -73,6 +73,7 @@ public class UIController {
                     addMember();
                     break;
                 case 2:
+                    editMember();
                     break;
                 case 3:
                     removeMember();
@@ -137,10 +138,84 @@ public class UIController {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
             }
-            // TODO(Benjamin): Find coach og sæt med på objektet:
-            return new CompetitionSwimmer(null, selectedDiscipline);
+            ui.println("");
+            int[] memberID = displayCoaches();
+            ui.print("Vælg ID på den ønskede træner: ");
+            int choice = parseUserInputToInt(memberID);
+            Member coach = storageController.searchMemberById(choice);
+            return new CompetitionSwimmer(coach, selectedDiscipline);
         }
         return null;
+    }
+
+    private void editMember() {
+        int[] memberIDList = findMemberByName();
+        memberIDList[memberIDList.length-1] = EXIT_TOKEN;
+        ui.println("Vælg et ID for at ændre\nEller vælg \""+ EXIT_TOKEN + "\" for at gå tilbage");
+        int memberID = parseUserInputToInt(memberIDList);
+        if(memberID != EXIT_TOKEN) {
+            Member currentMember = storageController.searchMemberById(memberID);
+            Member newMember = new Member(currentMember.isActive(),currentMember.getName(),currentMember.getAge(),currentMember.getId(),currentMember.getArrears(),currentMember.getCompetition());
+            boolean notDone = true;
+            while(notDone) {
+                ui.println("Vælg element der skal ændres:");
+                ui.println("1) Navn");
+                ui.println("2) Alder");
+                ui.println("3) Medlemsskabs status");
+                ui.println("4) Kompetitive svømmer");
+                int choice = parseUserInputToInt(1,2,3,EXIT_TOKEN);
+                if(choice != EXIT_TOKEN) {
+                    switch (choice){
+                        case 1:
+                            ui.print("Skriv nyt navn: ");
+                            newMember.setName(ui.getUserInput());
+                            break;
+                        case 2:
+                            ui.print("Skriv ny alder: ");
+                            newMember.setAge(parseUserInputToInt());
+                            break;
+                        case 3:
+                            String act = currentMember.isActive() ? "inaktive" : "aktive";
+                            if(yesNoOption("Sæt status til " + act)) {
+                                newMember.setActive(!currentMember.isActive());
+                            }
+                            break;
+                        case 4:
+                            // TODO(Benjamin): Change member from competitive to non-competitive and the other way around.
+                            break;
+                    }
+                    ui.println("Ændringer der bliver foretaget:\n");
+                    ui.println("Navn:\t" + currentMember.getName() + " -> " + newMember.getName());
+                    ui.println("Alder:\t" + currentMember.getAge() + " -> " + newMember.getAge());
+
+                    String act = currentMember.isActive() ? "Aktivt" : "Inaktivt";
+                    String newAct = newMember.isActive() ? "Aktivt" : "Inaktivt";
+                    ui.println("Medlemsskab Status:\t" + act + " -> " + newAct);
+                    if(yesNoOption("\nFærdig med ændre?")) {
+                        notDone = false;
+                    }
+                }
+            }
+            String cat = "";
+            Member finalMember = null;
+            if(currentMember.calculatePrice() < 500) {
+                finalMember = new Member(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
+                cat = StorageController.getCoachCat();
+            }
+            else {
+                if(newMember.getAge() < 18) {
+                    finalMember = new JuniorMember(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
+                    cat = StorageController.getJuniorCat();
+                }
+                else {
+                    finalMember = new SeniorMember(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
+                    cat = StorageController.getSeniorCat();
+                }
+            }
+            storageController.removeMember(cat, currentMember);
+            storageController.addMember(cat,finalMember);
+            storage.updateMember(finalMember);
+        }
     }
 
     private void removeMember() {
@@ -298,7 +373,6 @@ public class UIController {
                 ui.println("\n" + EXIT_TOKEN + ") Tilbage");
                 choice = parseUserInputToInt(1, 2, 3, 4, EXIT_TOKEN);
 
-                // TODO(Benjamin) Check if choice is equivalent with discipline_id in DB.
                 if (choice != EXIT_TOKEN) {
                     if (traningResults) {
                         getTop5TrainingResults(disciplines.get(choice - 1));
@@ -416,6 +490,16 @@ public class UIController {
         return competitionResult;
     }
 
+    private int[] displayCoaches() {
+        ArrayList<Member> coaches = storageController.getMembers().get(StorageController.getCoachCat());
+        int[] coachesID = new int[coaches.size()];
+        for (int i = 0; i < coaches.size(); i++) {
+            ui.println(coaches.get(i).toString());
+            coachesID[i] = coaches.get(i).getId();
+        }
+        return coachesID;
+    }
+
     private int[] findMemberByName() {
         int[] mID = null;
         boolean notDone = true;
@@ -459,7 +543,7 @@ public class UIController {
                     running = false;
                 }
             } catch (NumberFormatException e) {
-                ui.println("Du er en skovl. Brug et tal.");
+                ui.println("Brug et heltal.");
             }
         }
         return value;
@@ -475,7 +559,7 @@ public class UIController {
                 localTime = LocalTime.parse(date);
                 notDone = false;
             } catch (DateTimeParseException e) {
-                ui.println("Du er en skovl. Brug en valid tid.");
+                ui.println("Brug en valid tid.");
             }
 
         }
@@ -492,7 +576,7 @@ public class UIController {
                 localDate = LocalDate.parse(date);
                 notDone = false;
             } catch (DateTimeParseException e) {
-                ui.println("Du er en skovl. Brug en valid dato.");
+                ui.println("Brug en valid dato.");
             }
 
         }
@@ -516,5 +600,4 @@ public class UIController {
     public HashMap<String, ArrayList<Member>> getAllMembers() {
         return storageController.getMembers();
     }
-
 }
