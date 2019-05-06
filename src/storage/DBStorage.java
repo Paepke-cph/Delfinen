@@ -50,13 +50,10 @@ public class DBStorage implements Storage {
 
     @Override
     public Integer getNextMemberID() {
-        String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT as member_id FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"Delfinen\" AND TABLE_NAME = ?";
+        String PREP_GET_NEXT_ID = "SELECT MAX(MEMBER_ID) as member_id FROM MEMBERS";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "MEMBERS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
-            int id = Integer.parseInt(list.get(0).get("member_id"));
-            System.out.println(id);
-            return id;
+            return Integer.parseInt(list.get(0).get("member_id")) + 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -148,13 +145,14 @@ public class DBStorage implements Storage {
         LocalDate arrears = member.getArrears();
         CompetitionSwimmer compSwim = member.getCompetition();
         int member_id = member.getId();
-        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (?, ?, ?, ?, ?)";
+        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
             preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
+            preparedStatement.setInt(6, member_id);
             boolean success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
             if(compSwim != null){
                 return addSwimmingDisciplineToMember(compSwim, member_id);
