@@ -92,7 +92,7 @@ public class StorageController {
         boolean active = map.get("active").equalsIgnoreCase("1");
         LocalDate arrears = LocalDate.parse(map.get("arrears"));
         JuniorMember member;
-        if (map.get("coach_id") == null) {
+        if (map.get("coach_id") == null || map.get("coach_id").contains("0")) {
             member = new JuniorMember(active, name, age, member_id, arrears, null);
         } else {
             int coach_id = Integer.parseInt(map.get("coach_id"));
@@ -109,7 +109,7 @@ public class StorageController {
         boolean active = map.get("active").equalsIgnoreCase("1");
         LocalDate arrears = LocalDate.parse(map.get("arrears"));
         SeniorMember member;
-        if (map.get("coach_id") == null) {
+        if (map.get("coach_id") == null || map.get("coach_id").contains("0")) {
             member = new SeniorMember(active, name, age, member_id, arrears, null);
         } else {
             int coach_id = Integer.parseInt(map.get("coach_id"));
