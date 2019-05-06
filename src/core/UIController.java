@@ -162,7 +162,7 @@ public class UIController {
                 ui.println("2) Alder");
                 ui.println("3) Medlemsskabs status");
                 ui.println("4) Kompetitive svømmer");
-                int choice = parseUserInputToInt(1,2,3,4,EXIT_TOKEN);
+                int choice = parseUserInputToInt(1,2,3,EXIT_TOKEN);
                 if(choice != EXIT_TOKEN) {
                     switch (choice){
                         case 1:
@@ -180,6 +180,7 @@ public class UIController {
                             }
                             break;
                         case 4:
+                            // TODO(Benjamin): Change member from competitive to non-competitive and the other way around.
                             break;
                     }
                     ui.println("Ændringer der bliver foretaget:\n");
