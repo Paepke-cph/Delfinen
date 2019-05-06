@@ -147,45 +147,77 @@ public class UIController {
         // Find a member to edit
         int[] memberIDList = findMemberByName();
         memberIDList[memberIDList.length-1] = EXIT_TOKEN;
+        ui.println("Vælg et ID for at ændre\nEller vælg \""+ EXIT_TOKEN + "\" for at gå tilbage");
         int memberID = parseUserInputToInt(memberIDList);
         if(memberID != EXIT_TOKEN) {
             Member currentMember = storageController.searchMemberById(memberID);
-            String name;
-            int age;
-            boolean active;
-            CompetitionSwimmer competition;
-            ui.println("Vælg element der skal ændres:");
-            ui.println("1) Navn");
-            ui.println("2) Alder");
-            ui.println("3) Medlemsskabs status");
-            ui.println("4) Kompetitive svømmer");
-            int choice = parseUserInputToInt(EXIT_TOKEN);
-            if(choice != EXIT_TOKEN) {
-                switch (choice){
-                    case 1:
-                        ui.print("Skriv nyt navn: ");
-                        name = ui.getUserInput();
-                        break;
-                    case 2:
-                        ui.print("Skriv ny alder: ");
-                        age = parseUserInputToInt();
-                        break;
-                    case 3:
-                        String act = currentMember.isActive() ? "inaktive" : "aktive";
-                        if(yesNoOption("Sæt status til " + act)) {
-                            active = !currentMember.isActive();
-                        }
-                        break;
-                    case 4:
-                        // Sæt hvilke discipliner medlemmet indgår i.
-                        break;
-                }
-                // Show diff!
-                ui.println("Ændringer der bliver foretaget: ");
+            String name = null;
+            int age = -1;
+            boolean active = currentMember.isActive();
+            CompetitionSwimmer competition = null;
+            boolean notDone = true;
+            while(notDone) {
+                ui.println("Vælg element der skal ændres:");
+                ui.println("1) Navn");
+                ui.println("2) Alder");
+                ui.println("3) Medlemsskabs status");
+                ui.println("4) Kompetitive svømmer");
+                int choice = parseUserInputToInt(1,2,3,4,EXIT_TOKEN);
+                if(choice != EXIT_TOKEN) {
+                    switch (choice){
+                        case 1:
+                            ui.print("Skriv nyt navn: ");
+                            name = ui.getUserInput();
+                            break;
+                        case 2:
+                            ui.print("Skriv ny alder: ");
+                            age = parseUserInputToInt();
+                            break;
+                        case 3:
+                            String act = currentMember.isActive() ? "inaktive" : "aktive";
+                            if(yesNoOption("Sæt status til " + act)) {
+                                active = !currentMember.isActive();
+                            }
+                            break;
+                        case 4:
+                            break;
+                    }
+                    ui.println("Ændringer der bliver foretaget:\n");
 
+                    String tempName = (name != null) ? name : currentMember.getName();
+                    ui.println("Navn:\t" + currentMember.getName() + " -> " + tempName);
+
+                    int tempAge = (age != -1) ? age : currentMember.getAge();
+                    ui.println("Alder:\t" + currentMember.getAge() + " -> " + tempAge);
+
+                    String act = currentMember.isActive() ? "Aktivt" : "Inaktivt";
+                    String newAct = active ? "Aktivt" : "Inaktivt";
+                    ui.println("Medlemsskab Status:\t" + act + " -> " + newAct);
+                    if(yesNoOption("\nFærdig med ændre?")) {
+                        notDone = false;
+                    }
+                }
             }
+            String cat = "";
+            Member newMember = null;
+            if(currentMember.calculatePrice() < 500) {
+                newMember = new Member(active,name,age,currentMember.getId(),currentMember.getArrears(),competition);
+                cat = StorageController.getCoachCat();
+            }
+            else {
+                if(age < 18) {
+                    newMember = new JuniorMember(active,name,age,currentMember.getId(),currentMember.getArrears(),competition);
+                    cat = StorageController.getJuniorCat();
+                }
+                else {
+                    newMember = new SeniorMember(active,name,age,currentMember.getId(),currentMember.getArrears(),competition);
+                    cat = StorageController.getSeniorCat();
+                }
+            }
+            storageController.removeMember(cat, currentMember);
+            storageController.addMember(cat,newMember);
+            storage.updateMember(newMember);
         }
-        // Start editing the member.
     }
 
     private void removeMember() {

@@ -51,7 +51,9 @@ public class DBStorage implements Storage {
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
             preparedStatement.setString(1, "MEMBERS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
-            return Integer.parseInt(list.get(0).get("member_id"));
+            int id = Integer.parseInt(list.get(0).get("member_id"));
+            System.out.println(id);
+            return id;
         } catch (SQLException e) {
             e.printStackTrace();
         }
