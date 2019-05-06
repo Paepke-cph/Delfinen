@@ -143,7 +143,11 @@ public class DBStorage implements Storage {
         LocalDate arrears = member.getArrears();
         CompetitionSwimmer compSwim = member.getCompetition();
         int member_id = member.getId();
-        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID) VALUES (?, ?, ?, ?, ?, ?)";
+        Integer coach_id = 0;
+        if(compSwim != null){
+            coach_id = compSwim.getCoach().getId();
+        }
+        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID, COACH_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
@@ -151,6 +155,7 @@ public class DBStorage implements Storage {
             preparedStatement.setBoolean(4, active);
             preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
             preparedStatement.setInt(6, member_id);
+            preparedStatement.setInt(7, coach_id);
             boolean success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
             if(compSwim != null){
                 return addSwimmingDisciplineToMember(compSwim, member_id);
