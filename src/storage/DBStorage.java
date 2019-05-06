@@ -1,15 +1,18 @@
 package storage;
 
 import core.CompetitionResult;
+import core.CompetitionSwimmer;
 import core.Member;
 import core.SwimmingDiscipline;
 import core.TrainingResult;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -47,11 +50,10 @@ public class DBStorage implements Storage {
 
     @Override
     public Integer getNextMemberID() {
-        String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT as member_id FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"Delfinen\" AND TABLE_NAME = ?";
+        String PREP_GET_NEXT_ID = "SELECT MAX(MEMBER_ID) as member_id FROM MEMBERS";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "MEMBERS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
-            return Integer.parseInt(list.get(0).get("member_id"));
+            return Integer.parseInt(list.get(0).get("member_id")) + 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,23 +89,13 @@ public class DBStorage implements Storage {
     // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
-        String prepSelect = "SELECT * FROM MEMBERS WHERE MEMBER_ID LIKE ?";
-        String prepDelete = "DELETE FROM MEMBERS WHERE MEMBER_ID LIKE ?";
-
-        try (PreparedStatement preparedSelectStatement = sqlConnector.getConnection().prepareStatement(prepSelect)) {
-            preparedSelectStatement.setInt(1, member_id);
-            ArrayList<HashMap<String, String>> memberExists = sqlConnector.selectQuery(preparedSelectStatement);
-
-            if (!memberExists.isEmpty()) {
-                try (PreparedStatement preparedDeleteStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
-                    removeTrainingResult(member_id);
-                    removeCompResult(member_id);
-                    preparedDeleteStatement.setInt(1, member_id);
-                    return sqlConnector.insertUpdateDeleteQuery(preparedDeleteStatement);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        String prepDelete = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";
+        try (PreparedStatement preparedDeleteStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
+            removeTrainingResult(member_id);
+            removeCompResult(member_id);
+            removeDisciplineAssociation(member_id);
+            preparedDeleteStatement.setInt(1, member_id);
+            return sqlConnector.insertUpdateDeleteQuery(preparedDeleteStatement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,7 +103,18 @@ public class DBStorage implements Storage {
     }
 
     private boolean removeTrainingResult(int member_id) {
-        String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE ?";
+        String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID = ?";
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
+            preparedStatement.setInt(1, member_id);
+            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean removeDisciplineAssociation(int member_id) {
+        String prepDelete = "DELETE FROM DISCIPLINE_MEMBER WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(1, member_id);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
@@ -122,7 +125,7 @@ public class DBStorage implements Storage {
     }
 
     private boolean removeCompResult(int member_id) {
-        String prepDelete = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE ?";
+        String prepDelete = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(1, member_id);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
@@ -135,28 +138,49 @@ public class DBStorage implements Storage {
     // TODO: Create new member
     @Override
     public boolean createMember(Member member) {
-        boolean active = member.isActive();
         String memberName = member.getName();
         int memberAge = member.getAge();
         double subscription = member.calculatePrice();
-        String arrears = member.getArrears().toString();
-
-        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (?. ?, ?, ?, ?)";
-
+        boolean active = member.isActive();
+        LocalDate arrears = member.getArrears();
+        CompetitionSwimmer compSwim = member.getCompetition();
+        int member_id = member.getId();
+        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
-            preparedStatement.setString(5, arrears);
-            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+            preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
+            preparedStatement.setInt(6, member_id);
+            boolean success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+            if(compSwim != null){
+                return addSwimmingDisciplineToMember(compSwim, member_id);
+            } else {
+                return success;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    // TODO: Update member
+    private boolean addSwimmingDisciplineToMember(CompetitionSwimmer compSwim, int member_id){
+        int member = member_id;
+        String insertDisciplineMember = "INSERT INTO DISCIPLINE_MEMBER (MEMBER_ID, DISCIPLINE_ID) VALUES (?, ?)";
+        boolean success = false;
+        for(SwimmingDiscipline swimDisc : compSwim.getSwimmingDiscipline()){
+            int disciplineNumber = getDisciplineIDFromName(swimDisc);
+            try(PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertDisciplineMember)){
+                preparedStatement.setInt(1, member_id);
+                preparedStatement.setInt(2, disciplineNumber);
+                success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
     @Override
     public boolean updateMember(Member member) {
         boolean active = member.isActive();
