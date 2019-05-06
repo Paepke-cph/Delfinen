@@ -50,7 +50,8 @@ public class StorageController {
             String mName = hashMap.get("member_name");
             int mAge = Integer.parseInt(hashMap.get("age"));
             int mID = Integer.parseInt(hashMap.get("member_id"));
-            Member member = new Member(mName, mAge, mID, true);
+            LocalDate mDate = LocalDate.parse(hashMap.get("arrears"));
+            Member member = new Member(true, mName, mAge, mID, mDate, null);
             result.add(member);
         }
         return result;

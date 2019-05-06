@@ -10,6 +10,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 import storage.Storage;
 import ui.UI;
 
@@ -259,7 +261,7 @@ public class UIController {
         if (yesNoOption("\nSkal et af ovenstående medlemmer have rettet deres restance status?")) {
             ui.print("Skriv medlemmets ID: \neller bruge " + EXIT_TOKEN + " for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
-            if (choice != -1) {
+            if (choice != EXIT_TOKEN) {
                 Member member = storageController.searchMemberById(choice);
                 if (yesNoOption("\nSkal " + member.getName() + " have rettet restance pr. dags dato?")) {
                     member.setArrears(LocalDate.now());
@@ -280,10 +282,26 @@ public class UIController {
     private void paymentDatesMembers() {
         int[] mID = findMemberByName();
         if (mID != null) {
-            ui.print("\nSkriv medlems id for at vælge: \neller bruge \"-1\" for at gå tilbage: ");
+            ui.print("\nSkriv medlems id for at vælge \neller bruge " + EXIT_TOKEN + " for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
-            if (choice != -1) {
-                /////////////////////////////////////////////////////////////////////////////////////////////////////
+            if (choice != EXIT_TOKEN) {
+                Member member = storageController.searchMemberById(choice);
+                ui.print("\nMedlemskabet for " + member.getName() + " udløber d. " + member.getArrears().toString());
+                ui.print("\n\nVælg mellem 1 eller 2 års forlængelse \neller bruge " + EXIT_TOKEN + " for at gå tilbage: ");
+                choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
+                switch (choice) {
+                    case 1:
+                        LocalDate dateFormatOneYear = member.getArrears().plusYears(1);
+                        member.setArrears(dateFormatOneYear);
+                        break;
+                    case 2:
+                        LocalDate dateFormatTwoYears = member.getArrears().plusYears(2);
+                        member.setArrears(dateFormatTwoYears);
+                        break;
+                }
+                storage.updateMember(member);
+                ui.println("\n" + member.toString());
+                ui.println("Opdateret pr. oplyst antal år.");
             }
         }
     }
@@ -316,9 +334,9 @@ public class UIController {
     private void memberResult() {
         int[] mID = findMemberByName();
         if (mID != null) {
-            ui.print("\nSkriv medlems id for at vælge: \neller bruge \"-1\" for at gå tilbage: ");
+            ui.print("\nSkriv medlems id for at vælge: \neller bruge " + EXIT_TOKEN + " for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
-            if (choice != -1) {
+            if (choice != EXIT_TOKEN) {
                 Member member = storageController.searchMemberById(choice);
                 if (member.getCompetition() != null) {
                     ui.println("Competition Result: ");
@@ -371,7 +389,7 @@ public class UIController {
         int choice = 0;
         ui.print("\nDu kan vælge et ID,\neller bruge \"" + EXIT_TOKEN + "\" for at gå tilbage: ");
         choice = parseUserInputToInt(mID);
-        if (choice != -1) {
+        if (choice != EXIT_TOKEN) {
             Member member = storageController.searchMemberById(choice);
             if (member.getCompetition() != null) {
                 ui.println("Vælg resultats kategori:");
