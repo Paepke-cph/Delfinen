@@ -7,7 +7,7 @@ import java.time.LocalDate;
  * @author Alexander
  */
 public class Member {
-    
+
     private CompetitionSwimmer competition;
     private String name;
     private int age;
@@ -23,8 +23,6 @@ public class Member {
         this.active = active;
     }
 
-    
-    
     public Member(boolean active, String name, int age, int id, LocalDate arrears, CompetitionSwimmer competition) {
         this.name = name;
         this.age = age;
