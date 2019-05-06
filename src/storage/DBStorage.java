@@ -185,17 +185,17 @@ public class DBStorage implements Storage {
         String memberName = member.getName();
         int memberAge = member.getAge();
         double subscription = member.calculatePrice();
-        String arrears = member.getArrears().toString();
+        LocalDate arrears = member.getArrears();
         int memberID = member.getId();
 
-        String updateMember = "UPDATE MEMBERS SET MEMBER_NAME = ? AGE = ? SUBSCRIPTION = ? ACTIVE = ? ARREARS = ? WHERE MEMBER_ID = ?";
+        String updateMember = "UPDATE MEMBERS SET MEMBER_NAME = ?, AGE = ?, SUBSCRIPTION = ?, ACTIVE = ?, ARREARS = ? WHERE MEMBER_ID = ?";
 
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(updateMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
-            preparedStatement.setString(5, arrears);
+            preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
             preparedStatement.setInt(6, memberID);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
         } catch (SQLException e) {
