@@ -137,6 +137,9 @@ public class UIController {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
             }
+            ui.println("Find en træner");
+            int[] memberID = findMemberByName();
+
             // TODO(Benjamin): Find coach og sæt med på objektet:
             return new CompetitionSwimmer(null, selectedDiscipline);
         }
@@ -144,7 +147,6 @@ public class UIController {
     }
 
     private void editMember() {
-        // Find a member to edit
         int[] memberIDList = findMemberByName();
         memberIDList[memberIDList.length-1] = EXIT_TOKEN;
         ui.println("Vælg et ID for at ændre\nEller vælg \""+ EXIT_TOKEN + "\" for at gå tilbage");
@@ -318,7 +320,6 @@ public class UIController {
                 ui.println("\n"+EXIT_TOKEN+") Tilbage");
                 choice = parseUserInputToInt(1, 2, 3, 4, EXIT_TOKEN);
 
-                // TODO(Benjamin) Check if choice is equivalent with discipline_id in DB.
                 if(choice != EXIT_TOKEN){
                     if(traningResults) {
                         getTop5TrainingResults(disciplines.get(choice - 1));
@@ -437,6 +438,15 @@ public class UIController {
         return competitionResult;
     }
 
+    private int[] displayCoaches() {
+        ArrayList<Member> coaches = storageController.getMembers().get(StorageController.getCoachCat());
+        int[] coachesID = new int[coaches.size()];
+        for (int i = 0; i < coaches.size(); i++) {
+
+            coachesID[i] = coaches.get(i).getId();
+        }
+    }
+
     private int[] findMemberByName() {
         int[] mID = null;
         boolean notDone = true;
@@ -480,7 +490,7 @@ public class UIController {
                     running = false;
                 }
             } catch (NumberFormatException e) {
-                ui.println("Du er en skovl. Brug et tal.");
+                ui.println("Brug et heltal.");
             }
         }
         return value;
@@ -496,7 +506,7 @@ public class UIController {
                 localTime = LocalTime.parse(date);
                 notDone = false;
             } catch (DateTimeParseException e) {
-                ui.println("Du er en skovl. Brug en valid tid.");
+                ui.println("Brug en valid tid.");
             }
 
         }
@@ -513,7 +523,7 @@ public class UIController {
                 localDate = LocalDate.parse(date);
                 notDone = false;
             } catch (DateTimeParseException e) {
-                ui.println("Du er en skovl. Brug en valid dato.");
+                ui.println("Brug en valid dato.");
             }
 
         }
@@ -537,5 +547,4 @@ public class UIController {
     public HashMap<String, ArrayList<Member>> getAllMembers() {
         return storageController.getMembers();
     }
-
 }
