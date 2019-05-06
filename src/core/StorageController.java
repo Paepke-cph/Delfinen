@@ -144,9 +144,7 @@ public class StorageController {
 
     public void removeMember(String cat, Member member) {
         if(members.containsKey(cat)) {
-            if(members.get(cat).remove(member)) {
-                System.out.println("Old member removed");
-            }
+            members.get(cat).remove(member);
         }
     }
 
