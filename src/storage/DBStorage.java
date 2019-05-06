@@ -225,12 +225,10 @@ public class DBStorage implements Storage {
         return null;
     }
 
-    @Override
     public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id) {
-        String get_Top_Results_By_Discipline = "SELECT * FROM TRAINING_RESULTS join MEMBERS on ? = MEMBERS.MEMBER_ID WHERE DISCIPLINE_ID = ? ORDER BY BEST_TIME LIMIT 5";
+        String get_Top_Results_By_Discipline = "SELECT * FROM training_results join members on training_results.MEMBER_ID = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
-            preparedStatement.setString(1, "TRAINING_RESULTS.MEMBER_ID");
-            preparedStatement.setInt(2, discipline_id);
+            preparedStatement.setInt(1, discipline_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -240,10 +238,9 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
-        String get_Top_Results_By_Discipline = "SELECT * FROM COMPETITIONS_RESULTS join MEMBERS on ? = MEMBERS.MEMBER_ID WHERE DISCIPLINE_ID = ? ORDER BY BEST_TIME LIMIT 5";
+        String get_Top_Results_By_Discipline = "SELECT * FROM competition_results join members on competition_results.MEMBER_ID = members.MEMBER_ID WHERE discipline_id = ? ORDER BY best_time LIMIT 5";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(get_Top_Results_By_Discipline)) {
-            preparedStatement.setString(1, "s");
-            preparedStatement.setInt(2, discipline_id);
+            preparedStatement.setInt(1, discipline_id);
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();

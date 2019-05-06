@@ -6,11 +6,12 @@
 package core;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import storage.Storage;
 import ui.UI;
-import util.SortedQueue;
 
 /**
  *
@@ -190,6 +191,7 @@ public class UIController {
                     disciplineResult();
                     break;
                 case 3:
+                    addResult();
                     break;
             }
         }
@@ -198,20 +200,22 @@ public class UIController {
     private void memberResult() {
         int[] mID = findMemberByName();
         if (mID != null) {
-            ui.print("\nSkriv medlems id for at vælge: ");
+            ui.print("\nSkriv medlems id for at vælge: \neller bruge \"-1\" for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
-            Member member = memberHandler.searchMemberById(choice);
-            if (member.getCompetition() != null) {
-                ui.println("Competition Result: ");
-                for (CompetitionResult result : member.getCompetition().getCompetitionResult()) {
-                    ui.println(result.toString());
+            if (choice != -1) {
+                Member member = memberHandler.searchMemberById(choice);
+                if (member.getCompetition() != null) {
+                    ui.println("Competition Result: ");
+                    for (CompetitionResult result : member.getCompetition().getCompetitionResult()) {
+                        ui.println(result.toString());
+                    }
+                    ui.println("\nTraining Result: ");
+                    for (TrainingResult result : member.getCompetition().getTrainingResult()) {
+                        ui.println(result.toString());
+                    }
+                } else {
+                    ui.println("Det valgte medlem er ikke en kompetitiv svømmer.\n");
                 }
-                ui.println("\nTraining Result: ");
-                for (TrainingResult result : member.getCompetition().getTrainingResult()) {
-                    ui.println(result.toString());
-                }
-            } else {
-                ui.println("Det valgte medlem er ikke en kompetitiv svømmer.\n");
             }
         }
     }
@@ -238,17 +242,109 @@ public class UIController {
                 // TODO(Benjamin) Check if choice is equivalent with discipline_id in DB.
                 if(choice != EXIT_TOKEN){
                     if(traningResults) {
-                        //getTopFiveTrain(disciplines.get(choice));
-                    }
-                    else {
-                        //getTopFiveComp(disciplines.get(choice));
+                        getTop5TrainingResults(disciplines.get(choice - 1));
+                    } else {
+                        getTop5CompetitionResults(disciplines.get(choice - 1));
                     }
                 }
             }
         }
     }
 
+    private void addResult() {
+        int[] mID = findMemberByName();
+        int choice = 0;
+        ui.print("\nDu kan vælge et ID,\neller bruge \"-1\" for at gå tilbage: ");
+        choice = parseUserInputToInt(mID);
+// TODO(TOBIAS) Hvis ikke kompetitiv så giv fejl meddelelse.
+        if (choice != -1) {
+            Member member = memberHandler.searchMemberById(choice);
+            ui.println("Vælg resultats kategori:");
+            ui.println("1) Trænings resultat:");
+            ui.println("2) Kompetitive resultat:");
+            ui.println("\n9) Tilbage");
+            choice = parseUserInputToInt(1, 2, 9);
+            boolean traningResults = (choice == 1);
+            if (choice != 9) {
+                choice = showDisciplineMenu("Vælg disciplin:");
+                if (choice != 9) {
+                    LocalDate localDate = parseUserInputToLocalDate();
+                    LocalTime localTime = parseUserInputToLocalTime();
+// TODO: Tilføj Resten.
+                    
+                    
+                    if (traningResults) {
 
+                    } else {
+
+                    }
+                }
+            }
+        }
+    }
+
+    private int showDisciplineMenu(String header) {
+        int choice;
+        ArrayList<SwimmingDiscipline> disciplines = SwimmingDiscipline.getDisciplinesAsList();
+        ui.println(header);
+        for (int i = 0; i < disciplines.size(); i++) {
+            ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
+        }
+        ui.println("\n9) Tilbage");
+        choice = parseUserInputToInt(1, 2, 3, 4, 9);
+        return choice;
+    }
+
+    private void getTop5TrainingResults(SwimmingDiscipline discipline) {
+        ArrayList<HashMap<String, String>> dbResult = storage.getTopFiveTrainingResultsByDiscipline(discipline.ordinal() + 1);
+        for (HashMap<String, String> hashMap : dbResult) {
+            Member member = extractMember(hashMap);
+            TrainingResult trainingResult = extractTrainingResult(hashMap, discipline);
+            ui.println(trainingResult.toString());
+            ui.println(member.toString());
+        }
+    }
+
+    private void getTop5CompetitionResults(SwimmingDiscipline discipline) {
+        ArrayList<HashMap<String, String>> dbResult = storage.getTopFiveCompetitionResultsByDiscipline(discipline.ordinal() + 1);
+        for (HashMap<String, String> hashMap : dbResult) {
+            Member member = extractMember(hashMap);
+            CompetitionResult competitionResult = extractCompetitionResult(hashMap, discipline);
+            ui.println(competitionResult.toString());
+            ui.println(member.toString());
+        }
+    }
+
+    private Member extractMember(HashMap<String, String> hashMap) throws NumberFormatException {
+        // Member
+        String mName = hashMap.get("member_name");
+        int mAge = Integer.parseInt(hashMap.get("age"));
+        int mID = Integer.parseInt(hashMap.get("member_id"));
+        boolean mActive = Boolean.parseBoolean(hashMap.get("active"));
+        LocalDate mArrears = LocalDate.parse(hashMap.get("arrears"));
+        Member member = new Member(mActive, mName, mAge, mID, mArrears, null);
+        return member;
+    }
+
+    private TrainingResult extractTrainingResult(HashMap<String, String> hashMap, SwimmingDiscipline discipline) throws NumberFormatException {
+        // Training Result
+        LocalDate rDate = LocalDate.parse(hashMap.get("training_date"));
+        LocalTime rTime = LocalTime.parse(hashMap.get("best_time"));
+        int rID = Integer.parseInt(hashMap.get("training_id"));
+        TrainingResult trainingResult = new TrainingResult(discipline, rDate, rTime, rID);
+        return trainingResult;
+    }
+
+    private CompetitionResult extractCompetitionResult(HashMap<String, String> hashMap, SwimmingDiscipline discipline) throws NumberFormatException {
+        // Competition Result
+        String cEvent = hashMap.get("event_name");
+        int cPlacement = Integer.parseInt(hashMap.get("placement"));
+        LocalDate cDate = LocalDate.parse(hashMap.get("event_date"));
+        LocalTime cTime = LocalTime.parse(hashMap.get("best_time"));
+        int cID = Integer.parseInt(hashMap.get("competition_id"));
+        CompetitionResult competitionResult = new CompetitionResult(cEvent, cPlacement, discipline, cDate, cTime, cID);
+        return competitionResult;
+    }
 
     private int[] findMemberByName() {
         int[] mID = null;
@@ -297,6 +393,40 @@ public class UIController {
             }
         }
         return value;
+    }
+
+    private LocalTime parseUserInputToLocalTime() {
+        boolean notDone = true;
+        LocalTime localTime = null;
+        while (notDone) {
+            ui.print("Tid(hh:mm:ss): ");
+            String date = ui.getUserInput();
+            try {
+                localTime = LocalTime.parse(date);
+                notDone = false;
+            } catch (DateTimeParseException e) {
+                ui.println("Du er en skovl. Brug en valid tid.");
+            }
+
+        }
+        return localTime;
+    }
+
+    private LocalDate parseUserInputToLocalDate() {
+        boolean notDone = true;
+        LocalDate localDate = null;
+        while (notDone) {
+            ui.print("Dato(yyyy-mm-dd): ");
+            String date = ui.getUserInput();
+            try {
+                localDate = LocalDate.parse(date);
+                notDone = false;
+            } catch (DateTimeParseException e) {
+                ui.println("Du er en skovl. Brug en valid dato.");
+            }
+
+        }
+        return localDate;
     }
 
     private boolean yesNoOption(String question) {
