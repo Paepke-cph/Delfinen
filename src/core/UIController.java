@@ -177,9 +177,9 @@ public class UIController {
                             if(yesNoOption("Sæt status til " + act)) {
                                 newMember.setActive(!currentMember.isActive());
                             }
-                            break;
-                        case 4:
-                            // TODO(Benjamin): Change member from competitive to non-competitive and the other way around.
+                            else {
+                                newMember.setActive(currentMember.isActive());
+                            }
                             break;
                     }
                     ui.println("Ændringer der bliver foretaget:\n");
