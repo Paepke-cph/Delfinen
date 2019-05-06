@@ -83,7 +83,7 @@ public class StorageController {
         Member member = new Member(true, name, age, id, arrears, null);
         addMember(COACH_CAT, member);
     }
-
+    
 
     private void createJuniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");

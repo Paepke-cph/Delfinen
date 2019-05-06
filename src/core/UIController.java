@@ -256,7 +256,7 @@ public class UIController {
         ArrayList<Member> arreasMembers = storageController.getArrears();
         int[] mID = new int[arreasMembers.size() + 1];
         for (int i = 0; i < arreasMembers.size(); i++) {
-            ui.println(arreasMembers.toString());
+            ui.println(arreasMembers.get(i).toString());
             mID[i] = arreasMembers.get(i).getId();
         }
         mID[mID.length - 1] = EXIT_TOKEN;
