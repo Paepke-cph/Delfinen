@@ -63,6 +63,10 @@ public class Member {
         this.age = age;
     }
 
+    public void setArrears(LocalDate arrears) {
+        this.arrears = arrears;
+    }
+
     public int getId() {
         return id;
     }
@@ -85,7 +89,7 @@ public class Member {
         String medlemskab = active ? "Aktivt" : "Inaktivt";
 
         return id + "#\nNavn:\t\t" + name + "\nAlder:\t\t" + age
-                + "\nMedlemskab:\t" + medlemskab + "\n" + comp;
+                + "\nMedlemskab:\t" + medlemskab + "\nSidst betalt:\t" + arrears + "\n" + comp;
     }
 
 }

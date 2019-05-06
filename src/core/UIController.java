@@ -24,7 +24,6 @@ public class UIController {
     private StorageController storageController;
     private final int EXIT_TOKEN = -1;
 
-
     public UIController(UI ui, Storage storage) {
         this.ui = ui;
         this.storage = storage;
@@ -39,7 +38,7 @@ public class UIController {
             ui.println("1) Adm. Medlemmer");
             ui.println("2) Adm. Kontingenter");
             ui.println("3) Resultater");
-            ui.println("\n"+EXIT_TOKEN+") Afslut");
+            ui.println("\n" + EXIT_TOKEN + ") Afslut");
 
             choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
             switch (choice) {
@@ -64,7 +63,7 @@ public class UIController {
             ui.println("1) Tilføj");
             ui.println("2) Rediger");
             ui.println("3) Fjern");
-            ui.println("\n"+EXIT_TOKEN+") Tilbage");
+            ui.println("\n" + EXIT_TOKEN + ") Tilbage");
 
             choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
             switch (choice) {
@@ -127,7 +126,7 @@ public class UIController {
                     options[i] = i + 1;
                 }
                 if (selectedDiscipline.size() > 0) {
-                    ui.println("\n"+EXIT_TOKEN+") Fortsæt");
+                    ui.println("\n" + EXIT_TOKEN + ") Fortsæt");
                     options[options.length - 1] = EXIT_TOKEN;
                 }
                 int choice = parseUserInputToInt(options);
@@ -224,10 +223,10 @@ public class UIController {
     }
 
     private void removeMember() {
-        int[] memberID = findMemberByName();
-        if (memberID != null) {
-            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \""+EXIT_TOKEN+"\" for at gå tilbage: ");
-            int choice = parseUserInputToInt(memberID);
+        int[] mID = findMemberByName();
+        if (mID != null) {
+            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \"" + EXIT_TOKEN + "\" for at gå tilbage: ");
+            int choice = parseUserInputToInt(mID);
             if (choice != EXIT_TOKEN) {
                 storage.removeMember(choice);
             }
@@ -241,14 +240,56 @@ public class UIController {
             ui.println("-----------Adm. Kontingenter----------");
             ui.println("1) Se medlemmer i restance");
             ui.println("2) Registrer betaling");
-            ui.println("\n"+EXIT_TOKEN+") Tilbage");
+            ui.println("\n" + EXIT_TOKEN + ") Tilbage");
 
             choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
             switch (choice) {
                 case 1:
+                    restanceMembers();
                     break;
                 case 2:
+                    paymentDatesMembers();
                     break;
+            }
+        }
+    }
+
+    private void restanceMembers() {
+        ArrayList<Member> arreasMembers = storageController.getArrears();
+        int[] mID = new int[arreasMembers.size() + 1];
+        for (int i = 0; i < arreasMembers.size(); i++) {
+            ui.println(arreasMembers.toString());
+            mID[i] = arreasMembers.get(i).getId();
+        }
+        mID[mID.length - 1] = EXIT_TOKEN;
+        if (yesNoOption("\nSkal et af ovenstående medlemmer have rettet deres restance status?")) {
+            ui.print("Skriv medlemmets ID: \neller bruge " + EXIT_TOKEN + " for at gå tilbage: ");
+            int choice = parseUserInputToInt(mID);
+            if (choice != -1) {
+                Member member = storageController.searchMemberById(choice);
+                if (yesNoOption("\nSkal " + member.getName() + " have rettet restance pr. dags dato?")) {
+                    member.setArrears(LocalDate.now());
+                    storage.updateMember(member);
+                    ui.println("\n" + member.toString());
+                    ui.println("Opdateret pr. dags dato.");
+                } else {
+                    member.setArrears(parseUserInputToLocalDate());
+                    storage.updateMember(member);
+                    ui.println("\n" + member.toString());
+                    ui.println("Opdateret pr. indtastet dato.");
+                }
+
+            }
+        }
+    }
+
+    private void paymentDatesMembers() {
+        int[] mID = findMemberByName();
+        if (mID != null) {
+            ui.print("\nSkriv medlems id for at vælge: \neller bruge \"-1\" for at gå tilbage: ");
+            int choice = parseUserInputToInt(mID);
+            if (choice != -1) {
+                /////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         }
     }
@@ -261,7 +302,7 @@ public class UIController {
             ui.println("1) Se resultater for medlem");
             ui.println("2) Se resultater indenfor given disciplin");
             ui.println("3) Indskriv resultater");
-            ui.println("\n"+EXIT_TOKEN+") Tilbage");
+            ui.println("\n" + EXIT_TOKEN + ") Tilbage");
 
             choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
             switch (choice) {
@@ -306,22 +347,22 @@ public class UIController {
         ui.println("Vælg resultats kategori:");
         ui.println("1) Trænings resultater:");
         ui.println("2) Kompetitive resultater:");
-        ui.println("\n"+EXIT_TOKEN+") Tilbage");
+        ui.println("\n" + EXIT_TOKEN + ") Tilbage");
         int choice = 0;
-        choice = parseUserInputToInt(1,2,EXIT_TOKEN);
+        choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
         boolean traningResults = (choice == 1);
-        if(choice != EXIT_TOKEN) {
+        if (choice != EXIT_TOKEN) {
             choice = 0;
             while (choice != EXIT_TOKEN) {
                 ui.println("Top 5:");
                 for (int i = 0; i < disciplines.size(); i++) {
                     ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
                 }
-                ui.println("\n"+EXIT_TOKEN+") Tilbage");
+                ui.println("\n" + EXIT_TOKEN + ") Tilbage");
                 choice = parseUserInputToInt(1, 2, 3, 4, EXIT_TOKEN);
 
-                if(choice != EXIT_TOKEN){
-                    if(traningResults) {
+                if (choice != EXIT_TOKEN) {
+                    if (traningResults) {
                         getTop5TrainingResults(disciplines.get(choice - 1));
                     } else {
                         getTop5CompetitionResults(disciplines.get(choice - 1));
@@ -334,41 +375,40 @@ public class UIController {
     private void addResult() {
         int[] mID = findMemberByName();
         int choice = 0;
-        ui.print("\nDu kan vælge et ID,\neller bruge \""+EXIT_TOKEN+"\" for at gå tilbage: ");
+        ui.print("\nDu kan vælge et ID,\neller bruge \"" + EXIT_TOKEN + "\" for at gå tilbage: ");
         choice = parseUserInputToInt(mID);
         if (choice != -1) {
             Member member = storageController.searchMemberById(choice);
-            if(member.getCompetition() != null) {
+            if (member.getCompetition() != null) {
                 ui.println("Vælg resultats kategori:");
                 ui.println("1) Trænings resultat:");
                 ui.println("2) Kompetitive resultat:");
-                ui.println("\n"+EXIT_TOKEN+") Tilbage");
+                ui.println("\n" + EXIT_TOKEN + ") Tilbage");
                 choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
                 boolean traningResults = (choice == 1);
                 if (choice != EXIT_TOKEN) {
                     choice = showDisciplineMenu("Vælg disciplin:");
-                    SwimmingDiscipline swimmingDiscipline = SwimmingDiscipline.getDisciplinesAsList().get(choice-1);
+                    SwimmingDiscipline swimmingDiscipline = SwimmingDiscipline.getDisciplinesAsList().get(choice - 1);
                     if (choice != EXIT_TOKEN) {
                         LocalDate localDate = parseUserInputToLocalDate();
                         LocalTime localTime = parseUserInputToLocalTime();
                         int id;
                         if (traningResults) {
                             id = storage.getNextTrainingID();
-                            TrainingResult res = new TrainingResult(swimmingDiscipline,localDate,localTime,id);
-                            storage.addTrainingResult(res,member.getId());
+                            TrainingResult res = new TrainingResult(swimmingDiscipline, localDate, localTime, id);
+                            storage.addTrainingResult(res, member.getId());
                         } else {
                             id = storage.getNextCompetitionID();
                             ui.print("Stævne: ");
                             String event = ui.getUserInput();
                             ui.print("Placering: ");
                             int placement = parseUserInputToInt();
-                            CompetitionResult res = new CompetitionResult(event,placement,swimmingDiscipline, localDate,localTime,id);
+                            CompetitionResult res = new CompetitionResult(event, placement, swimmingDiscipline, localDate, localTime, id);
                             storage.addCompResult(res, member.getId());
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 ui.println("Medlemmet du har valgt er ikke en kompetitive svømmer, prøv igen");
                 addResult();
             }
@@ -382,7 +422,7 @@ public class UIController {
         for (int i = 0; i < disciplines.size(); i++) {
             ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
         }
-        ui.println("\n"+EXIT_TOKEN+") Tilbage");
+        ui.println("\n" + EXIT_TOKEN + ") Tilbage");
         choice = parseUserInputToInt(1, 2, 3, 4, EXIT_TOKEN);
         return choice;
     }
@@ -445,6 +485,7 @@ public class UIController {
 
             coachesID[i] = coaches.get(i).getId();
         }
+        return null;
     }
 
     private int[] findMemberByName() {
