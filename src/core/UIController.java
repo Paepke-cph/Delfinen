@@ -72,6 +72,7 @@ public class UIController {
                     addMember();
                     break;
                 case 2:
+                    editMember();
                     break;
                 case 3:
                     removeMember();
@@ -142,11 +143,56 @@ public class UIController {
         return null;
     }
 
+    private void editMember() {
+        // Find a member to edit
+        int[] memberIDList = findMemberByName();
+        memberIDList[memberIDList.length-1] = EXIT_TOKEN;
+        int memberID = parseUserInputToInt(memberIDList);
+        if(memberID != EXIT_TOKEN) {
+            Member currentMember = storageController.searchMemberById(memberID);
+            String name;
+            int age;
+            boolean active;
+            CompetitionSwimmer competition;
+            ui.println("Vælg element der skal ændres:");
+            ui.println("1) Navn");
+            ui.println("2) Alder");
+            ui.println("3) Medlemsskabs status");
+            ui.println("4) Kompetitive svømmer");
+            int choice = parseUserInputToInt(EXIT_TOKEN);
+            if(choice != EXIT_TOKEN) {
+                switch (choice){
+                    case 1:
+                        ui.print("Skriv nyt navn: ");
+                        name = ui.getUserInput();
+                        break;
+                    case 2:
+                        ui.print("Skriv ny alder: ");
+                        age = parseUserInputToInt();
+                        break;
+                    case 3:
+                        String act = currentMember.isActive() ? "inaktive" : "aktive";
+                        if(yesNoOption("Sæt status til " + act)) {
+                            active = !currentMember.isActive();
+                        }
+                        break;
+                    case 4:
+                        // Sæt hvilke discipliner medlemmet indgår i.
+                        break;
+                }
+                // Show diff!
+                ui.println("Ændringer der bliver foretaget: ");
+
+            }
+        }
+        // Start editing the member.
+    }
+
     private void removeMember() {
-        int[] mID = findMemberByName();
-        if (mID != null) {
+        int[] memberID = findMemberByName();
+        if (memberID != null) {
             ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \""+EXIT_TOKEN+"\" for at gå tilbage: ");
-            int choice = parseUserInputToInt(mID);
+            int choice = parseUserInputToInt(memberID);
             if (choice != EXIT_TOKEN) {
                 storage.removeMember(choice);
             }
