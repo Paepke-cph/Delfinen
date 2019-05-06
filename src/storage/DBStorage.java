@@ -87,23 +87,13 @@ public class DBStorage implements Storage {
     // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
-        String prepSelect = "SELECT * FROM MEMBERS WHERE MEMBER_ID LIKE ?";
-        String prepDelete = "DELETE FROM MEMBERS WHERE MEMBER_ID LIKE ?";
-
-        try (PreparedStatement preparedSelectStatement = sqlConnector.getConnection().prepareStatement(prepSelect)) {
-            preparedSelectStatement.setInt(1, member_id);
-            ArrayList<HashMap<String, String>> memberExists = sqlConnector.selectQuery(preparedSelectStatement);
-
-            if (!memberExists.isEmpty()) {
-                try (PreparedStatement preparedDeleteStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
-                    removeTrainingResult(member_id);
-                    removeCompResult(member_id);
-                    preparedDeleteStatement.setInt(1, member_id);
-                    return sqlConnector.insertUpdateDeleteQuery(preparedDeleteStatement);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+        String prepDelete = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";
+        try (PreparedStatement preparedDeleteStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
+            removeTrainingResult(member_id);
+            removeCompResult(member_id);
+            removeDisciplineAssociation(member_id);
+            preparedDeleteStatement.setInt(1, member_id);
+            return sqlConnector.insertUpdateDeleteQuery(preparedDeleteStatement);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,7 +101,18 @@ public class DBStorage implements Storage {
     }
 
     private boolean removeTrainingResult(int member_id) {
-        String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE ?";
+        String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID = ?";
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
+            preparedStatement.setInt(1, member_id);
+            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private boolean removeDisciplineAssociation(int member_id) {
+        String prepDelete = "DELETE FROM DISCIPLINE_MEMBER WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(1, member_id);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
@@ -122,7 +123,7 @@ public class DBStorage implements Storage {
     }
 
     private boolean removeCompResult(int member_id) {
-        String prepDelete = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID LIKE ?";
+        String prepDelete = "DELETE FROM COMPETITION_RESULTS WHERE MEMBER_ID = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
             preparedStatement.setInt(1, member_id);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
