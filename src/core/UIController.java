@@ -137,10 +137,10 @@ public class UIController {
                 }
             }
             ui.println("Find en træner");
-            int[] memberID = findMemberByName();
-
-            // TODO(Benjamin): Find coach og sæt med på objektet:
-            return new CompetitionSwimmer(null, selectedDiscipline);
+            int[] memberID = displayCoaches();
+            int choice = parseUserInputToInt(memberID);
+            Member coach = storageController.searchMemberById(choice);
+            return new CompetitionSwimmer(coach, selectedDiscipline);
         }
         return null;
     }
@@ -186,11 +186,11 @@ public class UIController {
                     }
                     ui.println("Ændringer der bliver foretaget:\n");
 
-                    String tempName = (name != null) ? name : currentMember.getName();
-                    ui.println("Navn:\t" + currentMember.getName() + " -> " + tempName);
+                    name = (name != null) ? name : currentMember.getName();
+                    ui.println("Navn:\t" + currentMember.getName() + " -> " + name);
 
-                    int tempAge = (age != -1) ? age : currentMember.getAge();
-                    ui.println("Alder:\t" + currentMember.getAge() + " -> " + tempAge);
+                    age = (age != -1) ? age : currentMember.getAge();
+                    ui.println("Alder:\t" + currentMember.getAge() + " -> " + age);
 
                     String act = currentMember.isActive() ? "Aktivt" : "Inaktivt";
                     String newAct = active ? "Aktivt" : "Inaktivt";
@@ -482,10 +482,10 @@ public class UIController {
         ArrayList<Member> coaches = storageController.getMembers().get(StorageController.getCoachCat());
         int[] coachesID = new int[coaches.size()];
         for (int i = 0; i < coaches.size(); i++) {
-
+            ui.println(coaches.get(i).toString());
             coachesID[i] = coaches.get(i).getId();
         }
-        return null;
+        return coachesID;
     }
 
     private int[] findMemberByName() {
