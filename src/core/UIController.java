@@ -177,9 +177,9 @@ public class UIController {
                             if(yesNoOption("Sæt status til " + act)) {
                                 newMember.setActive(!currentMember.isActive());
                             }
-                            break;
-                        case 4:
-                            // TODO(Benjamin): Change member from competitive to non-competitive and the other way around.
+                            else {
+                                newMember.setActive(currentMember.isActive());
+                            }
                             break;
                     }
                     ui.println("Ændringer der bliver foretaget:\n");
@@ -222,6 +222,8 @@ public class UIController {
             ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \"" + EXIT_TOKEN + "\" for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
             if (choice != EXIT_TOKEN) {
+                Member member = storageController.searchMemberById(choice);
+                storageController.removeMember(member);
                 storage.removeMember(choice);
             }
         }

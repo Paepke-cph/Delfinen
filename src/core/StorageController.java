@@ -88,7 +88,7 @@ public class StorageController {
         boolean active = map.get("active").equalsIgnoreCase("1");
         LocalDate arrears = LocalDate.parse(map.get("arrears"));
         JuniorMember member;
-        if (map.get("coach_id") == null) {
+        if (map.get("coach_id") == null || map.get("coach_id").contains("0")) {
             member = new JuniorMember(active, name, age, member_id, arrears, null);
         } else {
             int coach_id = Integer.parseInt(map.get("coach_id"));
@@ -105,7 +105,7 @@ public class StorageController {
         boolean active = map.get("active").equalsIgnoreCase("1");
         LocalDate arrears = LocalDate.parse(map.get("arrears"));
         SeniorMember member;
-        if (map.get("coach_id") == null) {
+        if (map.get("coach_id") == null || map.get("coach_id").contains("0")) {
             member = new SeniorMember(active, name, age, member_id, arrears, null);
         } else {
             int coach_id = Integer.parseInt(map.get("coach_id"));
@@ -139,11 +139,21 @@ public class StorageController {
         }
     }
 
+    public void removeMember(Member member) {
+        if(members.get(COACH_CAT).contains(member)) {
+            members.get(COACH_CAT).remove(member);
+        }
+        if(members.get(JUNIOR_CAT).contains(member)) {
+            members.get(JUNIOR_CAT).remove(member);
+        }
+        if(members.get(SENIOR_CAT).contains(member)) {
+            members.get(SENIOR_CAT).remove(member);
+        }
+    }
+
     public void removeMember(String cat, Member member) {
         if(members.containsKey(cat)) {
-            if(members.get(cat).remove(member)) {
-                System.out.println("Old member removed");
-            }
+            members.get(cat).remove(member);
         }
     }
 
