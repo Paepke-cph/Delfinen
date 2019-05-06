@@ -21,6 +21,8 @@ public class UIController {
     private UI ui;
     private Storage storage;
     private StorageController memberHandler;
+    private final int EXIT_TOKEN = -1;
+
 
     public UIController(UI ui, Storage storage) {
         this.ui = ui;
@@ -30,15 +32,15 @@ public class UIController {
 
     public void startProgram() {
         int choice = 0;
-        while (choice != 9) {
+        while (choice != EXIT_TOKEN) {
             showHeader();
             ui.println("");
             ui.println("1) Adm. Medlemmer");
             ui.println("2) Adm. Kontingenter");
             ui.println("3) Resultater");
-            ui.println("\n9) afslut");
+            ui.println("\n"+EXIT_TOKEN+") Afslut");
 
-            choice = parseUserInputToInt(1, 2, 3, 9);
+            choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
             switch (choice) {
                 case 1:
                     admMemberMenu();
@@ -55,15 +57,15 @@ public class UIController {
 
     private void admMemberMenu() {
         int choice = 0;
-        while (choice != 9) {
+        while (choice != EXIT_TOKEN) {
             showHeader();
             ui.println("------------Adm. Medlemmer------------");
             ui.println("1) Tilføj");
             ui.println("2) Rediger");
             ui.println("3) Fjern");
-            ui.println("\n9) Tilbage");
+            ui.println("\n"+EXIT_TOKEN+") Tilbage");
 
-            choice = parseUserInputToInt(1, 2, 3, 9);
+            choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
             switch (choice) {
                 case 1:
                     addMember();
@@ -123,11 +125,11 @@ public class UIController {
                     options[i] = i + 1;
                 }
                 if (selectedDiscipline.size() > 0) {
-                    ui.println("\n9) Fortsæt");
-                    options[options.length - 1] = 9;
+                    ui.println("\n"+EXIT_TOKEN+") Fortsæt");
+                    options[options.length - 1] = EXIT_TOKEN;
                 }
                 int choice = parseUserInputToInt(options);
-                if (choice == 9) {
+                if (choice == EXIT_TOKEN) {
                     notDone = false;
                 } else {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
@@ -142,9 +144,9 @@ public class UIController {
     private void removeMember() {
         int[] mID = findMemberByName();
         if (mID != null) {
-            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \"-1\" for at gå tilbage: ");
+            ui.print("\nDu kan vælge et ID som skal fjernes,\neller bruge \""+EXIT_TOKEN+"\" for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
-            if (choice != -1) {
+            if (choice != EXIT_TOKEN) {
                 storage.removeMember(choice);
             }
         }
@@ -152,14 +154,14 @@ public class UIController {
 
     private void admKontingenterMenu() {
         int choice = 0;
-        while (choice != 9) {
+        while (choice != EXIT_TOKEN) {
             showHeader();
             ui.println("-----------Adm. Kontingenter----------");
             ui.println("1) Se medlemmer i restance");
             ui.println("2) Registrer betaling");
-            ui.println("\n9) Tilbage");
+            ui.println("\n"+EXIT_TOKEN+") Tilbage");
 
-            choice = parseUserInputToInt(1, 2, 9);
+            choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
             switch (choice) {
                 case 1:
                     break;
@@ -171,15 +173,15 @@ public class UIController {
 
     private void resultsMenu() {
         int choice = 0;
-        while (choice != 9) {
+        while (choice != EXIT_TOKEN) {
             showHeader();
             ui.println("--------------Resultater--------------");
             ui.println("1) Se resultater for medlem");
             ui.println("2) Se resultater indenfor given disciplin");
             ui.println("3) Indskriv resultater");
-            ui.println("\n9) Tilbage");
+            ui.println("\n"+EXIT_TOKEN+") Tilbage");
 
-            choice = parseUserInputToInt(1, 2, 3, 9);
+            choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
             switch (choice) {
                 case 1:
                     memberResult();
@@ -219,22 +221,22 @@ public class UIController {
         ui.println("Vælg resultats kategori:");
         ui.println("1) Trænings resultater:");
         ui.println("2) Kompetitive resultater:");
-        ui.println("\n9) Tilbage");
+        ui.println("\n"+EXIT_TOKEN+") Tilbage");
         int choice = 0;
-        choice = parseUserInputToInt(1,2,9);
+        choice = parseUserInputToInt(1,2,EXIT_TOKEN);
         boolean traningResults = (choice == 1);
-        if(choice != 9) {
+        if(choice != EXIT_TOKEN) {
             choice = 0;
-            while (choice != 9) {
+            while (choice != EXIT_TOKEN) {
                 ui.println("Top 5:");
                 for (int i = 0; i < disciplines.size(); i++) {
                     ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
                 }
-                ui.println("\n9) Tilbage");
-                choice = parseUserInputToInt(1, 2, 3, 4, 9);
+                ui.println("\n"+EXIT_TOKEN+") Tilbage");
+                choice = parseUserInputToInt(1, 2, 3, 4, EXIT_TOKEN);
 
                 // TODO(Benjamin) Check if choice is equivalent with discipline_id in DB.
-                if(choice != 9){
+                if(choice != EXIT_TOKEN){
                     if(traningResults) {
                         //getTopFiveTrain(disciplines.get(choice));
                     }
@@ -262,7 +264,7 @@ public class UIController {
                     ui.println(resultList.get(i).toString());
                     mID[i] = resultList.get(i).getId();
                 }
-                mID[mID.length - 1] = -1;
+                mID[mID.length - 1] = EXIT_TOKEN;
             }
             if (yesNoOption("\nEr du færdig med din søgning?")) {
                 notDone = false;
