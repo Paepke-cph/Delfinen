@@ -1,15 +1,18 @@
 package storage;
 
 import core.CompetitionResult;
+import core.CompetitionSwimmer;
 import core.Member;
 import core.SwimmingDiscipline;
 import core.TrainingResult;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -138,28 +141,48 @@ public class DBStorage implements Storage {
     // TODO: Create new member
     @Override
     public boolean createMember(Member member) {
-        boolean active = member.isActive();
         String memberName = member.getName();
         int memberAge = member.getAge();
         double subscription = member.calculatePrice();
-        String arrears = member.getArrears().toString();
-
-        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (?. ?, ?, ?, ?)";
-
+        boolean active = member.isActive();
+        LocalDate arrears = member.getArrears();
+        CompetitionSwimmer compSwim = member.getCompetition();
+        int member_id = member.getId();
+        String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertMember)) {
             preparedStatement.setString(1, memberName);
             preparedStatement.setInt(2, memberAge);
             preparedStatement.setDouble(3, subscription);
             preparedStatement.setBoolean(4, active);
-            preparedStatement.setString(5, arrears);
-            return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+            preparedStatement.setDate(5, java.sql.Date.valueOf(arrears));
+            boolean success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+            if(compSwim != null){
+                return addSwimmingDisciplineToMember(compSwim, member_id);
+            } else {
+                return success;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    // TODO: Update member
+    private boolean addSwimmingDisciplineToMember(CompetitionSwimmer compSwim, int member_id){
+        int member = member_id;
+        String insertDisciplineMember = "INSERT INTO DISCIPLINE_MEMBER (MEMBER_ID, DISCIPLINE_ID) VALUES (?, ?)";
+        boolean success = false;
+        for(SwimmingDiscipline swimDisc : compSwim.getSwimmingDiscipline()){
+            int disciplineNumber = getDisciplineIDFromName(swimDisc);
+            try(PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertDisciplineMember)){
+                preparedStatement.setInt(1, member_id);
+                preparedStatement.setInt(2, disciplineNumber);
+                success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
+            } catch (SQLException e){
+                e.printStackTrace();
+            }
+        }
+        return success;
+    }
     @Override
     public boolean updateMember(Member member) {
         boolean active = member.isActive();
