@@ -136,8 +136,9 @@ public class UIController {
                     selectedDiscipline.add(discipline.remove(choice - 1)); // Remove fjerner og returnerer hvilken værdi der blev fjernet.
                 }
             }
-            ui.println("Find en træner");
+            ui.println("");
             int[] memberID = displayCoaches();
+            ui.print("Vælg ID på den ønskede træner: ");
             int choice = parseUserInputToInt(memberID);
             Member coach = storageController.searchMemberById(choice);
             return new CompetitionSwimmer(coach, selectedDiscipline);
@@ -152,10 +153,7 @@ public class UIController {
         int memberID = parseUserInputToInt(memberIDList);
         if(memberID != EXIT_TOKEN) {
             Member currentMember = storageController.searchMemberById(memberID);
-            String name = null;
-            int age = -1;
-            boolean active = currentMember.isActive();
-            CompetitionSwimmer competition = null;
+            Member newMember = new Member(currentMember.isActive(),currentMember.getName(),currentMember.getAge(),currentMember.getId(),currentMember.getArrears(),currentMember.getCompetition());
             boolean notDone = true;
             while(notDone) {
                 ui.println("Vælg element der skal ændres:");
@@ -168,16 +166,16 @@ public class UIController {
                     switch (choice){
                         case 1:
                             ui.print("Skriv nyt navn: ");
-                            name = ui.getUserInput();
+                            newMember.setName(ui.getUserInput());
                             break;
                         case 2:
                             ui.print("Skriv ny alder: ");
-                            age = parseUserInputToInt();
+                            newMember.setAge(parseUserInputToInt());
                             break;
                         case 3:
                             String act = currentMember.isActive() ? "inaktive" : "aktive";
                             if(yesNoOption("Sæt status til " + act)) {
-                                active = !currentMember.isActive();
+                                newMember.setActive(!currentMember.isActive());
                             }
                             break;
                         case 4:
@@ -185,15 +183,11 @@ public class UIController {
                             break;
                     }
                     ui.println("Ændringer der bliver foretaget:\n");
-
-                    name = (name != null) ? name : currentMember.getName();
-                    ui.println("Navn:\t" + currentMember.getName() + " -> " + name);
-
-                    age = (age != -1) ? age : currentMember.getAge();
-                    ui.println("Alder:\t" + currentMember.getAge() + " -> " + age);
+                    ui.println("Navn:\t" + currentMember.getName() + " -> " + newMember.getName());
+                    ui.println("Alder:\t" + currentMember.getAge() + " -> " + newMember.getAge());
 
                     String act = currentMember.isActive() ? "Aktivt" : "Inaktivt";
-                    String newAct = active ? "Aktivt" : "Inaktivt";
+                    String newAct = newMember.isActive() ? "Aktivt" : "Inaktivt";
                     ui.println("Medlemsskab Status:\t" + act + " -> " + newAct);
                     if(yesNoOption("\nFærdig med ændre?")) {
                         notDone = false;
@@ -201,24 +195,24 @@ public class UIController {
                 }
             }
             String cat = "";
-            Member newMember = null;
+            Member finalMember = null;
             if(currentMember.calculatePrice() < 500) {
-                newMember = new Member(active,name,age,currentMember.getId(),currentMember.getArrears(),competition);
+                finalMember = new Member(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
                 cat = StorageController.getCoachCat();
             }
             else {
-                if(age < 18) {
-                    newMember = new JuniorMember(active,name,age,currentMember.getId(),currentMember.getArrears(),competition);
+                if(newMember.getAge() < 18) {
+                    finalMember = new JuniorMember(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
                     cat = StorageController.getJuniorCat();
                 }
                 else {
-                    newMember = new SeniorMember(active,name,age,currentMember.getId(),currentMember.getArrears(),competition);
+                    finalMember = new SeniorMember(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
                     cat = StorageController.getSeniorCat();
                 }
             }
             storageController.removeMember(cat, currentMember);
-            storageController.addMember(cat,newMember);
-            storage.updateMember(newMember);
+            storageController.addMember(cat,finalMember);
+            storage.updateMember(finalMember);
         }
     }
 
