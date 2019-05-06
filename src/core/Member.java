@@ -81,7 +81,11 @@ public class Member {
 
     @Override
     public String toString() {
-        return name + ", " + age + ", " + id + ", " + competition;
+        String comp = competition != null ? "Kompetitive svømmer" : "";
+        String medlemskab = active ? "Aktivt" : "Inaktivt";
+
+        return id + "#\nNavn:\t\t" + name + "\nAge:\t\t" + age
+                + "\nMedlemskab:\t" + medlemskab + "\n" + comp;
     }
 
 }

@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class DBStorage implements Storage {
 
     SQLConnector sqlConnector;
-    private final String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
+    //private final String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE TABLE_SCHEMA = ? AND TABLE_NAME = ?";
 
     public DBStorage() throws SQLException {
         this.sqlConnector = new SQLConnector();
@@ -42,9 +42,9 @@ public class DBStorage implements Storage {
 
     @Override
     public Integer getNextMemberID() {
+        String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT as member_id FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"Delfinen\" AND TABLE_NAME = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "Delfinen");
-            preparedStatement.setString(2, "MEMBERS");
+            preparedStatement.setString(1, "MEMBERS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
             return Integer.parseInt(list.get(0).get("member_id"));
         } catch (SQLException e) {
@@ -55,11 +55,11 @@ public class DBStorage implements Storage {
 
     @Override
     public Integer getNextCompetitionID() {
+        String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT as result_id FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"Delfinen\" AND TABLE_NAME = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "Delfinen");
-            preparedStatement.setString(2, "COMPETITION_RESULTS");
+            preparedStatement.setString(1, "COMPETITION_RESULTS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
-            return Integer.parseInt(list.get(0).get("member_id"));
+            return Integer.parseInt(list.get(0).get("result_id"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -68,11 +68,11 @@ public class DBStorage implements Storage {
 
     @Override
     public Integer getNextTrainingID() {
+        String PREP_GET_NEXT_ID = "SELECT AUTO_INCREMENT as result_id FROM information_schema.TABLES WHERE TABLE_SCHEMA = \"Delfinen\" AND TABLE_NAME = ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
-            preparedStatement.setString(1, "Delfinen");
-            preparedStatement.setString(2, "TRAINING_RESULTS");
+            preparedStatement.setString(1, "TRAINING_RESULTS");
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
-            return Integer.parseInt(list.get(0).get("member_id"));
+            return Integer.parseInt(list.get(0).get("result_id"));
         } catch (SQLException e) {
             e.printStackTrace();
         }

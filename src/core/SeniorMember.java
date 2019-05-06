@@ -33,6 +33,11 @@ public class SeniorMember extends Member {
             return discount * subscription;
         else
             return subscription;
-    }    
+    }
+
+    @Override
+    public String toString() {
+        return "Senior medlem:\n" + super.toString();
+    }
 
 }

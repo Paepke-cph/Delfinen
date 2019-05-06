@@ -34,8 +34,6 @@ public class JuniorMember extends Member {
 
     @Override
     public String toString() {
-        return super.toString() + " " + subscription + ", " + active;
+        return "Junior medlem:\n" + super.toString();
     }
-    
-    
 }

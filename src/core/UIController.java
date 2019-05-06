@@ -5,6 +5,7 @@
  */
 package core;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import storage.Storage;
@@ -88,17 +89,17 @@ public class UIController {
             CompetitionSwimmer comp = createCompetitiveSwimmer();
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
             if (junior) {
-                member = new JuniorMember(active, name, age, id, false, comp);
+                member = new JuniorMember(active, name, age, id, LocalDate.now(), comp);
                 memberHandler.addMember(StorageController.getJuniorCat(), member);
             } else {
-                member = new SeniorMember(active, name, age, id, false, comp);
+                member = new SeniorMember(active, name, age, id, LocalDate.now(), comp);
                 memberHandler.addMember(StorageController.getSeniorCat(), member);
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
         } else {
-            member = new Member(true, name, age, id, false, null);
-            ui.println("\nNyt Træner Oprettet");
+            member = new Member(true, name, age, id, LocalDate.now(), null);
+            ui.println("\nNy Træner Oprettet");
             ui.println(member.toString());
         }
         storage.createMember(member);

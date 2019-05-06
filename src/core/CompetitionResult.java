@@ -28,7 +28,7 @@ public class CompetitionResult extends TrainingResult implements Comparable<Trai
 
     @Override
     public String toString() {
-        return super.toString() + "\nCompetitionResult{" + "event=" + event + ", placement=" + placement + '}';
+        return super.toString() + "\nStævne: " + event + ", Placering: " + placement;
     }
 
 }

@@ -35,7 +35,7 @@ public class TrainingResult implements Comparable<TrainingResult> {
 
     @Override
     public String toString() {
-        return "TrainingResult{" + "swimmingDiscipline=" + swimmingDiscipline + ", date=" + date + ", time=" + time + ", id=" + id + '}';
+        return id + "#\nResultat: " + swimmingDiscipline + "\nDato: " + date + ", Tid: " + time;
     }
 
     @Override
