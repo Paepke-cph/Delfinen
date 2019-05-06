@@ -86,7 +86,6 @@ public class DBStorage implements Storage {
         return null;
     }
 
-    // TODO: Remove Member
     @Override
     public boolean removeMember(int member_id) {
         String prepDelete = "DELETE FROM MEMBERS WHERE MEMBER_ID = ?";
@@ -135,7 +134,6 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    // TODO: Create new member
     @Override
     public boolean createMember(Member member) {
         String memberName = member.getName();
