@@ -21,14 +21,14 @@ public class UIController {
 
     private UI ui;
     private Storage storage;
-    private StorageController memberHandler;
+    private StorageController storageController;
     private final int EXIT_TOKEN = -1;
 
 
     public UIController(UI ui, Storage storage) {
         this.ui = ui;
         this.storage = storage;
-        memberHandler = new StorageController(storage);
+        storageController = new StorageController(storage);
     }
 
     public void startProgram() {
@@ -93,10 +93,10 @@ public class UIController {
             boolean active = yesNoOption("Vil du have et aktivt medlemskab?");
             if (junior) {
                 member = new JuniorMember(active, name, age, id, LocalDate.now(), comp);
-                memberHandler.addMember(StorageController.getJuniorCat(), member);
+                storageController.addMember(StorageController.getJuniorCat(), member);
             } else {
                 member = new SeniorMember(active, name, age, id, LocalDate.now(), comp);
-                memberHandler.addMember(StorageController.getSeniorCat(), member);
+                storageController.addMember(StorageController.getSeniorCat(), member);
             }
             ui.println("\nNyt Medlem Oprettet");
             ui.println(member.toString());
@@ -203,7 +203,7 @@ public class UIController {
             ui.print("\nSkriv medlems id for at vælge: \neller bruge \"-1\" for at gå tilbage: ");
             int choice = parseUserInputToInt(mID);
             if (choice != -1) {
-                Member member = memberHandler.searchMemberById(choice);
+                Member member = storageController.searchMemberById(choice);
                 if (member.getCompetition() != null) {
                     ui.println("Competition Result: ");
                     for (CompetitionResult result : member.getCompetition().getCompetitionResult()) {
@@ -254,31 +254,43 @@ public class UIController {
     private void addResult() {
         int[] mID = findMemberByName();
         int choice = 0;
-        ui.print("\nDu kan vælge et ID,\neller bruge \"-1\" for at gå tilbage: ");
+        ui.print("\nDu kan vælge et ID,\neller bruge \""+EXIT_TOKEN+"\" for at gå tilbage: ");
         choice = parseUserInputToInt(mID);
-// TODO(TOBIAS) Hvis ikke kompetitiv så giv fejl meddelelse.
         if (choice != -1) {
-            Member member = memberHandler.searchMemberById(choice);
-            ui.println("Vælg resultats kategori:");
-            ui.println("1) Trænings resultat:");
-            ui.println("2) Kompetitive resultat:");
-            ui.println("\n9) Tilbage");
-            choice = parseUserInputToInt(1, 2, 9);
-            boolean traningResults = (choice == 1);
-            if (choice != 9) {
-                choice = showDisciplineMenu("Vælg disciplin:");
-                if (choice != 9) {
-                    LocalDate localDate = parseUserInputToLocalDate();
-                    LocalTime localTime = parseUserInputToLocalTime();
-// TODO: Tilføj Resten.
-                    
-                    
-                    if (traningResults) {
-
-                    } else {
-
+            Member member = storageController.searchMemberById(choice);
+            if(member.getCompetition() != null) {
+                ui.println("Vælg resultats kategori:");
+                ui.println("1) Trænings resultat:");
+                ui.println("2) Kompetitive resultat:");
+                ui.println("\n"+EXIT_TOKEN+") Tilbage");
+                choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
+                boolean traningResults = (choice == 1);
+                if (choice != EXIT_TOKEN) {
+                    choice = showDisciplineMenu("Vælg disciplin:");
+                    SwimmingDiscipline swimmingDiscipline = SwimmingDiscipline.getDisciplinesAsList().get(choice-1);
+                    if (choice != EXIT_TOKEN) {
+                        LocalDate localDate = parseUserInputToLocalDate();
+                        LocalTime localTime = parseUserInputToLocalTime();
+                        int id;
+                        if (traningResults) {
+                            id = storage.getNextTrainingID();
+                            TrainingResult res = new TrainingResult(swimmingDiscipline,localDate,localTime,id);
+                            storage.addTrainingResult(res,member.getId());
+                        } else {
+                            id = storage.getNextCompetitionID();
+                            ui.print("Stævne: ");
+                            String event = ui.getUserInput();
+                            ui.print("Placering: ");
+                            int placement = parseUserInputToInt();
+                            CompetitionResult res = new CompetitionResult(event,placement,swimmingDiscipline, localDate,localTime,id);
+                            storage.addCompResult(res, member.getId());
+                        }
                     }
                 }
+            }
+            else {
+                ui.println("Medlemmet du har valgt er ikke en kompetitive svømmer, prøv igen");
+                addResult();
             }
         }
     }
@@ -290,8 +302,8 @@ public class UIController {
         for (int i = 0; i < disciplines.size(); i++) {
             ui.println(i + 1 + ") " + disciplines.get(i).getDisciplineName());
         }
-        ui.println("\n9) Tilbage");
-        choice = parseUserInputToInt(1, 2, 3, 4, 9);
+        ui.println("\n"+EXIT_TOKEN+") Tilbage");
+        choice = parseUserInputToInt(1, 2, 3, 4, EXIT_TOKEN);
         return choice;
     }
 
@@ -351,7 +363,7 @@ public class UIController {
         boolean notDone = true;
         while (notDone) {
             ui.print("Søg efter navn: ");
-            ArrayList<Member> resultList = memberHandler.getMembersByName(ui.getUserInput());
+            ArrayList<Member> resultList = storageController.getMembersByName(ui.getUserInput());
             if (resultList.isEmpty()) {
                 ui.println("Din søgning gav ingen resultater.");
             } else {
@@ -444,7 +456,7 @@ public class UIController {
     }
 
     public HashMap<String, ArrayList<Member>> getAllMembers() {
-        return memberHandler.getMembers();
+        return storageController.getMembers();
     }
 
 }

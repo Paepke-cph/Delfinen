@@ -113,7 +113,7 @@ public class DBStorage implements Storage {
     private boolean removeTrainingResult(int member_id) {
         String prepDelete = "DELETE FROM TRAINING_RESULTS WHERE MEMBER_ID LIKE ?";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(prepDelete)) {
-            preparedStatement.setInt(2, member_id);
+            preparedStatement.setInt(1, member_id);
             return sqlConnector.insertUpdateDeleteQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();

@@ -1,6 +1,8 @@
 package storage;
 
+import core.CompetitionResult;
 import core.Member;
+import core.TrainingResult;
 import ui.MockUI;
 
 import java.util.ArrayList;
@@ -96,16 +98,6 @@ public class MockStorage implements Storage{
     }
 
     @Override
-    public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id) {
-        return null;
-    }
-
-    @Override
-    public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
-        return null;
-    }
-
-    @Override
     public boolean updateMember(Member member) {
         return false;
     }
@@ -118,5 +110,15 @@ public class MockStorage implements Storage{
     @Override
     public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean addCompResult(CompetitionResult result, int member_id) {
+        return false;
+    }
+
+    @Override
+    public boolean addTrainingResult(TrainingResult result, int member_id) {
+        return false;
     }
 }

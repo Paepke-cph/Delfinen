@@ -1,6 +1,9 @@
 package storage;
 
+import core.CompetitionResult;
 import core.Member;
+import core.TrainingResult;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,4 +31,7 @@ public interface Storage {
     public ArrayList<Integer> getSwimmingDisciplines(int member_id);
     public ArrayList<HashMap<String, String>> getTopFiveTrainingResultsByDiscipline(int discipline_id);
     public ArrayList<HashMap<String, String>> getTopFiveCompetitionResultsByDiscipline(int discipline_id);
+
+    public boolean addCompResult(CompetitionResult result, int member_id);
+    public boolean addTrainingResult(TrainingResult result, int member_id);
 }
