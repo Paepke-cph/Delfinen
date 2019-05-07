@@ -62,6 +62,7 @@ public class MockStorage implements Storage{
 
     @Override
     public boolean createMember(Member member) {
+
         return false;
     }
 
@@ -79,7 +80,13 @@ public class MockStorage implements Storage{
 
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ArrayList<HashMap<String,String>> result = new ArrayList<>();
+        for (HashMap<String,String> map : members) {
+            if(map.get("member_name").contentEquals(name)) {
+                result.add(map);
+            }
+        }
+        return result;
     }
 
     @Override
