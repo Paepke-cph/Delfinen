@@ -254,7 +254,7 @@ public class UIController {
         ArrayList<Member> arreasMembers = storageController.getArrears();
         int[] mID = new int[arreasMembers.size() + 1];
         for (int i = 0; i < arreasMembers.size(); i++) {
-            ui.println(arreasMembers.toString());
+            ui.println(arreasMembers.get(i).toString());
             mID[i] = arreasMembers.get(i).getId();
         }
         mID[mID.length - 1] = EXIT_TOKEN;
@@ -391,6 +391,9 @@ public class UIController {
         choice = parseUserInputToInt(mID);
         if (choice != EXIT_TOKEN) {
             Member member = storageController.searchMemberById(choice);
+            ArrayList<SwimmingDiscipline> swimmingDisciplines = member.getCompetition().getSwimmingDiscipline();
+            int[] swimOptions = new int[swimmingDisciplines.size()+1];
+            swimOptions[swimOptions.length-1] = EXIT_TOKEN;
             if (member.getCompetition() != null) {
                 ui.println("Vælg resultats kategori:");
                 ui.println("1) Trænings resultat:");
@@ -399,9 +402,13 @@ public class UIController {
                 choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
                 boolean traningResults = (choice == 1);
                 if (choice != EXIT_TOKEN) {
-                    choice = showDisciplineMenu("Vælg disciplin:");
-                    SwimmingDiscipline swimmingDiscipline = SwimmingDiscipline.getDisciplinesAsList().get(choice - 1);
+                    for (int i = 0; i < swimmingDisciplines.size(); i++) {
+                        ui.println((i+1) + ") " + swimmingDisciplines.get(i).getDisciplineName());
+                        swimOptions[i] = i+1;
+                    }
+                    choice = parseUserInputToInt(swimOptions);
                     if (choice != EXIT_TOKEN) {
+                        SwimmingDiscipline swimmingDiscipline = swimmingDisciplines.get(choice-1);
                         LocalDate localDate = parseUserInputToLocalDate();
                         LocalTime localTime = parseUserInputToLocalTime();
                         int id;

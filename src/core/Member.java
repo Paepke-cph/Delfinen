@@ -86,8 +86,8 @@ public class Member {
         String comp = competition != null ? "Kompetitive svømmer" : "";
         String medlemskab = active ? "Aktivt" : "Inaktivt";
 
-        return id + "#\nNavn:\t\t" + name + "\nAlder:\t\t" + age
-                + "\nMedlemskab:\t" + medlemskab + "\nSidst betalt:\t" + arrears + "\n" + comp;
+        return "ID:\t\t\t\t"+ id + "\nNavn:\t\t\t" + name + "\nAlder:\t\t\t" + age
+                + "\nMedlemskab:\t\t" + medlemskab + "\nSidst betalt:\t" + arrears + "\n" + comp;
     }
 
 }
