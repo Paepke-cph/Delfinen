@@ -57,7 +57,7 @@ public class DBStorageTest {
     public void setUp() {
         try (
                 Connection conn = DriverManager.getConnection(url, user, password);
-                Statement stmt = conn.createStatement();) {
+                Statement stmt = conn.createStatement()) {
             for (String sqlStatement : createDatabase) {
                 stmt.executeUpdate(sqlStatement);
             }

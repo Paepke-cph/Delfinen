@@ -476,8 +476,7 @@ public class UIController {
         int mID = Integer.parseInt(hashMap.get("member_id"));
         boolean mActive = Boolean.parseBoolean(hashMap.get("active"));
         LocalDate mArrears = LocalDate.parse(hashMap.get("arrears"));
-        Member member = new Member(mActive, mName, mAge, mID, mArrears, null);
-        return member;
+        return new Member(mActive, mName, mAge, mID, mArrears, null);
     }
 
     private TrainingResult extractTrainingResult(HashMap<String, String> hashMap, SwimmingDiscipline discipline) throws NumberFormatException {
@@ -485,8 +484,7 @@ public class UIController {
         LocalDate rDate = LocalDate.parse(hashMap.get("training_date"));
         LocalTime rTime = LocalTime.parse(hashMap.get("best_time"));
         int rID = Integer.parseInt(hashMap.get("training_id"));
-        TrainingResult trainingResult = new TrainingResult(discipline, rDate, rTime, rID);
-        return trainingResult;
+        return new TrainingResult(discipline, rDate, rTime, rID);
     }
 
     private CompetitionResult extractCompetitionResult(HashMap<String, String> hashMap, SwimmingDiscipline discipline) throws NumberFormatException {
@@ -496,8 +494,7 @@ public class UIController {
         LocalDate cDate = LocalDate.parse(hashMap.get("event_date"));
         LocalTime cTime = LocalTime.parse(hashMap.get("best_time"));
         int cID = Integer.parseInt(hashMap.get("competition_id"));
-        CompetitionResult competitionResult = new CompetitionResult(cEvent, cPlacement, discipline, cDate, cTime, cID);
-        return competitionResult;
+        return new CompetitionResult(cEvent, cPlacement, discipline, cDate, cTime, cID);
     }
 
     private int[] displayCoaches() {

@@ -295,7 +295,7 @@ public class StorageControllerTest {
         expected.add(SwimmingDiscipline.BREASTSTROKE);
         ArrayList<SwimmingDiscipline> result = member.getCompetition().getSwimmingDiscipline();
 
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test

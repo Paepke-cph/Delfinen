@@ -25,7 +25,7 @@ public class MemberTest {
     public void testGetName() {
         String expected = "Alexander";
         String result = member.getName();
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test
@@ -47,7 +47,7 @@ public class MemberTest {
         String expected = "Alex";
         member.setName(expected);
         String result = member.getName();
-        assertTrue(expected.equals(result));
+        assertEquals(expected, result);
     }
 
     @Test
