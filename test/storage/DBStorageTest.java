@@ -23,8 +23,8 @@ public class DBStorageTest {
 
     ArrayList<String> createDatabase = scanFromFile("UnitTestCreate_Delfinen.sql");
     ArrayList<String> populateDatabase = scanFromFile("UnitTestPopulate_Delfinen.sql");
-    private final static String user = "root";
-    private final static String password = "Nu66ets";
+    private final static String user = "myuser";
+    private final static String password = "Password123";
     private final static String IP = "127.0.0.1";
     private final static String PORT = "3306";
     private final static String DATABASE = "Delfinen";
@@ -36,7 +36,7 @@ public class DBStorageTest {
     public ArrayList<String> scanFromFile(String filename) {
         ArrayList<String> file = new ArrayList();
         try {
-            Scanner scan = new Scanner(new File("scripts\\" + filename));
+            Scanner scan = new Scanner(new File("scripts/" + filename));
             scan.useDelimiter(Pattern.compile(";"));
             while (scan.hasNext()) {
                 file.add(scan.next());
