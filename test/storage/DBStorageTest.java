@@ -36,6 +36,9 @@ public class DBStorageTest {
     private final static String serverTime = "serverTimezone=UTC";
     private final static String url = "jdbc:mysql://" + IP + ":" + PORT + "/" + DATABASE + "?" + serverTime;
 
+    DBStorage storage;
+    
+    
     @Before
     public void setUp() {
         try (
@@ -47,9 +50,11 @@ public class DBStorageTest {
             for(String sqlStatement : populateDatabase){
                 stmt.executeUpdate(sqlStatement);
             }
+            storage = new DBStorage();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        
     }
 
     /**
@@ -57,6 +62,9 @@ public class DBStorageTest {
      */
     @Test
     public void testGetMembers() {
+        int actualSize = storage.getMembers().size();
+        int expectedSize = 46;
+        assertEquals(expectedSize, actualSize);
     }
 
     public ArrayList<String> scanFromFile(String filename) {
