@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package storage;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,12 +10,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class DBStorageTest {
 
@@ -39,12 +33,12 @@ public class DBStorageTest {
     @Before
     public void setUp() {
         try (
-                Connection conn = DriverManager.getConnection(url,user,password);
+                Connection conn = DriverManager.getConnection(url, user, password);
                 Statement stmt = conn.createStatement();) {
-            for(String sqlStatement : createDatabase){
+            for (String sqlStatement : createDatabase) {
                 stmt.executeUpdate(sqlStatement);
             }
-            for(String sqlStatement : populateDatabase){
+            for (String sqlStatement : populateDatabase) {
                 stmt.executeUpdate(sqlStatement);
             }
         } catch (SQLException e) {

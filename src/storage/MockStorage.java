@@ -3,17 +3,17 @@ package storage;
 import core.CompetitionResult;
 import core.Member;
 import core.TrainingResult;
-import ui.MockUI;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
-public class MockStorage implements Storage{
+public class MockStorage implements Storage {
 
     private ArrayList<HashMap<String, String>> members = new ArrayList<>();
     private ArrayList<HashMap<String, String>> competitionResults = new ArrayList<>();
@@ -24,7 +24,8 @@ public class MockStorage implements Storage{
     private int[] memberIDs;
     private int memberIDIndex = 0;
 
-    public MockStorage() {}
+    public MockStorage() {
+    }
 
     public MockStorage(int[] memberIDs) {
         this.memberIDs = memberIDs;
@@ -54,7 +55,6 @@ public class MockStorage implements Storage{
         return 0;
     }
 
-
     @Override
     public boolean removeMember(int member_id) {
         return false;
@@ -80,9 +80,9 @@ public class MockStorage implements Storage{
 
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        ArrayList<HashMap<String,String>> result = new ArrayList<>();
-        for (HashMap<String,String> map : members) {
-            if(map.get("member_name").contentEquals(name)) {
+        ArrayList<HashMap<String, String>> result = new ArrayList<>();
+        for (HashMap<String, String> map : members) {
+            if (map.get("member_name").contentEquals(name)) {
                 result.add(map);
             }
         }

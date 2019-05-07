@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.time.LocalDate;
@@ -13,11 +8,11 @@ import java.util.HashMap;
 import storage.Storage;
 import ui.UI;
 
-import javax.sound.sampled.AudioInputStream;
-
 /**
- *
- * @author rando
+ * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class UIController {
 
@@ -141,7 +136,7 @@ public class UIController {
             }
             ui.println("");
             int[] memberID = displayCoaches();
-            if(memberID != null) {
+            if (memberID != null) {
                 ui.print("Vælg ID på den ønskede træner: ");
                 int choice = parseUserInputToInt(memberID);
                 Member coach = storageController.searchMemberById(choice);
@@ -155,22 +150,22 @@ public class UIController {
 
     private void editMember() {
         int[] memberIDList = findMemberByName();
-        memberIDList[memberIDList.length-1] = EXIT_TOKEN;
-        ui.println("Vælg et ID for at ændre\nEller vælg \""+ EXIT_TOKEN + "\" for at gå tilbage");
+        memberIDList[memberIDList.length - 1] = EXIT_TOKEN;
+        ui.println("Vælg et ID for at ændre\nEller vælg \"" + EXIT_TOKEN + "\" for at gå tilbage");
         int memberID = parseUserInputToInt(memberIDList);
-        if(memberID != EXIT_TOKEN) {
+        if (memberID != EXIT_TOKEN) {
             Member currentMember = storageController.searchMemberById(memberID);
-            Member newMember = new Member(currentMember.isActive(),currentMember.getName(),currentMember.getAge(),currentMember.getId(),currentMember.getArrears(),currentMember.getCompetition());
+            Member newMember = new Member(currentMember.isActive(), currentMember.getName(), currentMember.getAge(), currentMember.getId(), currentMember.getArrears(), currentMember.getCompetition());
             boolean notDone = true;
-            while(notDone) {
+            while (notDone) {
                 ui.println("Vælg element der skal ændres:");
                 ui.println("1) Navn");
                 ui.println("2) Alder");
                 ui.println("3) Medlemsskabs status");
                 ui.println("4) Kompetitive svømmer");
-                int choice = parseUserInputToInt(1,2,3,EXIT_TOKEN);
-                if(choice != EXIT_TOKEN) {
-                    switch (choice){
+                int choice = parseUserInputToInt(1, 2, 3, EXIT_TOKEN);
+                if (choice != EXIT_TOKEN) {
+                    switch (choice) {
                         case 1:
                             ui.print("Skriv nyt navn: ");
                             newMember.setName(ui.getUserInput());
@@ -181,10 +176,9 @@ public class UIController {
                             break;
                         case 3:
                             String act = currentMember.isActive() ? "inaktive" : "aktive";
-                            if(yesNoOption("Sæt status til " + act)) {
+                            if (yesNoOption("Sæt status til " + act)) {
                                 newMember.setActive(!currentMember.isActive());
-                            }
-                            else {
+                            } else {
                                 newMember.setActive(currentMember.isActive());
                             }
                             break;
@@ -196,29 +190,27 @@ public class UIController {
                     String act = currentMember.isActive() ? "Aktivt" : "Inaktivt";
                     String newAct = newMember.isActive() ? "Aktivt" : "Inaktivt";
                     ui.println("Medlemsskab Status:\t" + act + " -> " + newAct);
-                    if(yesNoOption("\nFærdig med ændre?")) {
+                    if (yesNoOption("\nFærdig med ændre?")) {
                         notDone = false;
                     }
                 }
             }
             String cat = "";
             Member finalMember = null;
-            if(currentMember.calculatePrice() < 500) {
-                finalMember = new Member(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
+            if (currentMember.calculatePrice() < 500) {
+                finalMember = new Member(newMember.isActive(), newMember.getName(), newMember.getAge(), newMember.getId(), newMember.getArrears(), newMember.getCompetition());
                 cat = StorageController.getCoachCat();
-            }
-            else {
-                if(newMember.getAge() < 18) {
-                    finalMember = new JuniorMember(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
+            } else {
+                if (newMember.getAge() < 18) {
+                    finalMember = new JuniorMember(newMember.isActive(), newMember.getName(), newMember.getAge(), newMember.getId(), newMember.getArrears(), newMember.getCompetition());
                     cat = StorageController.getJuniorCat();
-                }
-                else {
-                    finalMember = new SeniorMember(newMember.isActive(),newMember.getName(),newMember.getAge(),newMember.getId(),newMember.getArrears(),newMember.getCompetition());
+                } else {
+                    finalMember = new SeniorMember(newMember.isActive(), newMember.getName(), newMember.getAge(), newMember.getId(), newMember.getArrears(), newMember.getCompetition());
                     cat = StorageController.getSeniorCat();
                 }
             }
             storageController.removeMember(cat, currentMember);
-            storageController.addMember(cat,finalMember);
+            storageController.addMember(cat, finalMember);
             storage.updateMember(finalMember);
         }
     }
@@ -398,10 +390,10 @@ public class UIController {
         choice = parseUserInputToInt(mID);
         if (choice != EXIT_TOKEN) {
             Member member = storageController.searchMemberById(choice);
-            if(member.getCompetition() != null) {
+            if (member.getCompetition() != null) {
                 ArrayList<SwimmingDiscipline> swimmingDisciplines = member.getCompetition().getSwimmingDiscipline();
-                int[] swimOptions = new int[swimmingDisciplines.size()+1];
-                swimOptions[swimOptions.length-1] = EXIT_TOKEN;
+                int[] swimOptions = new int[swimmingDisciplines.size() + 1];
+                swimOptions[swimOptions.length - 1] = EXIT_TOKEN;
                 if (member.getCompetition() != null) {
                     ui.println("Vælg resultats kategori:");
                     ui.println("1) Trænings resultat:");
@@ -411,12 +403,12 @@ public class UIController {
                     boolean traningResults = (choice == 1);
                     if (choice != EXIT_TOKEN) {
                         for (int i = 0; i < swimmingDisciplines.size(); i++) {
-                            ui.println((i+1) + ") " + swimmingDisciplines.get(i).getDisciplineName());
-                            swimOptions[i] = i+1;
+                            ui.println((i + 1) + ") " + swimmingDisciplines.get(i).getDisciplineName());
+                            swimOptions[i] = i + 1;
                         }
                         choice = parseUserInputToInt(swimOptions);
                         if (choice != EXIT_TOKEN) {
-                            SwimmingDiscipline swimmingDiscipline = swimmingDisciplines.get(choice-1);
+                            SwimmingDiscipline swimmingDiscipline = swimmingDisciplines.get(choice - 1);
                             LocalDate localDate = parseUserInputToLocalDate();
                             LocalTime localTime = parseUserInputToLocalTime();
                             int id;
@@ -510,7 +502,7 @@ public class UIController {
 
     private int[] displayCoaches() {
         ArrayList<Member> coaches = storageController.getMembers().get(StorageController.getCoachCat());
-        if(coaches != null) {
+        if (coaches != null) {
             int[] coachesID = new int[coaches.size()];
             for (int i = 0; i < coaches.size(); i++) {
                 ui.println(coaches.get(i).toString());

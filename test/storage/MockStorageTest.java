@@ -1,14 +1,15 @@
 package storage;
 
-import core.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class MockStorageTest {
 
@@ -45,7 +46,5 @@ public class MockStorageTest {
         mockStorage.setMembers(list);
         assertTrue(list.equals(mockStorage.getMembers()));
     }
-
-
 
 }

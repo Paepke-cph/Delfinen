@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.time.LocalDate;
@@ -12,10 +7,13 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class TrainingResultTest {
+
     TrainingResult comp;
     LocalDate date = LocalDate.now();
     LocalTime time = LocalTime.of(0, 10, 20, 43);

@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class DBStorage implements Storage {
 
@@ -142,7 +144,7 @@ public class DBStorage implements Storage {
         CompetitionSwimmer compSwim = member.getCompetition();
         int member_id = member.getId();
         Integer coach_id = 0;
-        if(compSwim != null){
+        if (compSwim != null) {
             coach_id = compSwim.getCoach().getId();
         }
         String insertMember = "INSERT INTO MEMBERS (MEMBER_NAME, AGE, SUBSCRIPTION, ACTIVE, ARREARS, MEMBER_ID, COACH_ID) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -155,7 +157,7 @@ public class DBStorage implements Storage {
             preparedStatement.setInt(6, member_id);
             preparedStatement.setInt(7, coach_id);
             boolean success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
-            if(compSwim != null){
+            if (compSwim != null) {
                 return addSwimmingDisciplineToMember(compSwim, member_id);
             } else {
                 return success;
@@ -166,22 +168,23 @@ public class DBStorage implements Storage {
         return false;
     }
 
-    private boolean addSwimmingDisciplineToMember(CompetitionSwimmer compSwim, int member_id){
+    private boolean addSwimmingDisciplineToMember(CompetitionSwimmer compSwim, int member_id) {
         int member = member_id;
         String insertDisciplineMember = "INSERT INTO DISCIPLINE_MEMBER (MEMBER_ID, DISCIPLINE_ID) VALUES (?, ?)";
         boolean success = false;
-        for(SwimmingDiscipline swimDisc : compSwim.getSwimmingDiscipline()){
+        for (SwimmingDiscipline swimDisc : compSwim.getSwimmingDiscipline()) {
             int disciplineNumber = getDisciplineIDFromName(swimDisc);
-            try(PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertDisciplineMember)){
+            try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(insertDisciplineMember)) {
                 preparedStatement.setInt(1, member_id);
                 preparedStatement.setInt(2, disciplineNumber);
                 success = sqlConnector.insertUpdateDeleteQuery(preparedStatement);
-            } catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return success;
     }
+
     @Override
     public boolean updateMember(Member member) {
         boolean active = member.isActive();

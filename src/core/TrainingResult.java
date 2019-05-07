@@ -4,8 +4,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class TrainingResult implements Comparable<TrainingResult> {
 

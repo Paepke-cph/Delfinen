@@ -3,8 +3,10 @@ package core;
 import java.time.LocalDate;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class Member {
 
@@ -86,7 +88,7 @@ public class Member {
         String comp = competition != null ? "Kompetitive svømmer" : "";
         String medlemskab = active ? "Aktivt" : "Inaktivt";
 
-        return "ID:\t\t\t\t"+ id + "\nNavn:\t\t\t" + name + "\nAlder:\t\t\t" + age
+        return "ID:\t\t\t\t" + id + "\nNavn:\t\t\t" + name + "\nAlder:\t\t\t" + age
                 + "\nMedlemskab:\t\t" + medlemskab + "\nSidst betalt:\t" + arrears + "\n" + comp;
     }
 

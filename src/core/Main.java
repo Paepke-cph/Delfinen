@@ -9,8 +9,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 /**
- *
- * @author rando
+ * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class Main {
 
