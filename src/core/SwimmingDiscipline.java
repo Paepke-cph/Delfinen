@@ -20,10 +20,18 @@ public enum SwimmingDiscipline {
         this.disciplineName = disciplineName;
     }
 
+    /**
+     * Gets the display name of the SwimmingDiscipline.
+     * @return A String representing the name of the SwimmingDiscipline.
+     */
     public String getDisciplineName() {
         return disciplineName;
     }
 
+    /**
+     * Gets a list of all the disciplines a member can be associated with.
+     * @return A list of SwimmingDisciplines.
+     */
     public static ArrayList<SwimmingDiscipline> getDisciplinesAsList() {
         ArrayList<SwimmingDiscipline> discipline = new ArrayList<>();
         discipline.add(SwimmingDiscipline.BUTTERFLY);

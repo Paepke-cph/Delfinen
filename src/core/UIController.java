@@ -21,12 +21,20 @@ public class UIController {
     private StorageController storageController;
     private final int EXIT_TOKEN = -1;
 
+    /**
+     * Creates a UIController using a implementation of UI and Storage
+     * @param ui The implementation of the UI system.
+     * @param storage The implementation of Storage system.
+     */
     public UIController(UI ui, Storage storage) {
         this.ui = ui;
         this.storage = storage;
         storageController = new StorageController(storage);
     }
 
+    /**
+     * Starts the program, displaying the main mennu.
+     */
     public void startProgram() {
         int choice = 0;
         while (choice != EXIT_TOKEN) {
@@ -612,6 +620,10 @@ public class UIController {
         return false;
     }
 
+    /**
+     * Wrapper method for getting all members.
+     * @return A map of all categories to all associated members.
+     */
     public HashMap<String, ArrayList<Member>> getAllMembers() {
         return storageController.getMembers();
     }

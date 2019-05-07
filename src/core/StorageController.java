@@ -23,12 +23,22 @@ public class StorageController {
     private Storage storage;
     private UI ui;
 
+    /**
+     * Creates a StorageController object using a implementation of the storage system.
+     * @param storage A implementation of the Storage system.
+     */
     public StorageController(Storage storage) {
         this.storage = storage;
         this.members = new HashMap<>();
         loadMembersFromStorage();
     }
 
+    /**
+     * Inserts a member in a given category.
+     * @param cat The category in which the member should be inserted into.
+     * @param member The member to be inserted.
+     * @return TRUE if the member is inserted, FALSE if category was not found (and the member was not inserted).
+     */
     public boolean setMember(String cat, Member member) {
         if (members.containsKey(cat)) {
             members.get(cat).add(member);
@@ -37,10 +47,19 @@ public class StorageController {
         return false;
     }
 
+    /**
+     * Gets the all members sorted into different Lists based on category.
+     * @return A map of category to lists of members.
+     */
     public HashMap<String, ArrayList<Member>> getMembers() {
         return members;
     }
 
+    /**
+     * Gets a list of members that match the given string.
+     * @param name The name to look for in the collection of members.
+     * @return A list of all members that match the given String.
+     */
     public ArrayList<Member> getMembersByName(String name) {
         ArrayList<HashMap<String, String>> collection = storage.getMembersByName(name);
         ArrayList<Member> result = new ArrayList<>();
@@ -116,6 +135,11 @@ public class StorageController {
         addMember(SENIOR_CAT, member);
     }
 
+    /**
+     * Adds a member to a given list based on the category.
+     * @param cat The category the member should be add to.
+     * @param member The member to be added.
+     */
     public void addMember(String cat, Member member) {
         ArrayList<Member> list = new ArrayList<>();
         list.add(member);
@@ -140,6 +164,10 @@ public class StorageController {
         }
     }
 
+    /**
+     * Removes a member from any category their found in.
+     * @param member The member to be removed.
+     */
     public void removeMember(Member member) {
         if (members.get(COACH_CAT).contains(member)) {
             members.get(COACH_CAT).remove(member);
@@ -152,12 +180,21 @@ public class StorageController {
         }
     }
 
+    /**
+     * Removes a member based on the category given.
+     * @param cat The category to remove the member from.
+     * @param member The member to be removed.
+     */
     public void removeMember(String cat, Member member) {
         if (members.containsKey(cat)) {
             members.get(cat).remove(member);
         }
     }
 
+    /**
+     * Gets a list of senior members.
+     * @return A list of senior members.
+     */
     public ArrayList<String> returnSeniorMembers() {
         ArrayList<String> seniors = new ArrayList<>();
         for (Member member : members.get(SENIOR_CAT)) {
@@ -166,6 +203,10 @@ public class StorageController {
         return seniors;
     }
 
+    /**
+     * Gets a list of junior members.
+     * @return A list of junior members.
+     */
     public ArrayList<String> returnJuniorMembers() {
         ArrayList<String> juniors = new ArrayList<>();
         for (Member member : members.get(JUNIOR_CAT)) {
@@ -174,6 +215,10 @@ public class StorageController {
         return juniors;
     }
 
+    /**
+     * Gets a list of all the coaches
+     * @return A list of all coaches.
+     */
     public ArrayList<String> returnCoaches() {
         ArrayList<String> coaches = new ArrayList<>();
         for (Member member : members.get(COACH_CAT)) {
@@ -182,6 +227,11 @@ public class StorageController {
         return coaches;
     }
 
+    /**
+     * Gets a member based on the unique ID.
+     * @param member_id The id of the member.
+     * @return The member associated with the member_id, NULL if no member was found.
+     */
     public Member searchMemberById(int member_id) {
         if (members.containsKey(COACH_CAT)) {
             for (Member member : members.get(COACH_CAT)) {
@@ -270,18 +320,34 @@ public class StorageController {
         }
     }
 
+    /**
+     * Gets the category of which all coaches should be associated with.
+     * @return The String representing the coach category.
+     */
     public static String getCoachCat() {
         return COACH_CAT;
     }
 
+    /**
+     * Gets the category of which all junior members should be associated with.
+     * @return The String representing the junior member category.
+     */
     public static String getJuniorCat() {
         return JUNIOR_CAT;
     }
 
+    /**
+     * Gets the category of which all senior members should be associated with.
+     * @return The String representing the senior member category.
+     */
     public static String getSeniorCat() {
         return SENIOR_CAT;
     }
 
+    /**
+     * Gets a list of all members whom are currently behind payment of their subscription.
+     * @return A list of members not having paid their subscription yet.
+     */
     public ArrayList<Member> getArrears() {
         ArrayList<Member> isArrears = new ArrayList<>();
         LocalDate date = LocalDate.now().minusYears(1);
