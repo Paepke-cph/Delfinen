@@ -3,10 +3,13 @@ package core;
 import java.time.LocalDate;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class SeniorMember extends Member {
+
     private double subscription;
     private boolean active;
 
@@ -27,12 +30,13 @@ public class SeniorMember extends Member {
         double discount = 0.75;
         double subscription = 1600;
         double inactive = 500;
-        if(!this.active)
+        if (!this.active) {
             return inactive;
-        else if (this.getAge() > 60)
+        } else if (this.getAge() > 60) {
             return discount * subscription;
-        else
+        } else {
             return subscription;
+        }
     }
 
     @Override

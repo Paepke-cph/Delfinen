@@ -6,38 +6,42 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class MemberTest {
+
     Member member;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         LocalDate date = LocalDate.now();
-        member = new Member(true, "Alexander", 29, 1,date, null);
+        member = new Member(true, "Alexander", 29, 1, date, null);
     }
+
     @Test
     public void testGetName() {
         String expected = "Alexander";
         String result = member.getName();
         assertTrue(expected.equals(result));
     }
-    
+
     @Test
     public void testGetAge() {
         int expected = 29;
         int result = member.getAge();
         assertEquals(expected, result);
     }
-    
+
     @Test
-    public void testGetID(){
+    public void testGetID() {
         int expected = 1;
         int result = member.getId();
         assertEquals(expected, result);
     }
-    
+
     @Test
     public void testSetName() {
         String expected = "Alex";
@@ -45,7 +49,7 @@ public class MemberTest {
         String result = member.getName();
         assertTrue(expected.equals(result));
     }
-    
+
     @Test
     public void testSetAge() {
         int expected = 20;
@@ -53,9 +57,9 @@ public class MemberTest {
         int result = member.getAge();
         assertEquals(expected, result);
     }
-    
+
     @Test
-    public void testSetID(){
+    public void testSetID() {
         int expected = 5;
         member.setId(expected);
         int result = member.getId();
@@ -67,7 +71,7 @@ public class MemberTest {
      */
     @Test
     public void testCalculatePrice() {
-        assertEquals(0, member.calculatePrice(),0);
+        assertEquals(0, member.calculatePrice(), 0);
     }
 
     /**
@@ -76,6 +80,5 @@ public class MemberTest {
     @Test
     public void testToString() {
     }
-      
-    
+
 }

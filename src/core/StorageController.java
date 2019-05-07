@@ -8,8 +8,10 @@ import storage.Storage;
 import ui.UI;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class StorageController {
 
@@ -79,7 +81,6 @@ public class StorageController {
         Member member = new Member(true, name, age, id, arrears, null);
         addMember(COACH_CAT, member);
     }
-    
 
     private void createJuniorMember(HashMap<String, String> map) {
         String name = map.get("member_name");
@@ -140,19 +141,19 @@ public class StorageController {
     }
 
     public void removeMember(Member member) {
-        if(members.get(COACH_CAT).contains(member)) {
+        if (members.get(COACH_CAT).contains(member)) {
             members.get(COACH_CAT).remove(member);
         }
-        if(members.get(JUNIOR_CAT).contains(member)) {
+        if (members.get(JUNIOR_CAT).contains(member)) {
             members.get(JUNIOR_CAT).remove(member);
         }
-        if(members.get(SENIOR_CAT).contains(member)) {
+        if (members.get(SENIOR_CAT).contains(member)) {
             members.get(SENIOR_CAT).remove(member);
         }
     }
 
     public void removeMember(String cat, Member member) {
-        if(members.containsKey(cat)) {
+        if (members.containsKey(cat)) {
             members.get(cat).remove(member);
         }
     }

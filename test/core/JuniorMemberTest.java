@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.time.LocalDate;
@@ -11,16 +6,19 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class JuniorMemberTest {
+
     JuniorMember member;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         LocalDate date = LocalDate.now();
-        member = new JuniorMember(true,"Alexander", 12, 1, date, null);
+        member = new JuniorMember(true, "Alexander", 12, 1, date, null);
     }
 
     /**
@@ -30,11 +28,11 @@ public class JuniorMemberTest {
     public void testCalculatePrice() {
         double expected = 1000;
         double result = member.calculatePrice();
-        assertEquals(expected, result,0);
+        assertEquals(expected, result, 0);
         expected = 500;
         member.setActive(false);
         result = member.calculatePrice();
-        assertEquals(expected, result,0);
+        assertEquals(expected, result, 0);
     }
 
     /**
@@ -44,5 +42,5 @@ public class JuniorMemberTest {
     public void testIsActive() {
         assertTrue(member.isActive());
     }
-    
+
 }

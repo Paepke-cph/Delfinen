@@ -1,21 +1,18 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ui;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
- * @author rando
+ * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class MockUITest {
-    
+
     @Test
-    public void testPrintln(){
+    public void testPrintln() {
         // Arrange
         MockUI mock = new MockUI(null);
         // Act
@@ -23,9 +20,9 @@ public class MockUITest {
         // Assert
         assertEquals(1, mock.getOutput().size());
     }
-    
+
     @Test
-    public void testPrintf(){
+    public void testPrintf() {
         // Arrange
         MockUI mock = new MockUI(null);
         // Act
@@ -36,11 +33,11 @@ public class MockUITest {
         assertEquals("test Hej Test", mock.getOutput().get(0));
         assertEquals("test 23 Test", mock.getOutput().get(1));
     }
-    
+
     @Test
-    public void testGetUserInput(){
+    public void testGetUserInput() {
         // Arrange
-        MockUI mock = new MockUI(new String[] {"test", "Test", "Hej"});
+        MockUI mock = new MockUI(new String[]{"test", "Test", "Hej"});
         // Act
         String temp1 = mock.getUserInput();
         String temp2 = mock.getUserInput();
@@ -50,9 +47,9 @@ public class MockUITest {
         assertEquals("Test", temp2);
         assertEquals("Hej", temp3);
     }
-    
+
     @Test
-    public void testGetOutput(){
+    public void testGetOutput() {
         // Arrange
         MockUI mock = new MockUI(null);
         // Act
@@ -63,5 +60,5 @@ public class MockUITest {
         assertNotNull(mock.getOutput());
         assertEquals(3, mock.getOutput().size());
     }
-    
+
 }

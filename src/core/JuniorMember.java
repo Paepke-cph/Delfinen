@@ -3,10 +3,13 @@ package core;
 import java.time.LocalDate;
 
 /**
- *
- * @author rando
+ * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class JuniorMember extends Member {
+
     private double subscription;
     private boolean active;
 
@@ -21,15 +24,16 @@ public class JuniorMember extends Member {
         this.active = active;
         this.subscription = calculatePrice();
     }
-    
+
     @Override
-    public double calculatePrice(){
+    public double calculatePrice() {
         double inactive = 500;
         double subscription = 1000;
-        if(!this.active)
+        if (!this.active) {
             return inactive;
-        else
+        } else {
             return subscription;
+        }
     }
 
     @Override

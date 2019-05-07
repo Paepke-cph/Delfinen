@@ -1,17 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import java.util.ArrayList;
 
 /**
- *
- * @author rando
+ * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class CompetitionSwimmer {
+
     private Member coach;
     private ArrayList<SwimmingDiscipline> swimmingDiscipline;
     private ArrayList<TrainingResult> trainingResult = new ArrayList<>();
@@ -21,15 +19,15 @@ public class CompetitionSwimmer {
         this.coach = coach;
         this.swimmingDiscipline = swimmingDiscipline;
     }
-    
-    public void addCompetitionResult(CompetitionResult result){
+
+    public void addCompetitionResult(CompetitionResult result) {
         competitionResult.add(result);
     }
-    
-    public void addTrainingResult(TrainingResult result){
+
+    public void addTrainingResult(TrainingResult result) {
         trainingResult.add(result);
     }
-    
+
     public Member getCoach() {
         return coach;
     }
@@ -52,7 +50,7 @@ public class CompetitionSwimmer {
         stringBuilder.append("[");
         for (int i = 0; i < swimmingDiscipline.size(); i++) {
             stringBuilder.append(swimmingDiscipline.get(i).getDisciplineName());
-            if(i < swimmingDiscipline.size()-1) {
+            if (i < swimmingDiscipline.size() - 1) {
                 stringBuilder.append(", ");
             }
         }

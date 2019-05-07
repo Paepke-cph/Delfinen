@@ -5,13 +5,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class SQLConnector implements AutoCloseable {
 
     private final static String user = "root";
+<<<<<<< HEAD
     private final static String password = "Nu66ets";
+=======
+    private final static String password = "InsertPasswordHere";
+>>>>>>> 33d61ed4e4fceee8fe6a64d73c9e0413f502981b
     private final static String IP = "127.0.0.1";
     private final static String PORT = "3306";
     private final static String DATABASE = "Delfinen";
@@ -20,8 +26,8 @@ public class SQLConnector implements AutoCloseable {
     private Connection connection;
     private Statement statement;
 
-    public SQLConnector() throws SQLException{
-        this.connection = DriverManager.getConnection(url,user,password);
+    public SQLConnector() throws SQLException {
+        this.connection = DriverManager.getConnection(url, user, password);
         this.statement = connection.prepareStatement(url);
     }
 
@@ -48,12 +54,11 @@ public class SQLConnector implements AutoCloseable {
     public boolean insertUpdateDeleteQuery(PreparedStatement query) {
         try {
             return query.executeUpdate() == 1;
-        }
-        catch(SQLException e) {
+        } catch (SQLException e) {
             return false;
         }
     }
-    
+
     @Override
     public void close() throws Exception {
         if (!connection.isClosed()) {

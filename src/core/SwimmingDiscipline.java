@@ -3,8 +3,10 @@ package core;
 import java.util.ArrayList;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public enum SwimmingDiscipline {
     BUTTERFLY("BUTTERFLY"),

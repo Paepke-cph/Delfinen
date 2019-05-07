@@ -4,12 +4,15 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class SwimmingDisciplineTest {
+
     SwimmingDiscipline disc;
-    
+
     /**
      * Test of Butterfly method, of class SwimmingDiscipline.
      */
@@ -27,7 +30,7 @@ public class SwimmingDisciplineTest {
         String result = disc.BACKSTROKE.name();
         assertEquals("BACKSTROKE", result);
     }
-    
+
     /**
      * Test of Butterfly method, of class SwimmingDiscipline.
      */
@@ -36,7 +39,7 @@ public class SwimmingDisciplineTest {
         String result = disc.CRAWL.name();
         assertEquals("CRAWL", result);
     }
-    
+
     /**
      * Test of Butterfly method, of class SwimmingDiscipline.
      */
@@ -45,5 +48,5 @@ public class SwimmingDisciplineTest {
         String result = disc.BREASTSTROKE.name();
         assertEquals("BREASTSTROKE", result);
     }
-    
+
 }

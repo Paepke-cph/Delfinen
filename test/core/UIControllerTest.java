@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package core;
 
 import org.junit.Test;
@@ -14,13 +9,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
- * @author rando
+ * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class UIControllerTest {
+
     private MockStorage mockStorage;
+
     public UIControllerTest() {
-        mockStorage = new MockStorage(new int[] {1});
+        mockStorage = new MockStorage(new int[]{1});
     }
 
     @Test
@@ -103,9 +102,9 @@ public class UIControllerTest {
     @Test
     public void testAddMember_AddCompJunior() {
         // Arrange
-        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "nej", "ja","2", "-1", "3", "ja", "-1", "-1"});
+        MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "17", "nej", "ja", "2", "-1", "3", "ja", "-1", "-1"});
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
-        HashMap<String,String> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("member_name", "Test Coach");
         map.put("age", "29");
         map.put("member_id", "3");
@@ -125,7 +124,7 @@ public class UIControllerTest {
         // Arrange
         MockUI mockUI = new MockUI(new String[]{"1", "1", "Peter Larsen", "80", "nej", "ja", "2", "-1", "ja", "3", "ja", "-1", "-1"});
         ArrayList<HashMap<String, String>> list = new ArrayList<>();
-        HashMap<String,String> map = new HashMap<>();
+        HashMap<String, String> map = new HashMap<>();
         map.put("member_name", "Test Coach");
         map.put("age", "29");
         map.put("member_id", "3");

@@ -2,17 +2,16 @@ package core;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
 import storage.MockStorage;
-import ui.MockUI;
 
 /**
- *
  * @author Alexander
+ * @author Benjamin
+ * @author Mads
+ * @author Tobias
  */
 public class StorageControllerTest {
 
@@ -180,7 +179,7 @@ public class StorageControllerTest {
     }
 
     @Test
-    public void testJuniorCompSwimmer () {
+    public void testJuniorCompSwimmer() {
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
@@ -203,7 +202,7 @@ public class StorageControllerTest {
         map.put("coach_id", "3");
         map.put("arrears", "2019-04-05");
         list.add(map);
-        
+
         mockStorage.setSwimmingDisciplines(swimDisc);
         mockStorage.setMembers(list);
         members = new StorageController(mockStorage);
@@ -212,7 +211,7 @@ public class StorageControllerTest {
     }
 
     @Test
-    public void testSearchMemberByID () {
+    public void testSearchMemberByID() {
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
@@ -244,7 +243,7 @@ public class StorageControllerTest {
     }
 
     @Test
-    public void testCreateCompetition(){
+    public void testCreateCompetition() {
         mockStorage = new MockStorage();
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
@@ -290,17 +289,17 @@ public class StorageControllerTest {
         mockStorage.setMembers(list);
         members = new StorageController(mockStorage);
         Member member = members.searchMemberById(1);
-        
+
         ArrayList<SwimmingDiscipline> expected = new ArrayList<>();
         expected.add(SwimmingDiscipline.BACKSTROKE);
         expected.add(SwimmingDiscipline.BREASTSTROKE);
         ArrayList<SwimmingDiscipline> result = member.getCompetition().getSwimmingDiscipline();
-        
+
         assertTrue(expected.equals(result));
     }
 
     @Test
-    public void testGetArrears(){
+    public void testGetArrears() {
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
         HashMap<String, String> map3 = new HashMap();
@@ -333,9 +332,9 @@ public class StorageControllerTest {
         int result = members.getArrears().size();
         assertEquals(expected, result);
     }
-    
+
     @Test
-    public void testGetArrearsNull(){
+    public void testGetArrearsNull() {
         HashMap<String, String> map = new HashMap();
         HashMap<String, String> map2 = new HashMap();
         HashMap<String, String> map3 = new HashMap();
