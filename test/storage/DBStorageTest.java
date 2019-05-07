@@ -38,7 +38,7 @@ public class DBStorageTest {
     public ArrayList<String> scanFromFile(String filename) {
         ArrayList<String> file = new ArrayList();
         try {
-            Scanner scan = new Scanner(new File("scripts\\" + filename));
+            Scanner scan = new Scanner(new File("scripts/" + filename));
             scan.useDelimiter(Pattern.compile(";"));
             while (scan.hasNext()) {
                 file.add(scan.next());
@@ -91,7 +91,27 @@ public class DBStorageTest {
     @Test
     public void testGetNextCompetitionID() {
         int actual = storage.getNextCompetitionID();
-        //int expected =
+        int expected = 33;
+        assertEquals(expected, actual);
     }
 
+    @Test
+    public void testGetNextTrainingID () {
+        int actual = storage.getNextTrainingID();
+        int expected = 33;
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void testRemoveMember () {
+        int sizeBefore = storage.getMembers().size();
+        storage.removeMember(1);
+        int sizeAfter = storage.getMembers().size();
+        assertEquals(sizeBefore -1, sizeAfter);
+    }
+
+    @Test
+    public void removeTrainingResult () {
+        
+    }
 }
