@@ -50,14 +50,15 @@ public class DBStorage implements Storage {
 
     @Override
     public Integer getNextMemberID() {
+        Integer memberID = null;
         String PREP_GET_NEXT_ID = "SELECT MAX(MEMBER_ID) as member_id FROM MEMBERS";
         try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement(PREP_GET_NEXT_ID)) {
             ArrayList<HashMap<String, String>> list = sqlConnector.selectQuery(preparedStatement);
-            return Integer.parseInt(list.get(0).get("member_id")) + 1;
+            memberID = Integer.parseInt(list.get(0).get("member_id")) + 1;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return memberID;
     }
 
     @Override
