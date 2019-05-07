@@ -10,10 +10,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import storage.Storage;
 import ui.UI;
+
+import javax.sound.sampled.AudioInputStream;
 
 /**
  *
@@ -104,6 +104,7 @@ public class UIController {
             ui.println(member.toString());
         } else {
             member = new Member(true, name, age, id, LocalDate.now(), null);
+            storageController.addMember(StorageController.getCoachCat(), member);
             ui.println("\nNy Træner Oprettet");
             ui.println(member.toString());
         }
@@ -140,10 +141,14 @@ public class UIController {
             }
             ui.println("");
             int[] memberID = displayCoaches();
-            ui.print("Vælg ID på den ønskede træner: ");
-            int choice = parseUserInputToInt(memberID);
-            Member coach = storageController.searchMemberById(choice);
-            return new CompetitionSwimmer(coach, selectedDiscipline);
+            if(memberID != null) {
+                ui.print("Vælg ID på den ønskede træner: ");
+                int choice = parseUserInputToInt(memberID);
+                Member coach = storageController.searchMemberById(choice);
+                return new CompetitionSwimmer(coach, selectedDiscipline);
+            } else {
+                return null;
+            }
         }
         return null;
     }
@@ -393,45 +398,49 @@ public class UIController {
         choice = parseUserInputToInt(mID);
         if (choice != EXIT_TOKEN) {
             Member member = storageController.searchMemberById(choice);
-            ArrayList<SwimmingDiscipline> swimmingDisciplines = member.getCompetition().getSwimmingDiscipline();
-            int[] swimOptions = new int[swimmingDisciplines.size()+1];
-            swimOptions[swimOptions.length-1] = EXIT_TOKEN;
-            if (member.getCompetition() != null) {
-                ui.println("Vælg resultats kategori:");
-                ui.println("1) Trænings resultat:");
-                ui.println("2) Kompetitive resultat:");
-                ui.println("\n" + EXIT_TOKEN + ") Tilbage");
-                choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
-                boolean traningResults = (choice == 1);
-                if (choice != EXIT_TOKEN) {
-                    for (int i = 0; i < swimmingDisciplines.size(); i++) {
-                        ui.println((i+1) + ") " + swimmingDisciplines.get(i).getDisciplineName());
-                        swimOptions[i] = i+1;
-                    }
-                    choice = parseUserInputToInt(swimOptions);
+            if(member.getCompetition() != null) {
+                ArrayList<SwimmingDiscipline> swimmingDisciplines = member.getCompetition().getSwimmingDiscipline();
+                int[] swimOptions = new int[swimmingDisciplines.size()+1];
+                swimOptions[swimOptions.length-1] = EXIT_TOKEN;
+                if (member.getCompetition() != null) {
+                    ui.println("Vælg resultats kategori:");
+                    ui.println("1) Trænings resultat:");
+                    ui.println("2) Kompetitive resultat:");
+                    ui.println("\n" + EXIT_TOKEN + ") Tilbage");
+                    choice = parseUserInputToInt(1, 2, EXIT_TOKEN);
+                    boolean traningResults = (choice == 1);
                     if (choice != EXIT_TOKEN) {
-                        SwimmingDiscipline swimmingDiscipline = swimmingDisciplines.get(choice-1);
-                        LocalDate localDate = parseUserInputToLocalDate();
-                        LocalTime localTime = parseUserInputToLocalTime();
-                        int id;
-                        if (traningResults) {
-                            id = storage.getNextTrainingID();
-                            TrainingResult res = new TrainingResult(swimmingDiscipline, localDate, localTime, id);
-                            storage.addTrainingResult(res, member.getId());
-                        } else {
-                            id = storage.getNextCompetitionID();
-                            ui.print("Stævne: ");
-                            String event = ui.getUserInput();
-                            ui.print("Placering: ");
-                            int placement = parseUserInputToInt();
-                            CompetitionResult res = new CompetitionResult(event, placement, swimmingDiscipline, localDate, localTime, id);
-                            storage.addCompResult(res, member.getId());
+                        for (int i = 0; i < swimmingDisciplines.size(); i++) {
+                            ui.println((i+1) + ") " + swimmingDisciplines.get(i).getDisciplineName());
+                            swimOptions[i] = i+1;
+                        }
+                        choice = parseUserInputToInt(swimOptions);
+                        if (choice != EXIT_TOKEN) {
+                            SwimmingDiscipline swimmingDiscipline = swimmingDisciplines.get(choice-1);
+                            LocalDate localDate = parseUserInputToLocalDate();
+                            LocalTime localTime = parseUserInputToLocalTime();
+                            int id;
+                            if (traningResults) {
+                                id = storage.getNextTrainingID();
+                                TrainingResult res = new TrainingResult(swimmingDiscipline, localDate, localTime, id);
+                                storage.addTrainingResult(res, member.getId());
+                            } else {
+                                id = storage.getNextCompetitionID();
+                                ui.print("Stævne: ");
+                                String event = ui.getUserInput();
+                                ui.print("Placering: ");
+                                int placement = parseUserInputToInt();
+                                CompetitionResult res = new CompetitionResult(event, placement, swimmingDiscipline, localDate, localTime, id);
+                                storage.addCompResult(res, member.getId());
+                            }
                         }
                     }
+                } else {
+                    ui.println("Medlemmet du har valgt er ikke en kompetitive svømmer, prøv igen");
+                    addResult();
                 }
             } else {
-                ui.println("Medlemmet du har valgt er ikke en kompetitive svømmer, prøv igen");
-                addResult();
+                ui.println("Medlem er ikke kompetitiv");
             }
         }
     }
@@ -501,12 +510,17 @@ public class UIController {
 
     private int[] displayCoaches() {
         ArrayList<Member> coaches = storageController.getMembers().get(StorageController.getCoachCat());
-        int[] coachesID = new int[coaches.size()];
-        for (int i = 0; i < coaches.size(); i++) {
-            ui.println(coaches.get(i).toString());
-            coachesID[i] = coaches.get(i).getId();
+        if(coaches != null) {
+            int[] coachesID = new int[coaches.size()];
+            for (int i = 0; i < coaches.size(); i++) {
+                ui.println(coaches.get(i).toString());
+                coachesID[i] = coaches.get(i).getId();
+            }
+            return coachesID;
+        } else {
+            ui.println("Der er ingen trænere tilmedt.");
+            return null;
         }
-        return coachesID;
     }
 
     private int[] findMemberByName() {

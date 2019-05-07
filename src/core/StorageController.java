@@ -1,15 +1,11 @@
 package core;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import storage.Storage;
-import ui.ConsoleUI;
 import ui.UI;
-import util.SortedQueue;
 
 /**
  *
