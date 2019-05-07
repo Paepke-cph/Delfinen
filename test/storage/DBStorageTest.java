@@ -6,12 +6,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.regex.Pattern;
-import static org.junit.Assert.assertEquals;
+
+import core.*;
 import org.junit.Test;
 import org.junit.Before;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Alexander
@@ -109,7 +115,157 @@ public class DBStorageTest {
     }
 
     @Test
-    public void removeTrainingResult () {
-        
+    public void testRemoveNonExistingMember () {
+        assertFalse(storage.removeMember(-1));
     }
+
+    @Test
+    public void testCreateMember () {
+        // Meet John! John is created as a member object
+        Member john = new Member(true, "John", 55, 200, LocalDate.now(), null);
+
+        // We then fetch everyone called John from the DB. (No one - yet.)
+        ArrayList<HashMap<String, String>> johnFromStorage;
+        johnFromStorage = storage.getMembersByName("John");
+        assertTrue(johnFromStorage.isEmpty());
+
+        // John is stored in the DB
+        storage.createMember(john);
+
+        // Search for John again
+        johnFromStorage = storage.getMembersByName("John");
+
+        // John now exists in the DB with the correct member_id
+        assertEquals("John", johnFromStorage.get(0).get("member_name"));
+        assertEquals(200, Integer.parseInt(johnFromStorage.get(0).get("member_id")));
+    }
+
+    @Test
+    public void testCreateMember_competitive () {
+        Member coach = new Member("Coach", 55, 50, true);
+        ArrayList<SwimmingDiscipline> swimmingDisciplines = new ArrayList<>();
+        swimmingDisciplines.add(SwimmingDiscipline.BACKSTROKE);
+        CompetitionSwimmer competitionSwimmer = new CompetitionSwimmer(coach, swimmingDisciplines);
+        Member john = new Member(true, "John", 55, 200, LocalDate.now(), competitionSwimmer);
+        storage.createMember(john);
+
+        // Search for John again
+        ArrayList<HashMap<String, String>> johnFromStorage = storage.getMembersByName("John");
+
+        // John now exists in the DB with the correct member_id
+        assertEquals("John", johnFromStorage.get(0).get("member_name"));
+        assertEquals(200, Integer.parseInt(johnFromStorage.get(0).get("member_id")));
+    }
+
+    @Test
+    public void testUpdateMember () {
+        // Say hello to john again!
+        Member john = new Member(true, "John", 55, 200, LocalDate.now(), null);
+        storage.createMember(john);
+
+        // Assert that John is created in the DB
+        ArrayList<HashMap<String, String>> memberFromStorage;
+        memberFromStorage = storage.getMembersByName("John");
+        assertFalse(memberFromStorage.isEmpty());
+
+        // John now wants to be called Michael
+        john.setName("Michael");
+        storage.updateMember(john);
+
+        // Search the DB for members called Michael and assert their unique ID is the same as Johns
+        memberFromStorage = storage.getMembersByName("Michael");
+        assertEquals("Michael", memberFromStorage.get(0).get("member_name"));
+        assertEquals(200, Integer.parseInt(memberFromStorage.get(0).get("member_id")));
+    }
+
+    @Test
+    public void testGetCompetitionResults () {
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.of(00, 04, 40, 00);
+
+        CompetitionResult competitionResult = new CompetitionResult("Olympics", 1, SwimmingDiscipline.CRAWL, date, time, 5);
+
+        int numberOfResultsBefore = storage.getCompetitionResults(5).size();
+        storage.addCompResult(competitionResult, 5);
+
+        int numberOfResultsAfter = storage.getCompetitionResults(5).size();
+
+        assertEquals(numberOfResultsBefore + 1, numberOfResultsAfter);
+    }
+
+    @Test
+    public void testGetCompetitiveResults_nonExistingMember () {
+        assertTrue(storage.getCompetitionResults(400).isEmpty());
+    }
+
+    @Test
+    public void testGetTrainingResults () {
+        LocalDate date = LocalDate.now();
+        LocalTime time = LocalTime.of(00, 04, 40, 00);
+
+
+        TrainingResult trainingResult = new TrainingResult(SwimmingDiscipline.CRAWL, date, time, 5);
+
+        int numberOfResultsBefore = storage.getTrainingResults(5).size();
+        storage.addTrainingResult(trainingResult, 5);
+
+        int numberOfResultsAfter = storage.getTrainingResults(5).size();
+
+        assertEquals(numberOfResultsBefore + 1, numberOfResultsAfter);
+    }
+
+    @Test
+    public void testGetTrainingResults_nonExistingMember () {
+        assertTrue(storage.getTrainingResults(400).isEmpty());
+    }
+
+    @Test
+    public void testGetSwimmingDisciplines () {
+        assertEquals(1, (int)storage.getSwimmingDisciplines(5).get(0));
+        assertEquals(4, (int)storage.getSwimmingDisciplines(5).get(1));
+    }
+
+    @Test
+    public void testGetSwimmingDisciplines_NonExistingMember () {
+        assertNull(storage.getSwimmingDisciplines(400));
+    }
+
+    @Test
+    public void testGetTopFiveCompetitionResultsByDiscipline () {
+        // Do we get 5 results back?
+        assertEquals(5, storage.getTopFiveCompetitionResultsByDiscipline(1).size());
+        LocalTime result1 = LocalTime.parse(storage.getTopFiveCompetitionResultsByDiscipline(1).get(0).get("best_time"));
+        LocalTime result2 = LocalTime.parse(storage.getTopFiveCompetitionResultsByDiscipline(1).get(1).get("best_time"));
+        LocalTime result3 = LocalTime.parse(storage.getTopFiveCompetitionResultsByDiscipline(1).get(2).get("best_time"));
+        LocalTime result4 = LocalTime.parse(storage.getTopFiveCompetitionResultsByDiscipline(1).get(3).get("best_time"));
+        LocalTime result5 = LocalTime.parse(storage.getTopFiveCompetitionResultsByDiscipline(1).get(4).get("best_time"));
+
+        // Right order?
+        assertTrue(result1.compareTo(result2) <= 0);
+        assertTrue(result2.compareTo(result3) <= 0);
+        assertTrue(result3.compareTo(result4) <= 0);
+        assertTrue(result4.compareTo(result5) <= 0);
+    }
+
+    @Test
+    public void testGetTopFiveTrainingResultsByDiscipline () {
+        // Do we get 5 results back?
+        assertEquals(5, storage.getTopFiveTrainingResultsByDiscipline(1).size());
+        LocalTime result1 = LocalTime.parse(storage.getTopFiveTrainingResultsByDiscipline(1).get(0).get("best_time"));
+        LocalTime result2 = LocalTime.parse(storage.getTopFiveTrainingResultsByDiscipline(1).get(1).get("best_time"));
+        LocalTime result3 = LocalTime.parse(storage.getTopFiveTrainingResultsByDiscipline(1).get(2).get("best_time"));
+        LocalTime result4 = LocalTime.parse(storage.getTopFiveTrainingResultsByDiscipline(1).get(3).get("best_time"));
+        LocalTime result5 = LocalTime.parse(storage.getTopFiveTrainingResultsByDiscipline(1).get(4).get("best_time"));
+
+        // Right order?
+        assertTrue(result1.compareTo(result2) <= 0);
+        assertTrue(result2.compareTo(result3) <= 0);
+        assertTrue(result3.compareTo(result4) <= 0);
+        assertTrue(result4.compareTo(result5) <= 0);
+    }
+
+
+
+
+
 }
