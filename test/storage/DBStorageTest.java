@@ -12,6 +12,8 @@ import java.util.regex.Pattern;
 import org.junit.Test;
 import org.junit.Before;
 
+import static org.junit.Assert.assertEquals;
+
 /**
  * @author Alexander
  * @author Benjamin
@@ -22,8 +24,8 @@ public class DBStorageTest {
 
     ArrayList<String> createDatabase = scanFromFile("UnitTestCreate_Delfinen.sql");
     ArrayList<String> populateDatabase = scanFromFile("UnitTestPopulate_Delfinen.sql");
-    private final static String user = "root";
-    private final static String password = "Nu66ets";
+    private final static String user = "myuser";
+    private final static String password = "Password123";
     private final static String IP = "127.0.0.1";
     private final static String PORT = "3306";
     private final static String DATABASE = "Delfinen";
