@@ -1,10 +1,10 @@
 # Delfinen
 
 ## Opsætning af database:
-1. Kør ![](Scripts/Create_Delfinen.sql) for at oprette databasen.
-2. Kør 1[](Scripts/Populate_Delfinen.sql) for at fylde databasen med data.
+1. Kør ![Create_Delfinen.sql](Scripts/Create_Delfinen.sql) for at oprette databasen.
+2. Kør ![Populate_Delfinen.sql](Scripts/Populate_Delfinen.sql) for at fylde databasen med data.
 ## Opsætning af programmet:
-1. Ændre ![](src/storage/SQLConnector.java) ved user og password til dit valgte username og password.
+1. Ændre ![SQLConnector.java](src/storage/SQLConnector.java) ved user og password til dit valgte username og password.
 
 
 
