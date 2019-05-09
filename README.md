@@ -1,8 +1,12 @@
 # Delfinen
 
+## Rapport
+Vores rapport kan findes ![her](Documenter/Rapport.pdf)
+
 ## Opsætning af database:
 1. Kør ![Create_Delfinen.sql](Scripts/Create_Delfinen.sql) for at oprette databasen.
 2. Kør ![Populate_Delfinen.sql](Scripts/Populate_Delfinen.sql) for at fylde databasen med data.
+
 ## Opsætning af programmet:
 1. Ændre ![SQLConnector.java](src/storage/SQLConnector.java) ved user og password til dit valgte username og password.
 
