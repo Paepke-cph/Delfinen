@@ -1,7 +1,7 @@
 # Delfinen
 
 ## Rapport
-Vores rapport kan findes ![her](Documenter/Rapport.pdf)
+Vores rapport kan findes ![her](Documents/Rapport.pdf)
 
 ## Opsætning af database:
 1. Kør ![Create_Delfinen.sql](Scripts/Create_Delfinen.sql) for at oprette databasen.
