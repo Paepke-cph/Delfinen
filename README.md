@@ -1,4 +1,4 @@
-# Delfinen
+# Delfinen - Gruppe 8
 
 ## Rapport
 Vores rapport kan findes ![her](Documents/Rapport.pdf)
