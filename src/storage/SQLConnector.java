@@ -20,6 +20,7 @@ public class SQLConnector implements AutoCloseable {
     private final static String serverTime = "serverTimezone=UTC";
     private final static String url = "jdbc:mysql://" + IP + ":" + PORT + "/" + DATABASE + "?" + serverTime;
     private Connection connection;
+
     private Statement statement;
 
     public SQLConnector() throws SQLException {
