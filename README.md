@@ -1,7 +1,15 @@
 # Delfinen
-![](like-a-dolphin-134211.gif)
-## 1. Semesterprojekt forår 2019 - Case: Svømmeklubben Delfinen
 
+## Opsætning af database:
+1. Kør ![](Scripts/Create_Delfinen.sql) for at oprette databasen.
+2. Kør 1[](Scripts/Populate_Delfinen.sql) for at fylde databasen med data.
+## Opsætning af programmet:
+1. Ændre ![](src/storage/SQLConnector.java) ved user og password til dit valgte username og password.
+
+
+
+## 1. Semesterprojekt forår 2019 - Case: Svømmeklubben Delfinen
+![](like-a-dolphin-134211.gif)
 Svømmeklubben Delfinen er en mindre klub, der er i vækst. Klubbens ledelse ønsker derfor udviklet et administrativt system til at styre medlemsoplysninger, kontingenter og svømmeresultater.
 
 Det er klubbens formand, der tager sig af nye medlemmer. Ved indmeldelse i klubben registreres diverse stamoplysninger om personen herunder alder.
