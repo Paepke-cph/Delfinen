@@ -30,7 +30,7 @@ public class CompetitionResultTest {
      * Test of getSwimmingDiscipline method, of class CompetitionResult.
      */
     @Test
-    public void testGetSwmmingDiscipline() {
+    public void testGetSwimmingDiscipline() {
         assertEquals("BUTTERFLY", comp.getSwimmingDiscipline().getDisciplineName());
     }
 

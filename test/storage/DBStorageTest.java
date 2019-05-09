@@ -159,7 +159,7 @@ public class DBStorageTest {
 
     @Test
     public void testUpdateMember () {
-        // Say hello to john again!
+        // Say hello to John again!
         Member john = new Member(true, "John", 55, 200, LocalDate.now(), null);
         storage.createMember(john);
 
@@ -202,7 +202,6 @@ public class DBStorageTest {
     public void testGetTrainingResults () {
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.of(00, 04, 40, 00);
-
 
         TrainingResult trainingResult = new TrainingResult(SwimmingDiscipline.CRAWL, date, time, 5);
 
