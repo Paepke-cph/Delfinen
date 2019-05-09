@@ -44,7 +44,7 @@ public class MockStorageTest {
         map.put("active", "1");
         list.add(map);
         mockStorage.setMembers(list);
-        assertTrue(list.equals(mockStorage.getMembers()));
+        assertEquals(list, mockStorage.getMembers());
     }
 
 }

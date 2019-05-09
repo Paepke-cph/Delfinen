@@ -30,7 +30,7 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembers() {
-        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS");) {
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS")) {
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -40,7 +40,7 @@ public class DBStorage implements Storage {
 
     @Override
     public ArrayList<HashMap<String, String>> getMembersByName(String name) {
-        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"");) {
+        try (PreparedStatement preparedStatement = sqlConnector.getConnection().prepareStatement("SELECT * FROM MEMBERS WHERE member_name like \"" + name + "%\"")) {
             return sqlConnector.selectQuery(preparedStatement);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -170,7 +170,6 @@ public class DBStorage implements Storage {
     }
 
     private boolean addSwimmingDisciplineToMember(CompetitionSwimmer compSwim, int member_id) {
-        int member = member_id;
         String insertDisciplineMember = "INSERT INTO DISCIPLINE_MEMBER (MEMBER_ID, DISCIPLINE_ID) VALUES (?, ?)";
         boolean success = false;
         for (SwimmingDiscipline swimDisc : compSwim.getSwimmingDiscipline()) {
